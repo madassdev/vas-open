@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusinessDocumentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +20,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::post('/register', )
+Route::group(['prefix'=>'auth'],function(){
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/update-password', [AuthController::class, 'updatePassword'])->middleware('auth:sanctum');
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+});
+
+Route::group(['middleware'=>['auth:sanctum', 'hasChangedPassword']], function(){
+    Route::group(['prefix'=>'account'], function(){
+        Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
+    });
+});

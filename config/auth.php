@@ -18,6 +18,8 @@ return [
         'passwords' => 'users',
     ],
 
+    'auth_token_name' => env("AUTH_TOKEN", "vasreseller-token"),
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
