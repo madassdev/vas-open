@@ -25,7 +25,10 @@ class RoleSeeder extends Seeder
         ]);
 
         $roles->map(function ($r) {
-            Role::create(["name" => $r]);
+            Role::updateOrCreate(
+                ["name" => $r],
+                ["name" => $r]
+            );
         });
     }
 }
