@@ -44,6 +44,10 @@ class AuthController extends Controller
             "verified" => false,
         ]);
 
+        // Assign role to user 
+        $user->assignRole('business_super_admin');
+
+
         // TODO: Create user on test env
 
         // Notify user
@@ -94,11 +98,6 @@ class AuthController extends Controller
         $user->password = bcrypt($request->new_password);
         $user->password_changed = true;
         $user->save();
-
-        if ($context === "new") {
-            $user->assignRole('business_super_admin');
-        }
-
         Mail::to($user)->queue(new PasswordUpdatedMail($user, $context));
 
         return $this->sendSuccess('Password updated successfully', ["context" => $context]);
