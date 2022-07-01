@@ -9,8 +9,10 @@ use App\Mail\UserCreatedPasswordMail;
 use App\Mail\UserWelcomeMail;
 use App\Models\Business;
 use App\Models\User;
+use App\Rules\StandardPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -51,8 +53,9 @@ class AuthController extends Controller
         // TODO: Create user on test env
 
         // Notify user
-        Mail::to($user)->queue(new UserWelcomeMail($user));
-        Mail::to($user)->queue(new UserCreatedPasswordMail($user));
+        // Mail::to($user)->queue(new UserWelcomeMail($user));
+        // Mail::to($user)->queue(new UserCreatedPasswordMail($user));
+        
 
         // Create response for test environments where mail may not be setup yet.
         $data = config('app.env') !== 'production' ? ["generated_password" => $generated_password] : [];
@@ -76,7 +79,7 @@ class AuthController extends Controller
         $roles = $user->roles->pluck('name')->toArray();
         $permissions = $user->permissions->pluck('name')->toArray();
         $message = $user->password_changed ? "Login Successful" : "Login successful. | WARNING: Please update your password to continue.";
-        
+
         $data = [
             "user" => $user,
             "access_token" => $token,
@@ -90,8 +93,18 @@ class AuthController extends Controller
     {
         $request->validate([
             "password" => "required|current_password",
-            "new_password" => "required|string",
+            "new_password" => [
+                "required", Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()->rules([new StandardPassword]), 
+            ],
+            // "new_password" => "required|string|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/",
         ]);
+
+        return 'pass';
 
         $user = auth()->user();
         $context = $user->password_changed ? "updated" : "new";

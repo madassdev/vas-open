@@ -10,7 +10,7 @@ class Business extends Model
     use HasFactory;
 
     protected $guarded = [];
-    
+
 
     public function documents()
     {
@@ -35,5 +35,10 @@ class Business extends Model
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function businessDocument()
+    {
+        return $this->hasOne(BusinessDocument::class);
     }
 }
