@@ -20,7 +20,6 @@ class UserWelcomeMail extends Mailable
     public $user;
     public function __construct(User $user)
     {
-        //
         $this->user = $user;
     }
 
@@ -31,6 +30,6 @@ class UserWelcomeMail extends Mailable
      */
     public function build()
     {
-        return $this->view('email.welcome-user');
+        return $this->markdown('email.welcome-user');
     }
 }

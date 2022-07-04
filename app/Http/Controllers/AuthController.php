@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
+use App\Jobs\UserMailJob;
 use App\Mail\PasswordUpdatedMail;
 use App\Mail\UserCreatedPasswordMail;
 use App\Mail\UserWelcomeMail;
 use App\Models\Business;
 use App\Models\User;
 use App\Rules\StandardPassword;
+use App\Services\BalanceService;
+use App\Services\MailApiService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
@@ -18,9 +22,19 @@ class AuthController extends Controller
 {
     //
 
+    public function generateRandomCharacters()
+    {
+        $seed = str_split('abcdefghijklmnopqrstuvwxyz'
+            . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            . '0123456789!@#$%^&*()'); // and any other characters
+        shuffle($seed); // probably optional since array_is randomized; this may be redundant
+        $rand = '';
+        foreach (array_rand($seed, 4) as $k) $rand .= $seed[$k];
+        return $rand;
+    }
+
     public function register(RegistrationRequest $request)
     {
-        $generated_password = str()->random(4) . rand(1000, 3000);
 
         // Create business
         $business = Business::updateOrCreate([
@@ -34,6 +48,7 @@ class AuthController extends Controller
         ]);
 
         // Create User
+        $generated_password = $this->generateRandomCharacters() . $this->generateRandomCharacters();
         $user = User::updateOrCreate([
             "email" => $request->email,
         ], [
@@ -53,12 +68,16 @@ class AuthController extends Controller
         // TODO: Create user on test env
 
         // Notify user
-        // Mail::to($user)->queue(new UserWelcomeMail($user));
-        // Mail::to($user)->queue(new UserCreatedPasswordMail($user));
-        
+        $mailError = null;
+        $passwordMail = new MailApiService($user->email, "[Vas Reseller] Here's your account details!", (new UserCreatedPasswordMail($user))->render());
+        try {
+            $passwordMail->send();
+        } catch (Exception $e) {
+            $mailError = $e->getMessage();
+        };
 
         // Create response for test environments where mail may not be setup yet.
-        $data = config('app.env') !== 'production' ? ["generated_password" => $generated_password] : [];
+        $data = config('app.env') !== 'production' ? ["generated_password" => $generated_password, "mail_error" => $mailError] : [];
 
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
     }
@@ -75,13 +94,19 @@ class AuthController extends Controller
         // Create API Token for user
         $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
 
+        // 
+        $balance = BalanceService::getBalance($user);
+        // return $balance;
+
         // Fetch User Roles and Permissions
         $roles = $user->roles->pluck('name')->toArray();
         $permissions = $user->permissions->pluck('name')->toArray();
         $message = $user->password_changed ? "Login Successful" : "Login successful. | WARNING: Please update your password to continue.";
 
+
         $data = [
             "user" => $user,
+            "balance" => $balance,
             "access_token" => $token,
             "user_roles" => $roles,
             "user_permissions" => $permissions,
@@ -99,21 +124,29 @@ class AuthController extends Controller
                     ->mixedCase()
                     ->numbers()
                     ->symbols()
-                    ->uncompromised()->rules([new StandardPassword]), 
+                    ->rules([new StandardPassword]),
             ],
             // "new_password" => "required|string|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/",
         ]);
 
-        return 'pass';
+        // return 'pass';
 
         $user = auth()->user();
         $context = $user->password_changed ? "updated" : "new";
         $user->password = bcrypt($request->new_password);
         $user->password_changed = true;
         $user->save();
-        Mail::to($user)->queue(new PasswordUpdatedMail($user, $context));
 
-        return $this->sendSuccess('Password updated successfully', ["context" => $context]);
+        $passwordUpdatedMail = new MailApiService($user->email, "[Vas Reseller] Password updated successfully!", (new PasswordUpdatedMail($user, $context))->render());
+        $mailError = null;
+        try {
+            $passwordUpdatedMail->send();
+        } catch (Exception $e) {
+            $mailError = $e->getMessage();
+        };
+
+
+        return $this->sendSuccess('Password updated successfully', ["context" => $context, "mail_error" => $mailError]);
     }
 
     public function logout()

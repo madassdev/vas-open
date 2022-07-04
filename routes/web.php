@@ -1,5 +1,7 @@
 <?php
 
+use App\Mail\UserCreatedPasswordMail;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/mail', function(){
+    $user = User::whereEmail('favescsskr@gmail.com')->first();
+    return (new UserCreatedPasswordMail($user))->render();
 });

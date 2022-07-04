@@ -31,6 +31,6 @@ class UserCreatedPasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->view('email.user-password');
+        return $this->markdown('email.user-password');
     }
 }

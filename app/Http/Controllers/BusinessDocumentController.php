@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserWelcomeMail;
+use App\Services\MailApiService;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Markdown;
 
 class BusinessDocumentController extends Controller
 {

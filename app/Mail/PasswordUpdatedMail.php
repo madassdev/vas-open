@@ -33,8 +33,8 @@ class PasswordUpdatedMail extends Mailable
     public function build()
     {
         return $this->context === "updated" ?
-            $this->view('email.password-updated')
+            $this->markdown('email.password-updated')
             :
-            $this->view('email.new-password-updated');
+            $this->markdown('email.new-password-updated');
     }
 }
