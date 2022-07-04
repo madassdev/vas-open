@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Jobs\UserMailJob;
+use App\Mail\GenericMail;
 use App\Mail\PasswordUpdatedMail;
 use App\Mail\UserCreatedPasswordMail;
 use App\Mail\UserWelcomeMail;
@@ -22,14 +23,14 @@ class AuthController extends Controller
 {
     //
 
-    public function generateRandomCharacters()
+    public function generateRandomCharacters($length = 4)
     {
         $seed = str_split('abcdefghijklmnopqrstuvwxyz'
             . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
             . '0123456789!@#$%^&*()'); // and any other characters
         shuffle($seed); // probably optional since array_is randomized; this may be redundant
         $rand = '';
-        foreach (array_rand($seed, 4) as $k) $rand .= $seed[$k];
+        foreach (array_rand($seed, $length) as $k) $rand .= $seed[$k];
         return $rand;
     }
 
@@ -55,6 +56,7 @@ class AuthController extends Controller
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
             "email" => $request->email,
+            "phone" => $request->phone_number,
             "business_id" => $business->id,
             "password" => bcrypt($generated_password),
             "verification_code" => $generated_password,
@@ -154,5 +156,82 @@ class AuthController extends Controller
         $user = auth()->user();
         $user->tokens()->delete();
         return $this->sendSuccess("User logged out successfully.");
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            "email" => "required|email|exists:users,email",
+        ]);
+
+        $token = $this->generateRandomCharacters(8);
+        $user = User::whereEmail($request->email)->firstOrFail();
+        $user->verification_code = $token;
+        $user->save();
+
+        $mailContent = new GenericMail('email.password-reset-token', $user, 'user');
+        $mail = new MailApiService($user->email, "[Vas Reseller] Reset your password", $mailContent->render());
+
+        try {
+            $mailError = null;
+            $mail->send();
+        } catch (Exception $e) {
+            $mailError = $e->getMessage();
+        };
+
+        // Create response for test environments where mail may not be setup yet.
+        $data = config('app.env') !== 'production' ? ["reset_token" => $token, "mail_error" => $mailError] : [];
+
+        return $this->sendSuccess('Password reset request token has been sent. Please check your mail to proceed with requests.', $data);
+    }
+
+    public function verifyResetToken(Request $request)
+    {
+        $request->validate([
+            "email" => "required|email|exists:users,email",
+            "token" => "required|exists:users,verification_code"
+        ]);
+
+        // Validate token against user
+        $user = User::whereEmail($request->email)->firstOrFail();
+        if ($user->verification_code !== $request->token) {
+            return $this->sendError("[Token mismatch] - The token supplied does not exist for this user!", [], 401);
+        }
+
+        return $this->sendSuccess("Token verified successfully. You can now reset your password with this token.", ["token" => $request->token]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+       $request->validate([
+            "email" => "required|email|exists:users,email",
+            "token" => "required|exists:users,verification_code",
+            "new_password" => [
+                "required", Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->rules([new StandardPassword]),
+            ],
+        ]);
+
+        // Validate token against user
+        $user = User::whereEmail($request->email)->firstOrFail();
+        if ($user->verification_code !== $request->token) {
+            return $this->sendError("[Token mismatch] - The token supplied does not exist for this user!", [], 401);
+        }
+
+        $user->password = bcrypt($request->new_password);
+        $user->verification_code = null;
+        $user->password_changed = true;
+        $user->save();
+
+        // Should all existing tokens be deleted? 
+        // What other security strategies are to be implemented?
+
+        return $this->sendSuccess("Password reset successful, please proceed to login.");
+
+
     }
 }

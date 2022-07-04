@@ -1,8 +1,8 @@
 @component('mail::message')
-<h1>
-    YOUR PASSWORD HAS BEEN UPDATED FOR THE FIRST TIME
-</h1>
+<h3>
+    Your password has been updated. You can now use the app.
+</h3>
 <p>
-    email: <b>{{$user->email}}</b>
+    Email: <b>{{$user->email}}</b>
 </p>
 @endcomponent

@@ -20,15 +20,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix'=>'auth'],function(){
+Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/update-password', [AuthController::class, 'updatePassword'])->middleware('auth:sanctum');
+    Route::post('/passwords/request-token', [AuthController::class, 'forgotPassword']);
+    Route::post('/passwords/verify-token', [AuthController::class, 'verifyResetToken']);
+    Route::post('/passwords/reset', [AuthController::class, 'resetPassword']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 });
 
-Route::group(['middleware'=>['auth:sanctum', 'hasChangedPassword']], function(){
-    Route::group(['prefix'=>'account'], function(){
+Route::group(['middleware' => ['auth:sanctum', 'hasChangedPassword']], function () {
+    Route::group(['prefix' => 'account'], function () {
         Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
     });
 });
