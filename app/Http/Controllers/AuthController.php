@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DBSwap;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Jobs\UserMailJob;
@@ -65,8 +66,39 @@ class AuthController extends Controller
 
         // Assign role to user 
         $user->assignRole('business_super_admin');
+        
+        // Create user and business on test env
+        DBSwap::setConnection('mysqltest');
 
+        $test_business = Business::updateOrCreate([
+            "email" => $request->business_email,
+        ], [
+            "name" => $request->business_name,
+            "email" => $request->business_email,
+            "phone" => $request->business_phone_number,
+            "address" => $request->business_address,
+            "current_env" => "test"
+        ]);
 
+        // Create User
+        $test_user = User::updateOrCreate([
+            "email" => $request->email,
+        ], [
+            "first_name" => $request->first_name,
+            "last_name" => $request->last_name,
+            "email" => $request->email,
+            "phone" => $request->phone_number,
+            "business_id" => $test_business->id,
+            "password" => bcrypt($generated_password),
+            "verification_code" => $generated_password,
+            "verified" => false,
+        ]);
+
+        // Assign role to user 
+        $test_user->assignRole('business_super_admin');
+        
+
+        DBSwap::setConnection('mysqllive');
         // TODO: Create user on test env
 
         // Notify user

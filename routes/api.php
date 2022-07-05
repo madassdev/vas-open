@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,8 +31,9 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 });
 
-Route::group(['middleware'=>['auth:sanctum', 'hasChangedPassword']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'hasChangedPassword']], function () {
     Route::group(['prefix' => 'account'], function () {
+        Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
         Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
     });
 });
