@@ -120,23 +120,20 @@ class AuthController extends Controller
     {
         // Verify user credentials
         auth()->attempt($request->only(['email', 'password']));
-        $user = auth()->user();
+        $user = auth()->user()->load('business');
         if (!$user) {
             return $this->sendError("Unauthenticated!", [], 401);
         }
 
-        // Create API Token for user
-        $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
-
-        // 
         $balanceService = new BalanceService($user);
         $balance = $balanceService->getBalance($user);
-        // return $balance;
-        // return $balance;
-
+        
         // Fetch User Roles and Permissions
         $roles = $user->roles->pluck('name')->toArray();
         $permissions = $user->permissions->pluck('name')->toArray();
+        
+        // Create API Token for user
+        $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
         $message = $user->password_changed ? "Login Successful" : "Login successful. | WARNING: Please update your password to continue.";
 
 
@@ -172,6 +169,18 @@ class AuthController extends Controller
         $user->password = bcrypt($request->new_password);
         $user->password_changed = true;
         $user->save();
+        try{
+
+            DBSwap::setConnection('mysqltest');
+            $test_user = User::whereEmail($user->email)->first();
+            $test_user->password = bcrypt($request->new_password);
+            $test_user->password_changed = true;
+            $test_user->save();
+        }
+        catch(Exception $e)
+        {
+            // Do nothing
+        }
 
         $passwordUpdatedMail = new MailApiService($user->email, "[Vas Reseller] Password updated successfully!", (new PasswordUpdatedMail($user, $context))->render());
         $mailError = null;
