@@ -97,7 +97,9 @@ class AuthController extends Controller
         $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
 
         // 
-        $balance = BalanceService::getBalance($user);
+        $balanceService = new BalanceService($user);
+        $balance = $balanceService->getBalance($user);
+        // return $balance;
         // return $balance;
 
         // Fetch User Roles and Permissions
