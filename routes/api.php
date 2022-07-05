@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -37,6 +38,7 @@ Route::get('/live', function(){
 
 Route::group(['middleware' => ['auth:sanctum', 'hasChangedPassword']], function () {
     Route::group(['prefix' => 'account'], function () {
+        Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
         Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
     });
 });
