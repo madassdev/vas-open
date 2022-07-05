@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DBSwap;
+use App\Models\Business;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BusinessController extends Controller
@@ -18,6 +21,14 @@ class BusinessController extends Controller
         $business->current_env = $request->env;
         $business->save();
         return $this->sendSuccess("Bussiness Env switched to live");
-        return 123;
+    }
+
+    public function seed(Request $request)
+    {
+        DBSwap::setConnection('mysqltest');
+        $amount = $request->amount ?? 1;
+        $business = Business::find(1);
+        $transactions = $business->createDemoTransaction($amount);
+        return $transactions;
     }
 }

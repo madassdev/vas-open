@@ -42,3 +42,7 @@ Route::group(['middleware' => ['auth:sanctum', 'hasChangedPassword']], function 
         Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
     });
 });
+
+Route::group(['prefix' => 'seed'], function () {
+    // Route::post('/business', [BusinessController::class, 'seed']);
+});
