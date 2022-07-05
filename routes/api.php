@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessDocumentController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,10 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/passwords/verify-token', [AuthController::class, 'verifyResetToken']);
     Route::post('/passwords/reset', [AuthController::class, 'resetPassword']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+});
+
+Route::get('/live', function(){
+    return User::all();
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'hasChangedPassword']], function () {
