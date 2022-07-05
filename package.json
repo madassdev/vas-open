@@ -2,6 +2,8 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
+        "heroku-push-live": "git push live-heroku herokuLive:master",
+        "heroku-push-test": "git push heroku master",
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
