@@ -32,6 +32,6 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['middleware'=>['auth:sanctum', 'hasChangedPassword']], function () {
     Route::group(['prefix' => 'account'], function () {
-        Route::post('/docu en s', [BusinessDocumentController::class, 'uploadDocuments']);
+        Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
     });
 });
