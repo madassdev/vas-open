@@ -18,9 +18,13 @@ class NoTestEndpoints
     {
         $request_root = $request->root();
         $live_domain = env('LIVE_APP_DOMAIN');
-        if($request_root !== $live_domain)
-        {
-            abort(403, "[ENVIRONMENT ERROR]: Attempting to access LIVE only endpoint.");
+        if ($request_root !== $live_domain) {
+            return response()->json([
+                "success" => false,
+                "message" => "[ENVIRONMENT ERROR]: Attempting to access LIVE only endpoint.",
+                "data" => ["root" => $request_root, "live_domain" => $live_domain]
+            ], 400);
+            // abort(403, "[ENVIRONMENT ERROR]: Attempting to access LIVE only endpoint.");
         }
         return $next($request);
     }
