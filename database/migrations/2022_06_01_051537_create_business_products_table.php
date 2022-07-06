@@ -14,15 +14,20 @@ class CreateBusinessProductsTable extends Migration
     public function up()
     {
         Schema::create('business_products', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('business_id')->index()->nullable();
-            $table->unsignedInteger('product_id')->index()->nullable();
+            $table->id();
+            $table->bigInteger('business_id')->unsigned();
+            $table->bigInteger('product_id')->unsigned();
             $table->float('commission_value')->nullable();
             $table->text('fee_configuration')->nullable();
             $table->tinyInteger('enabled')->nullable();
             $table->integer('created_by')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+        });
+
+        Schema::table('business_products', function (Blueprint $table) {
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

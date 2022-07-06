@@ -14,11 +14,11 @@ class CreateBillersTable extends Migration
     public function up()
     {
         Schema::create('billers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('name')->nullable();
             $table->string('shortname')->nullable();
             $table->string('vendor_code')->nullable();
-            $table->integer('status')->nullable();
+            $table->string('status')->nullable();
             $table->string('logo')->nullable();
             $table->tinyInteger('enabled')->nullable();
             $table->timestamp('created_at')->nullable();

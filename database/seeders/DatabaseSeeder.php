@@ -2,8 +2,29 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
+use App\Models\Biller;
+use App\Models\Wallet;
+use App\Models\Invitee;
+use App\Models\Product;
+use App\Models\Business;
+use App\Models\BusinessBank;
+use App\Models\WalletLog;
+use App\Models\Transaction;
+use App\Models\WalletSplit;
+use App\Models\BusinessProduct;
+use App\Models\ProductCategory;
 use Illuminate\Database\Seeder;
+use App\Models\BusinessCategory;
+use App\Models\BusinessDirector;
+use App\Models\BusinessDocument;
+use App\Models\TransactionExtra;
+use Database\Seeders\RoleSeeder;
+use App\Models\WalletTransaction;
+use Database\Factories\RoleFactory;
+use Database\Seeders\BillerSeeder;
+use Database\Seeders\ProductCategoriesSeeder;
+use Database\Seeders\BusinessCategoriesSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,9 +35,48 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(BillerSeeder::class);
-        $this->call(RoleSeeder::class);
-        $this->call(ProductCategoriesSeeder::class);
-        $this->call(BusinessCategoriesSeeder::class);
+        // $this->call(BillerSeeder::class);
+        // $this->call(RoleSeeder::class);
+        // $this->call(ProductCategoriesSeeder::class);
+        // $this->call(BusinessCategoriesSeeder::class);
+        $billers = Biller::factory()->count(5)->create();
+        $product_categories = ProductCategory::factory()->count(5)->create();
+        foreach ($product_categories as $product_category) {
+            $product_category->products()->saveMany(Product::factory()->count(5)->make());
+        }
+        RoleFactory::new()->count(5)->create();
+        $business_categories = BusinessCategory::factory()->count(5)->create();
+        foreach ($business_categories as $business_category) {
+            $business_category->businesses()->saveMany(Business::factory()->count(2)->make());
+        }
+        // create 50 businesses
+        $businesses = Business::all();
+        foreach ($businesses as $business) {
+            // foreach business create directors, documents and products
+            $business->directors()->saveMany(BusinessDirector::factory()->count(5)->make());
+            $business->documents()->saveMany(BusinessDocument::factory()->count(5)->make());
+            $business->products()->saveMany(BusinessProduct::factory()->count(5)->make());
+            $business->wallet()->save(Wallet::factory()->make());
+            $business->users()->saveMany(User::factory()->count(5)->make());
+            $business->invitees()->saveMany(Invitee::factory()->count(5)->make());
+            $business->banks()->saveMany(BusinessBank::factory()->count(5)->make());
+        }
+
+        $transactions =  Transaction::factory()->count(10)->create();
+        foreach ($transactions as $transaction) {
+            $transaction->extra()->save(TransactionExtra::factory()->make());
+        }
+        $wallets = Wallet::all();
+        foreach ($wallets as $wallet) {
+            // foreach wallet create transactions
+            $wallet->transactions()->saveMany(WalletTransaction::factory()->count(10)->make());
+            $wallet->splits()->saveMany(WalletSplit::factory()->count(10)->make());
+            $wallet->logs()->saveMany(WalletLog::factory()->count(10)->make());
+        }
+        // create 20 accounts
+        // create 50 billers
+        // create 50 transactions
+
+
     }
 }

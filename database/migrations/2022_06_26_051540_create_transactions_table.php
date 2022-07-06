@@ -15,8 +15,8 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('business_id')->index()->nullable();
-            $table->unsignedInteger('product_id')->index()->nullable();
+            $table->bigInteger('business_id')->unsigned();
+            $table->bigInteger('product_id')->unsigned();
             $table->string('idempotency_hash')->unique()->nullable();
             $table->double('amount')->nullable();
             $table->string('business_reference')->nullable();
@@ -30,7 +30,7 @@ class CreateTransactionsTable extends Migration
             $table->string('status_code')->nullable();
             $table->string('status_message')->nullable();
             $table->tinyInteger('retries')->nullable();
-            $table->string('narration')->nullable();
+            $table->text('narration')->nullable();
             $table->decimal('product_price')->nullable();
             $table->decimal('fee')->nullable();
             $table->decimal('integrator_commission')->nullable();
@@ -39,6 +39,11 @@ class CreateTransactionsTable extends Migration
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->unique(['business_id', 'business_reference']);
+        });
+
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

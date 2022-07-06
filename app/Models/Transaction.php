@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Business;
+use App\Models\TransactionExtra;
+use App\Models\WalletTransaction;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaction extends Model
 {
@@ -18,5 +21,10 @@ class Transaction extends Model
     public function walletTransactions()
     {
         return $this->hasMany(WalletTransaction::class);
+    }
+
+    public function extra()
+    {
+        return $this->hasOne(TransactionExtra::class);
     }
 }

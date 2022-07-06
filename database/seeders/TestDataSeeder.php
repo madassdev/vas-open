@@ -44,7 +44,6 @@ class TestDataSeeder extends Seeder
 
         $business_category = BusinessCategory::first();
         $business->category = $business_category->name;
-        $business->category_id = $business_category->id;
         $business->save();
 
         // Products

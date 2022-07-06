@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccountsTable extends Migration
+class CreateBusinessBanksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,17 @@ class CreateAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title')->nullable();
-            $table->string('name')->nullable();
-            $table->string('type')->nullable();
+        Schema::create('business_banks', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('business_id');
+            $table->string('bankname')->nullable();
+            $table->string('account_number')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+        });
+
+        Schema::table('business_banks', function (Blueprint $table) {
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
     }
 
