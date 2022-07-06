@@ -13,10 +13,10 @@ class CreateTransactionsExtrasTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions_extras', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedBigInteger('transaction_id')->index()->nullable();
-            $table->integer('request_type')->nullable();
+        Schema::create('transaction_extras', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('transaction_id')->unsigned();
+            $table->string('request_type')->nullable();
             $table->text('business_headers')->nullable();
             $table->text('business_body')->nullable();
             $table->text('provider_request')->nullable();
@@ -26,6 +26,10 @@ class CreateTransactionsExtrasTable extends Migration
             $table->text('business_response')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+        });
+
+        Schema::table('transaction_extras', function (Blueprint $table) {
+            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
         });
     }
 

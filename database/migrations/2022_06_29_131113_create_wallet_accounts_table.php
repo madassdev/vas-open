@@ -15,10 +15,15 @@ return new class extends Migration
     {
         Schema::create('wallet_accounts', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('wallet_id')->unsigned();
             $table->string('title')->nullable();
             $table->string('name')->nullable();
             $table->string('type')->nullable();
             $table->timestamps();
+        });
+
+        Schema::table('wallet_accounts', function (Blueprint $table) {
+            $table->foreign('wallet_id')->references('id')->on('wallets')->onDelete('cascade');
         });
     }
 

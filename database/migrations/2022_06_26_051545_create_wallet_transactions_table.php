@@ -14,13 +14,19 @@ class CreateWalletTransactionsTable extends Migration
     public function up()
     {
         Schema::create('wallet_transactions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedBigInteger('transaction_id')->index()->nullable();
+            $table->id();
+            $table->bigInteger('transaction_id')->unsigned();
+            $table->bigInteger('wallet_id')->unsigned();
             $table->string('reference')->unique()->nullable();
             $table->decimal('total_debit')->nullable();
-            $table->string('message')->nullable();
+            $table->text('message')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+        });
+
+        Schema::table('wallet_transactions', function (Blueprint $table) {
+            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
+            $table->foreign('wallet_id')->references('id')->on('wallets')->onDelete('cascade');
         });
     }
 

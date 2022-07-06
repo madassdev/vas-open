@@ -14,8 +14,8 @@ class CreateBusinessDirectorsTable extends Migration
     public function up()
     {
         Schema::create('business_directors', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('business_id')->nullable();
+            $table->id();
+            $table->bigInteger('business_id')->unsigned();
             $table->string('fullname')->nullable();
             $table->string('address')->nullable();
             $table->string('lga')->nullable();
@@ -28,6 +28,10 @@ class CreateBusinessDirectorsTable extends Migration
             $table->timestamp('deleted_at')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+        });
+
+        Schema::table('business_directors', function (Blueprint $table) {
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
     }
 

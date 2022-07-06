@@ -3,8 +3,17 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Wallet;
+use App\Models\Invitee;
+use App\Models\Product;
+use App\Models\Transaction;
+use App\Models\BusinessBank;
+use App\Models\BusinessProduct;
+use App\Models\BusinessDirector;
+use App\Models\BusinessDocument;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Business extends Model
 {
@@ -25,7 +34,7 @@ class Business extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'business_products');
+        return $this->hasMany(BusinessProduct::class);
     }
 
     public function transactions()
@@ -40,7 +49,7 @@ class Business extends Model
 
     public function businessDocument()
     {
-        return $this->hasOne(BusinessDocument::class);
+        return $this->hasMany(BusinessDocument::class);
     }
 
     public function createDemoTransaction($count = 1)
@@ -76,5 +85,20 @@ class Business extends Model
             $tx[] = $t;
         }
         return $tx;
+    }
+
+    public function invitees()
+    {
+        return $this->hasMany(Invitee::class);
+    }
+
+    public function banks()
+    {
+        return $this->hasMany(BusinessBank::class);
+    }
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
     }
 }

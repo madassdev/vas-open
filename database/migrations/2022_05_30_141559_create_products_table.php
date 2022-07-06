@@ -14,13 +14,13 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('name')->nullable();
-            $table->unsignedInteger('biller_id')->index()->nullable();
+            $table->bigInteger('biller_id')->unsigned();
             $table->string('description')->nullable();
             $table->string('product_code')->nullable();
             $table->string('logo')->nullable();
-            $table->string('category')->nullable();
+            $table->bigInteger('product_category_id')->unsigned();
             $table->tinyInteger('has_validation')->nullable();
             $table->tinyInteger('enabled')->nullable();
             $table->tinyInteger('service_status')->nullable();
@@ -41,6 +41,11 @@ class CreateProductsTable extends Migration
             $table->string('implementation_code')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+        });
+
+        Schema::table('products', function (Blueprint $table) {
+            $table->foreign('biller_id')->references('id')->on('billers')->onDelete('cascade');
+            $table->foreign('product_category_id')->references('id')->on('product_categories')->onDelete('cascade');
         });
     }
 
