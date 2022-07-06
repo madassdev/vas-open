@@ -35,10 +35,8 @@ class AuthController extends Controller
         return $rand;
     }
 
-    public function register(Request $request)
+    public function register(RegistrationRequest $request)
     {
-
-        return $this->sendError('[LIVE ONLY ACTION]: Please register user on live environment only');
 
         // Create business
         $business = Business::updateOrCreate([
@@ -70,7 +68,6 @@ class AuthController extends Controller
         $user->assignRole('business_super_admin');
         
         // Create user and business on test env
-        
         DBSwap::setConnection('mysqltest');
 
         $test_business = Business::updateOrCreate([
@@ -123,11 +120,11 @@ class AuthController extends Controller
     {
         // Verify user credentials
         auth()->attempt($request->only(['email', 'password']));
+        $user = auth()->user();
         if (!$user) {
             return $this->sendError("Unauthenticated!", [], 401);
         }
-        
-        $user = auth()->user()->load('business');
+
         $balanceService = new BalanceService($user);
         $balance = $balanceService->getBalance($user);
         
@@ -152,7 +149,6 @@ class AuthController extends Controller
 
     public function updatePassword(Request $request)
     {
-        return $this->sendError('[LIVE ONLY ACTION]: Please update user password on live environment only');
         $request->validate([
             "password" => "required|current_password",
             "new_password" => [
