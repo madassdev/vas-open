@@ -70,14 +70,17 @@ Route::get('/routes', function () use ($authMiddleware) {
 Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function () {
     Route::group(['prefix' => 'business'], function () {
         Route::get('/stats', [BusinessController::class, 'getBalance']);
-        Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
-        Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
-        Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
+        Route::group(["middleware" => "noTestRoute", function(){
+
+            Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
+            Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
+            Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
+        }]);
     });
 });
 
-Route::group(['prefix' => 'seed'], function () {
-    // Route::post('/business', [BusinessController::class, 'seed']);
-});
+// Route::group(['prefix' => 'seed'], function () {
+//     // Route::post('/business', [BusinessController::class, 'seed']);
+// });
 
 Route::get('business-categories', [BusinessCategoryController::class, 'list']);
