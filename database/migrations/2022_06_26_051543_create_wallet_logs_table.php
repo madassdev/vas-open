@@ -20,7 +20,7 @@ class CreateWalletLogsTable extends Migration
             $table->decimal('prev_balance');
             $table->decimal('amount');
             $table->decimal('new_balance');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('entry_type')->nullable();
             $table->string('wallet_type')->nullable();
             $table->timestamp('created_at')->nullable();
