@@ -9,4 +9,9 @@ class BusinessCategory extends Model
 {
     protected $guarded = [];
     use HasFactory;
+
+    public function businesses()
+    {
+        return $this->hasMany(Business::class);
+    }
 }
