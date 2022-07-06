@@ -18,6 +18,8 @@ return [
         'passwords' => 'users',
     ],
 
+    'env_auth_middleware' => env('APP_AUTH_MIDDLEWARE','auth:sanctum'),
+
     'auth_token_name' => env("AUTH_TOKEN", "vasreseller-token"),
 
     /*

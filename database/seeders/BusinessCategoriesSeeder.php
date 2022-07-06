@@ -16,6 +16,7 @@ class BusinessCategoriesSeeder extends Seeder
     public function run()
     {
         //
+        // BusinessCategory::truncate();
         $businessCategories = collect([
             "Small and Medium Scale Enterprise",
             "Online Stores",

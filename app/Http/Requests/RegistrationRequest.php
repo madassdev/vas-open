@@ -33,6 +33,7 @@ class RegistrationRequest extends FormRequest
             "business_address" => "required|string|max:500",
             "business_email" => "required|string|email|max:100|unique:businesses,email",
             "business_phone_number" => "required|string|max:50",
+            "business_category_id" => "required|exists:business_categories,id"
         ];
     }
 }

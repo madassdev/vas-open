@@ -37,7 +37,10 @@ class AuthController extends Controller
 
     public function register(RegistrationRequest $request)
     {
-
+        // Setup keys and passwords
+        $generated_password = $this->generateRandomCharacters() . $this->generateRandomCharacters();
+        $test_api_key = md5($generated_password);
+        
         // Create business
         $business = Business::updateOrCreate([
             "email" => $request->business_email,
@@ -46,11 +49,11 @@ class AuthController extends Controller
             "email" => $request->business_email,
             "phone" => $request->business_phone_number,
             "address" => $request->business_address,
-            "current_env" => "test"
+            "current_env" => "test",
+            "test_api_key" => $test_api_key
         ]);
 
         // Create User
-        $generated_password = $this->generateRandomCharacters() . $this->generateRandomCharacters();
         $user = User::updateOrCreate([
             "email" => $request->email,
         ], [
@@ -77,7 +80,8 @@ class AuthController extends Controller
             "email" => $request->business_email,
             "phone" => $request->business_phone_number,
             "address" => $request->business_address,
-            "current_env" => "test"
+            "current_env" => "test",
+            "test_api_key" => $test_api_key
         ]);
 
         // Create User

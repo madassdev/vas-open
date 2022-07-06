@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ApiKeyMiddleware;
 use App\Http\Middleware\NoTestEndpoints;
 use App\Http\Middleware\PasswordUpdated;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -66,6 +67,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'noTestRoute' => NoTestEndpoints::class,
+        'apiKey' => ApiKeyMiddleware::class,
         'hasChangedPassword' => PasswordUpdated::class,
     ];
 }

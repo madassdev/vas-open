@@ -21,8 +21,10 @@ class CreateBusinessesTable extends Migration
             $table->string('phone')->nullable();
             $table->tinyInteger('enabled')->nullable();
             $table->string('current_env')->nullable();
-            $table->string('api_key')->nullable();
-            $table->string('secret_key')->nullable();
+            $table->string('live_api_key')->nullable();
+            $table->string('test_api_key')->nullable();
+            $table->string('live_secret_key')->nullable();
+            $table->string('test_secret_key')->nullable();
             $table->string('webhook')->nullable();
             $table->string('website')->nullable();
             $table->bigInteger('business_category_id')->unsigned();

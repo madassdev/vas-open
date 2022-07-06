@@ -35,17 +35,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(BillerSeeder::class);
-        // $this->call(RoleSeeder::class);
-        // $this->call(ProductCategoriesSeeder::class);
-        // $this->call(BusinessCategoriesSeeder::class);
-        $billers = Biller::factory()->count(5)->create();
-        $product_categories = ProductCategory::factory()->count(5)->create();
+        $this->call(BillerSeeder::class);
+        $this->call(RoleSeeder::class);
+        $this->call(ProductCategoriesSeeder::class);
+        $this->call(BusinessCategoriesSeeder::class);
+        // $billers = Biller::factory()->count(5)->create();
+        $product_categories = ProductCategory::all();
         foreach ($product_categories as $product_category) {
             $product_category->products()->saveMany(Product::factory()->count(5)->make());
         }
-        RoleFactory::new()->count(5)->create();
-        $business_categories = BusinessCategory::factory()->count(5)->create();
+        $business_categories = BusinessCategory::all();
         foreach ($business_categories as $business_category) {
             $business_category->businesses()->saveMany(Business::factory()->count(2)->make());
         }
@@ -57,9 +56,9 @@ class DatabaseSeeder extends Seeder
             $business->documents()->saveMany(BusinessDocument::factory()->count(5)->make());
             $business->products()->saveMany(BusinessProduct::factory()->count(5)->make());
             $business->wallet()->save(Wallet::factory()->make());
-            $business->users()->saveMany(User::factory()->count(5)->make());
-            $business->invitees()->saveMany(Invitee::factory()->count(5)->make());
-            $business->banks()->saveMany(BusinessBank::factory()->count(5)->make());
+            $business->users()->saveMany(User::factory()->count(1)->make());
+            $business->invitees()->saveMany(Invitee::factory()->count(2)->make());
+            $business->banks()->saveMany(BusinessBank::factory()->count(1)->make());
         }
 
         $transactions =  Transaction::factory()->count(10)->create();
