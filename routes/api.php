@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
 use App\Models\User;
@@ -64,13 +65,16 @@ Route::get('/routes', function () use ($authMiddleware) {
     return $authMiddleware;
 });
 
-Route::group(['middleware' => ['auth:sanctum', 'hasChangedPassword']], function () {
+Route::group(['middleware' => ['noTestRoute',$authMiddleware, 'hasChangedPassword']], function () {
     Route::group(['prefix' => 'account'], function () {
         Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
         Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
+        Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
     });
 });
 
 Route::group(['prefix' => 'seed'], function () {
     // Route::post('/business', [BusinessController::class, 'seed']);
 });
+
+Route::get('business-categories', [BusinessCategoryController::class, 'list']);

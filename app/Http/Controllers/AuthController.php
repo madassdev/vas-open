@@ -40,7 +40,7 @@ class AuthController extends Controller
         // Setup keys and passwords
         $generated_password = $this->generateRandomCharacters() . $this->generateRandomCharacters();
         $test_api_key = md5($generated_password);
-        
+
         // Create business
         $business = Business::updateOrCreate([
             "email" => $request->business_email,
@@ -69,7 +69,7 @@ class AuthController extends Controller
 
         // Assign role to user 
         $user->assignRole('business_super_admin');
-        
+
         // Create user and business on test env
         DBSwap::setConnection('mysqltest');
 
@@ -100,7 +100,7 @@ class AuthController extends Controller
 
         // Assign role to user 
         $test_user->assignRole('business_super_admin');
-        
+
 
         DBSwap::setConnection('mysqllive');
         // TODO: Create user on test env
@@ -132,11 +132,11 @@ class AuthController extends Controller
         $user->load('business');
         $balanceService = new BalanceService($user);
         $balance = $balanceService->getBalance($user);
-        
+
         // Fetch User Roles and Permissions
         $roles = $user->roles->pluck('name')->toArray();
         $permissions = $user->permissions->pluck('name')->toArray();
-        
+
         // Create API Token for user
         $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
         $message = $user->password_changed ? "Login Successful" : "Login successful. | WARNING: Please update your password to continue.";
@@ -174,16 +174,14 @@ class AuthController extends Controller
         $user->password = bcrypt($request->new_password);
         $user->password_changed = true;
         $user->save();
-        try{
+        try {
 
             DBSwap::setConnection('mysqltest');
             $test_user = User::whereEmail($user->email)->first();
             $test_user->password = bcrypt($request->new_password);
             $test_user->password_changed = true;
             $test_user->save();
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             // Do nothing
         }
 
@@ -251,7 +249,7 @@ class AuthController extends Controller
 
     public function resetPassword(Request $request)
     {
-       $request->validate([
+        $request->validate([
             "email" => "required|email|exists:users,email",
             "token" => "required|exists:users,verification_code",
             "new_password" => [
@@ -279,7 +277,5 @@ class AuthController extends Controller
         // What other security strategies are to be implemented?
 
         return $this->sendSuccess("Password reset successful, please proceed to login.");
-
-
     }
 }

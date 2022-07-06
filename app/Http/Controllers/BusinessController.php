@@ -14,7 +14,7 @@ class BusinessController extends Controller
     public function switchEnv(Request $request)
     {
         $request->validate([
-            "env"=>"required|string|in:test,live"
+            "env" => "required|string|in:test,live"
         ]);
         // Perform series of checks...
         $business = auth()->user()->business;
@@ -31,4 +31,14 @@ class BusinessController extends Controller
         $transactions = $business->createDemoTransaction($amount);
         return $transactions;
     }
+
+    // 1. Percentage of failed, pending and successful transaction 
+    // 2. Wallet balance 
+    // 3. Total commission earned 
+    // 4. Total fees paid 
+    // 5. Recent transactions 
+    // 6. Count of transactions 
+    // 7. Volume of transactions 
+    // 8. Filter per product 
+    // 9. Date range filter 
 }
