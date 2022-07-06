@@ -27,6 +27,7 @@ class Business extends Model
         return $this->hasMany(BusinessDocument::class);
     }
 
+
     public function directors()
     {
         return $this->hasMany(BusinessDirector::class);
@@ -42,15 +43,36 @@ class Business extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    public function users()
+    public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->hasOne(User::class);
     }
 
     public function businessDocument()
     {
-        return $this->hasMany(BusinessDocument::class);
+        return $this->hasOne(BusinessDocument::class);
     }
+
+    public function businessBank()
+    {
+        return $this->hasOne(BusinessBank::class);
+    }
+
+    public function createDummyAccount($type = "live")
+    {
+        if ($type === "live") {
+            $bank = $this->businessBank()->create([
+                "bankname" => "First Bank",
+                "account_number" => "000000000"
+            ]);
+            return $bank;
+        }
+        $bank = $this->businessBank()->create([
+            "bankname" => "Access Bank",
+            "account_number" => "000000000"
+        ]);
+    }
+
 
     public function createDemoTransaction($count = 1)
     {

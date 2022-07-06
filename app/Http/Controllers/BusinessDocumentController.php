@@ -57,4 +57,17 @@ class BusinessDocumentController extends Controller
         $business->save();
         return $this->sendSuccess('Business document of type ' . strtoupper($request->type) . ' uploaded and saved successfully.', ["business" => $business->load('businessDocument')]);
     }
+
+    public function showDocuments()
+    {
+        $user = auth()->user();
+        $documents = $user->business->businessDocument;
+        if(!$documents)
+        {
+            $documents = $user->business->businessDocument()->create([])->refresh();
+        }
+        return $this->sendSuccess("User Business Documents fetched successfully.", [
+            "business_documents" => $documents,
+        ]);
+    }
 }

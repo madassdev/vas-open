@@ -50,8 +50,12 @@ class AuthController extends Controller
             "phone" => $request->business_phone_number,
             "address" => $request->business_address,
             "current_env" => "test",
-            "test_api_key" => $test_api_key
+            "test_api_key" => $test_api_key,
+            "live_enabled" => true,
+            "business_category_id" => $request->business_category_id,
         ]);
+
+        $business->createDummyAccount();
 
         // Create User
         $user = User::updateOrCreate([
@@ -81,9 +85,11 @@ class AuthController extends Controller
             "phone" => $request->business_phone_number,
             "address" => $request->business_address,
             "current_env" => "test",
-            "test_api_key" => $test_api_key
+            "test_api_key" => $test_api_key,
+            "live_enabled" => true,
+            "business_category_id" => $request->business_category_id,
         ]);
-
+        $business->createDummyAccount();
         // Create User
         $test_user = User::updateOrCreate([
             "email" => $request->email,
@@ -129,9 +135,9 @@ class AuthController extends Controller
             return $this->sendError("Unauthenticated!", [], 401);
         }
 
-        $user->load('business');
+        $user->load('business.businessBank');
         $balanceService = new BalanceService($user);
-        $balance = $balanceService->getBalance($user);
+        // $balance = $balanceService->getBalance($user);
 
         // Fetch User Roles and Permissions
         $roles = $user->roles->pluck('name')->toArray();
@@ -144,7 +150,7 @@ class AuthController extends Controller
 
         $data = [
             "user" => $user,
-            "balance" => $balance,
+            // "balance" => $balance,
             "access_token" => $token,
             "user_roles" => $roles,
             "user_permissions" => $permissions,

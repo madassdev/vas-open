@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\DBSwap;
+use App\Models\Business;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -18,7 +20,14 @@ class ApiKeyMiddleware
     public function handle(Request $request, Closure $next)
     {
         // Find business by apiKey in headers
-        $user = User::first();
+        DBSwap::setConnection('mysqltest');
+        $apiKey = $request->api_key;
+        $business = Business::whereTestApiKey($apiKey)->first();
+        if(!$business)
+        {
+            abort(403, "Unauthenticated. Please provide test_api_key");
+        }
+        $user = $business->user;
         auth()->login($user);
         return $next($request);
     }

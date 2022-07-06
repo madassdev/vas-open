@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\DBSwap;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
@@ -65,8 +66,10 @@ Route::get('/routes', function () use ($authMiddleware) {
     return $authMiddleware;
 });
 
-Route::group(['middleware' => ['noTestRoute',$authMiddleware, 'hasChangedPassword']], function () {
-    Route::group(['prefix' => 'account'], function () {
+
+Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function () {
+    Route::group(['prefix' => 'business'], function () {
+        Route::get('/stats', [BusinessController::class, 'getBalance']);
         Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
         Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
         Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
