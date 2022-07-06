@@ -14,14 +14,18 @@ class CreateWalletsTable extends Migration
     public function up()
     {
         Schema::create('wallets', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('account_id')->index()->nullable();
+            $table->id();
+            $table->bigInteger('business_id')->unsigned();
             $table->decimal('main_balance');
             $table->decimal('commission_balance')->nullable();
             $table->tinyInteger('main_locked')->nullable();
             $table->tinyInteger('commission_locked')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+        });
+
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
     }
 

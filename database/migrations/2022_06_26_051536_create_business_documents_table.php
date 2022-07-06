@@ -14,8 +14,8 @@ class CreateBusinessDocumentsTable extends Migration
     public function up()
     {
         Schema::create('business_documents', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('business_id')->index()->nullable();
+            $table->id();
+            $table->bigInteger('business_id')->unsigned();
             $table->string('cac_2')->nullable();
             $table->string('cac_7')->nullable();
             $table->string('certificate')->nullable();
@@ -25,6 +25,10 @@ class CreateBusinessDocumentsTable extends Migration
             $table->string('share_allotment')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+        });
+
+        Schema::table('business_documents', function (Blueprint $table) {
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
     }
 
