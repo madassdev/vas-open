@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware('noTestRoute');
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/update-password', [AuthController::class, 'updatePassword'])->middleware('auth:sanctum');
     Route::post('/passwords/request-token', [AuthController::class, 'forgotPassword']);
@@ -32,9 +32,12 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 });
 
-Route::get('/live', function(){
-    return User::all();
-});
+Route::get('/routes', function(){
+    return [
+        'live'=>env('LIVE_APP_DOMAIN'),
+        'test'=>env('TEST_APP_DOMAIN'),
+    ];
+})->middleware('noTestRoute');
 
 Route::group(['middleware' => ['auth:sanctum', 'hasChangedPassword']], function () {
     Route::group(['prefix' => 'account'], function () {
