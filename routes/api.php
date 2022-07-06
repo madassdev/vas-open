@@ -70,12 +70,12 @@ Route::get('/routes', function () use ($authMiddleware) {
 Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function () {
     Route::group(['prefix' => 'business'], function () {
         Route::get('/stats', [BusinessController::class, 'getBalance']);
-        Route::group(["middleware" => "noTestRoute", function(){
+        Route::group(["middleware" => "noTestRoute"], function(){
 
             Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
             Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
             Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
-        }]);
+        });
     });
 });
 
