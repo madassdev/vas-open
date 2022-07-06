@@ -53,6 +53,8 @@ class BusinessDocumentController extends Controller
                 break;
         }
         $document->save();
+        $business->document_verified = 1;
+        $business->save();
         return $this->sendSuccess('Business document of type ' . strtoupper($request->type) . ' uploaded and saved successfully.', ["business" => $business->load('businessDocument')]);
     }
 }

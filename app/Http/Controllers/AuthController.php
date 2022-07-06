@@ -123,11 +123,11 @@ class AuthController extends Controller
     {
         // Verify user credentials
         auth()->attempt($request->only(['email', 'password']));
-        $user = auth()->user()->load('business');
         if (!$user) {
             return $this->sendError("Unauthenticated!", [], 401);
         }
-
+        
+        $user = auth()->user()->load('business');
         $balanceService = new BalanceService($user);
         $balance = $balanceService->getBalance($user);
         
