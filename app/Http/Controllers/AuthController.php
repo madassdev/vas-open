@@ -216,7 +216,7 @@ class AuthController extends Controller
             "email" => "required|email|exists:users,email",
         ]);
 
-        $token = $this->generateRandomCharacters(8);
+        $token = rand(10,99).rand(10,99).rand(10,99);
         $user = User::whereEmail($request->email)->firstOrFail();
         $user->verification_code = $token;
         $user->save();
