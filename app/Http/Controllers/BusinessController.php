@@ -7,6 +7,7 @@ use App\Models\Business;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BusinessController extends Controller
 {
@@ -36,8 +37,92 @@ class BusinessController extends Controller
         return $transactions;
     }
 
+    public function getLowBalanceThreshold()
+    {
+        $business = auth()->user()->business;
+        return $this->sendSuccess("Business Low Balance Threshold Fetched successfully", [
+            "low_balance_threshold" => $business->low_balance_threshold
+        ]);
+    }
+
+    public function setLowBalanceThreshold(Request $request)
+    {
+        $request->validate([
+            "low_balance_threshold" => "required|numeric|min:0"
+        ]);
+        $business = auth()->user()->business;
+        $business->low_balance_threshold = $request->low_balance_threshold;
+        $business->save();
+        return $this->sendSuccess("Business Low Balance Threshold Updated successfully", [
+            "low_balance_threshold" => $business->low_balance_threshold ?? [],
+        ]);
+    }
+
+    public function getWebhookUrl()
+    {
+        $business = auth()->user()->business;
+        return $this->sendSuccess("Business Webhook Url Fetched successfully", [
+            "webhook" => $business->webhook,
+        ]);
+    }
+
+    public function setWebhookUrl(Request $request)
+    {
+        $request->validate([
+            "webhook_url" => "required|url"
+        ]);
+        $business = auth()->user()->business;
+        $business->webhook = $request->webhook_url;
+        $business->save();
+        return $this->sendSuccess("Business Webhook Url Updated successfully", [
+            "webhook" => $business->webhook,
+        ]);
+    }
+
+    public function getWhitelistIps()
+    {
+        $business = auth()->user()->business;
+        return $this->sendSuccess("Business Whitelisted Ips fetched successfully", [
+            "ip_addresses" => $business->ip_addresses,
+        ]);
+    }
+
+    public function setWhitelistIps(Request $request)
+    {
+        $request->validate([
+            "ip_addresses" => "required|string",
+        ]);
+
+        // $request->validate([
+        //     "ip_addresses" => "required|array",
+        //     "ip_addresses.*" => "required|ipv4",
+        // ]);
+
+        // $ip_addresses = collect($request->ip_addresses)->unique()->toArray();
+        $comma_separated_addresses = str_replace(' ', '', $request->ip_addresses);
+        $addresses_to_array = explode(',', $comma_separated_addresses);
+        $validator = Validator::make(["ip_addresses" => $addresses_to_array], [
+            "ip_addresses" => "required|array",
+            "ip_addresses.*" => "required|ipv4",
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => $validator->errors()
+            ], 422);
+        }
+
+        $business = auth()->user()->business;
+        $business->ip_addresses = $comma_separated_addresses;
+        $business->save();
+        return $this->sendSuccess("Business Whitelisted Ips updated successfully", [
+            "ip_addresses" => $business->ip_addresses ?? [],
+        ]);
+    }
+
+
     public function getBalance()
     {
+        // @TODO: Sort balance threshold logic
         $business = auth()->user()->business;
         $env = $business->current_env;
         $live_stats = [

@@ -20,6 +20,10 @@ class Business extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $casts = [
+        "live_enabled" => "boolean",
+        "enabled" => "boolean",
+    ];
 
 
     public function documents()

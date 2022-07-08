@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
+use App\Http\Controllers\InviteeController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -71,10 +72,29 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
     Route::group(['prefix' => 'business'], function () {
         Route::get('/stats', [BusinessController::class, 'getBalance']);
         Route::group(["middleware" => "noTestRoute"], function(){
-
             Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
             Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
             Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
+
+            // Invitations
+            Route::post('/invitees', [InviteeController::class, 'sendInvites'] );
+
+            // Whitelist IPs
+            Route::get('/whitelist-ips', [BusinessController::class, 'getWhitelistIps']);
+            Route::post('/whitelist-ips', [BusinessController::class, 'setWhitelistIps']);
+
+            // Low Balance Threshold
+            Route::get('/low-balance-threshold', [BusinessController::class, 'getLowBalanceThreshold']);
+            Route::post('/low-balance-threshold', [BusinessController::class, 'setLowBalanceThreshold']);
+            
+            // Low Balance Threshold
+            Route::get('/webhook-url', [BusinessController::class, 'getWebhookUrl']);
+            Route::post('/webhook-url', [BusinessController::class, 'setWebhookUrl']);
+
+            // Webhook setup
+
+            // Enable/Disable Users
+
         });
     });
 });
