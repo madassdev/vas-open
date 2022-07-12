@@ -52,4 +52,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Business::class);
     }
+
+    public function businesses()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function getActiveBusinessAttribute()
+    {
+        $activeBusiness = BusinessUser::whereUserId($this->id)->whereIsActive(true)->first();
+        return $activeBusiness ?? $this->business;
+    }
 }

@@ -47,9 +47,14 @@ class Business extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    public function user()
+    public function businessUsers()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsToMany(User::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 
     public function businessDocument()

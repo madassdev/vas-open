@@ -82,6 +82,7 @@ class BusinessController extends Controller
     public function getWhitelistIps()
     {
         $business = auth()->user()->business;
+        // return $business->users->pluck('id');
         return $this->sendSuccess("Business Whitelisted Ips fetched successfully", [
             "ip_addresses" => $business->ip_addresses,
         ]);
