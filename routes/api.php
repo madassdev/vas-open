@@ -103,4 +103,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
 //     // Route::post('/business', [BusinessController::class, 'seed']);
 // });
 
+// heroku pipelines:promote -r staging
+
+
 Route::get('business-categories', [BusinessCategoryController::class, 'list']);

@@ -4,6 +4,7 @@ use App\Models\Business;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\Models\Role;
 
 return new class extends Migration
 {
@@ -15,9 +16,14 @@ return new class extends Migration
     public function up()
     {
         //
-        Business::all()->map(function($business){
+        $role = Role::whereName('business_super_admin')->first();
+        Business::all()->map(function ($business) use ($role) {
             $users = $business->users->pluck('id');
-            $business->businessUsers()->syncWithPivotValues($users,["is_active" => true]);
+            $business_user = $business->businessUsers()
+                ->syncWithPivotValues($users, [
+                    "is_active" => true,
+                    "role_id" => $role->id
+                ]);
         });
     }
 
