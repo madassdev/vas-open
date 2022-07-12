@@ -28,6 +28,21 @@ class BusinessController extends Controller
         return $this->sendSuccess("Bussiness Env switched to live");
     }
 
+    public function switchActiveBusiness(Request $request)
+    {
+        $request->validate([
+            "business_id" => "required|exists:businesses,id"
+        ]);
+        $user = auth()->user();
+        $switch = $user->switchActiveBusiness($request->business_id);
+
+        $user->load('businesses', 'business');
+
+        return $this->sendSuccess("User Active Business switched successfully",[
+            "user"=>$user
+        ]);
+    }
+
     public function seed(Request $request)
     {
         DBSwap::setConnection('mysqltest');

@@ -5,4 +5,5 @@
 <p>
     Email: <b>{{$user->email}}</b>
 </p>
+@include('email.unified-template')
 @endcomponent

@@ -26,7 +26,8 @@ class User extends Authenticatable
         'password',
         'verified',
         'verification_code',
-        'business_id'
+        'business_id',
+        'password_changed'
     ];
 
     /**
@@ -58,9 +59,33 @@ class User extends Authenticatable
         return $this->belongsToMany(Business::class);
     }
 
+    public function businessUsers()
+    {
+        return $this->hasMany(BusinessUser::class);
+    }
+
     public function getActiveBusinessAttribute()
     {
         $activeBusiness = BusinessUser::whereUserId($this->id)->whereIsActive(true)->first();
         return $activeBusiness ?? $this->business;
+    }
+    public function switchActiveBusiness($business_id)
+    {
+        $businessUser = BusinessUser::whereUserId($this->id)->whereBusinessId($business_id)->first();
+        if (!$businessUser) {
+            response()->json(["status" => false, "message" => "Business not found for this user", "data" => []], 403)->throwResponse();
+        }
+
+        // Deactivate all existing record 
+        BusinessUser::whereUserId($this->id)->update(['is_active' => false]);
+        
+        // Activate this record
+        $businessUser->is_active = true;
+        $businessUser->save();
+
+        // Update user object to reflect new active business
+        $this->business_id = $business_id;
+        $this->save();
+        return true;
     }
 }

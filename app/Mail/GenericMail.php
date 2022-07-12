@@ -19,13 +19,15 @@ class GenericMail extends Mailable
     public $payload;
     public $view;
     public $key;
+    public $subject;
 
-    public function __construct($view, $payload, $key)
+    public function __construct($view, $payload, $key, $subject=null)
     {
         //
         $this->payload = $payload;
         $this->view = $view;
         $this->key = $key;
+        $this->subject = $subject;
     }
 
     /**
@@ -35,6 +37,10 @@ class GenericMail extends Mailable
      */
     public function build()
     {
+        if($this->subject){
+            return $this->subject($this->subject)->markdown($this->view, [$this->key => $this->payload]);
+
+        }
         return $this->markdown($this->view, [$this->key => $this->payload]);
     }
 }

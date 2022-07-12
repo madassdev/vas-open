@@ -9,5 +9,4 @@ class BusinessUser extends Pivot
 {
     //
     use HasRoles;
-    
 }

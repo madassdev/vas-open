@@ -19,6 +19,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -73,7 +74,7 @@ class AuthController extends Controller
 
         // Attach business to user
         $user->businesses()->attach($business->id, ["is_active" => true]);
-        
+
         // Assign role to user 
         $user->assignRole('business_super_admin');
 
@@ -109,7 +110,7 @@ class AuthController extends Controller
 
         // Attach business to user
         $test_user->businesses()->attach($test_business->id, ["is_active" => true]);
-        
+
         // Assign role to user 
         $test_user->assignRole('business_super_admin');
 
@@ -141,7 +142,7 @@ class AuthController extends Controller
             return $this->sendError("Unauthenticated!", [], 401);
         }
 
-        $user->load('businesses','business.businessBank');
+        $user->load('businesses', 'business.businessBank');
         $balanceService = new BalanceService($user);
         // $balance = $balanceService->getBalance($user);
 
@@ -222,7 +223,7 @@ class AuthController extends Controller
             "email" => "required|email|exists:users,email",
         ]);
 
-        $token = rand(10,99).rand(10,99).rand(10,99);
+        $token = rand(10, 99) . rand(10, 99) . rand(10, 99);
         $user = User::whereEmail($request->email)->firstOrFail();
         $user->verification_code = $token;
         $user->save();
@@ -289,5 +290,22 @@ class AuthController extends Controller
         // What other security strategies are to be implemented?
 
         return $this->sendSuccess("Password reset successful, please proceed to login.");
+    }
+
+    public function me()
+    {
+        $user = auth()->user();
+        $user->load('business.businessBank', 'businesses', 'roles');
+        return $this->sendSuccess('User details fethched successfully', [
+            "user" => $user
+        ]);
+    }
+
+    public function roles()
+    {
+        $roles = Role::all();
+        return $this->sendSuccess("Roles fetched successfully", [
+            "roles" => $roles
+        ]);
     }
 }

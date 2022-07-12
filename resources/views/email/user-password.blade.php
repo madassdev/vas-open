@@ -9,4 +9,5 @@
             Password: <b>{{$user->verification_code}}</b>
         </p>
         <p style="padding-top: 20px; font-size:12px">You can now login to your dashboard with these details</p>
+        @include('email.unified-template')
         @endcomponent

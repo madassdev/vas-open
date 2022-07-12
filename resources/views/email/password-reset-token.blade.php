@@ -7,4 +7,5 @@
             Token: <b>{{$user->verification_code}}</b>
         </p>
         <p style="padding-top: 20px; font-size:12px">You can now reset your password with this token.</p>
+        @include('email.unified-template')
         @endcomponent

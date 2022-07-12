@@ -69,15 +69,19 @@ Route::get('/routes', function () use ($authMiddleware) {
 
 
 Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function () {
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/roles', [AuthController::class, 'roles']);
+
     Route::group(['prefix' => 'business'], function () {
         Route::get('/stats', [BusinessController::class, 'getBalance']);
-        Route::group(["middleware" => "noTestRoute"], function(){
+        Route::group(["middleware" => "noTestRoute"], function () {
             Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
+            Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness']);
             Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
             Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
 
             // Invitations
-            Route::post('/invitees', [InviteeController::class, 'sendInvites'] );
+            Route::post('/invitees', [InviteeController::class, 'sendInvites']);
 
             // Whitelist IPs
             Route::get('/whitelist-ips', [BusinessController::class, 'getWhitelistIps']);
@@ -86,7 +90,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
             // Low Balance Threshold
             Route::get('/low-balance-threshold', [BusinessController::class, 'getLowBalanceThreshold']);
             Route::post('/low-balance-threshold', [BusinessController::class, 'setLowBalanceThreshold']);
-            
+
             // Low Balance Threshold
             Route::get('/webhook-url', [BusinessController::class, 'getWebhookUrl']);
             Route::post('/webhook-url', [BusinessController::class, 'setWebhookUrl']);
@@ -97,6 +101,10 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
 
         });
     });
+});
+
+Route::group(["middleware" => "noTestRoute"], function () {
+    Route::post("/invitations/accept", [InviteeController::class, 'acceptInvite']);
 });
 
 // Route::group(['prefix' => 'seed'], function () {
