@@ -141,7 +141,7 @@ class AuthController extends Controller
             return $this->sendError("Unauthenticated!", [], 401);
         }
 
-        $user->load('business.businessBank');
+        $user->load('businesses','business.businessBank');
         $balanceService = new BalanceService($user);
         // $balance = $balanceService->getBalance($user);
 
