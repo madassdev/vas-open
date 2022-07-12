@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function businesses()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Business::class);
     }
 
     public function getActiveBusinessAttribute()

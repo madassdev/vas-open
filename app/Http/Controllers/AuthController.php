@@ -71,6 +71,9 @@ class AuthController extends Controller
             "verified" => false,
         ]);
 
+        // Attach business to user
+        $user->businesses()->attach($business->id, ["is_active" => true]);
+        
         // Assign role to user 
         $user->assignRole('business_super_admin');
 
@@ -89,7 +92,7 @@ class AuthController extends Controller
             "live_enabled" => true,
             "business_category_id" => $request->business_category_id,
         ]);
-        $business->createDummyAccount();
+        $test_business->createDummyAccount();
         // Create User
         $test_user = User::updateOrCreate([
             "email" => $request->email,
@@ -104,6 +107,9 @@ class AuthController extends Controller
             "verified" => false,
         ]);
 
+        // Attach business to user
+        $test_user->businesses()->attach($test_business->id, ["is_active" => true]);
+        
         // Assign role to user 
         $test_user->assignRole('business_super_admin');
 
