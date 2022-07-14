@@ -11,7 +11,7 @@ function generateFrontendLink($param, $value, $path = '')
 function makeInviteLink($invitee)
 {
     $frontendDomain = env("APP_FRONTEND_DOMAIN", "http://localhost");
-    $path = "/mail/invitations";
+    $path = "auth/accept-invite";
     $invitation_token = encrypt($invitee->code);
     $email = $invitee->email;
     $userExists = User::whereEmail($email)->first() ? 1 : 0;

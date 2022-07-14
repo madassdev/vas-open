@@ -87,6 +87,10 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
             Route::get('/whitelist-ips', [BusinessController::class, 'getWhitelistIps']);
             Route::post('/whitelist-ips', [BusinessController::class, 'setWhitelistIps']);
 
+
+            Route::post('/user/toggle-notification', [BusinessController::class, 'toggleBusinessNotification']);
+            Route::post('/reset-keys', [BusinessController::class, 'resetKeys']);
+            
             // Low Balance Threshold
             Route::get('/low-balance-threshold', [BusinessController::class, 'getLowBalanceThreshold']);
             Route::post('/low-balance-threshold', [BusinessController::class, 'setLowBalanceThreshold']);

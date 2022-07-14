@@ -38,6 +38,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'verification_code'
     ];
 
     /**
@@ -76,7 +77,7 @@ class User extends Authenticatable
             response()->json(["status" => false, "message" => "Business not found for this user", "data" => []], 403)->throwResponse();
         }
 
-        // Deactivate all existing record 
+        // Deactivate all existing records 
         BusinessUser::whereUserId($this->id)->update(['is_active' => false]);
         
         // Activate this record

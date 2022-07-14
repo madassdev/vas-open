@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DBSwap;
 use App\Models\Business;
+use App\Models\BusinessUser;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class BusinessController extends Controller
 {
@@ -38,8 +40,8 @@ class BusinessController extends Controller
 
         $user->load('businesses', 'business');
 
-        return $this->sendSuccess("User Active Business switched successfully",[
-            "user"=>$user
+        return $this->sendSuccess("User Active Business switched successfully", [
+            "user" => $user
         ]);
     }
 
@@ -132,6 +134,69 @@ class BusinessController extends Controller
         $business->save();
         return $this->sendSuccess("Business Whitelisted Ips updated successfully", [
             "ip_addresses" => $business->ip_addresses ?? [],
+        ]);
+    }
+
+    public function toggleBusinessNotification()
+    {
+        $user = auth()->user();
+        $businessUser = BusinessUser::whereUserId($user->id)
+            ->whereBusinessId($user->business_id)
+            ->first();
+        $businessUser->notify = !$businessUser->notify;
+        $businessUser->save();
+        return $this->sendSuccess('Business User Notification Toggled Successfully', [
+            "user" => $user,
+        ]);
+        return $businessUser;
+    }
+
+    public function resetKeys(Request $request)
+    {
+        $request->validate([
+            "key_type" => "required|string|in:test_api_key,live_api_key,test_secret_key,live_secret_key"
+        ]);
+        // Can user perform this action?
+        $user = auth()->user();
+        $business = $user->business;
+        $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
+        // Does this user actually still have this business under them?
+        if (!$businessUser) {
+            return $this->sendError('We could not find this business for this user.', [], 403);
+        }
+        // Is this business the current active business of this user?       
+        if (!$businessUser->is_active) {
+            return $this->sendError('This is not the current active business of this user. Please update active business first.', [], 403);
+        }
+        // Can this user perform this action on this active business?
+        $businessUserRole = Role::find($businessUser->role_id);
+
+        if (!($businessUserRole && $businessUserRole->name == "business_super_admin")) {
+            return $this->sendError('User does not have the roles to perform this action on this business', [], 403);
+        }
+
+        switch ($request->key_type) {
+            case 'test_api_key':
+                $business->test_api_key = "ak_test_" . md5(str()->uuid());
+                break;
+            case 'live_api_key':
+                $business->live_api_key = "ak_live_" . md5(str()->uuid());
+                break;
+            case 'test_secret_key':
+                $business->test_secret_key = "sk_test_" . md5(str()->uuid());
+                break;
+            case 'live_secret_key':
+                $business->live_secret_key = "sk_live_" . md5(str()->uuid());
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        $business->save();
+
+        return $this->sendSuccess($request->key_type." has been reset successfully.",[
+            "business" => $business
         ]);
     }
 
