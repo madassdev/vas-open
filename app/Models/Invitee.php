@@ -11,6 +11,7 @@ class Invitee extends Model
     use HasFactory, Notifiable;
     
     protected $guarded = [];
+    protected $hidden = ["code"];
 
     public function business()
     {

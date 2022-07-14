@@ -11,6 +11,7 @@ use App\Rules\StandardPassword;
 use App\Services\MailApiService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rules\Password;
@@ -19,6 +20,22 @@ use Spatie\Permission\Models\Role;
 class InviteeController extends Controller
 {
     //
+
+    public function getProtectedRoles()
+    {
+        $protectedRoleNames = ['owner_super_admin'];
+        $protectedRoles = DB::table('roles')->whereIn('name', $protectedRoleNames)->get();
+        return $protectedRoles;
+    }
+    public function showInvitees()
+    {
+        $user = auth()->user();
+        $business = $user->business;
+        $invitees = Invitee::whereBusinessId($business->id)->get();
+        return $this->sendSuccess("Invitees fetched successfully", [
+            "invitees" => $invitees
+        ]);
+    }
 
     public function sendInvites(Request $request)
     {
@@ -29,30 +46,36 @@ class InviteeController extends Controller
             "invitations.*.email" => "required|email",
             "invitations.*.role_id" => "required|exists:roles,id"
         ]);
+
+        // Do Not Assign Protected Roles
+        $protectedRoleIds = $this->getProtectedRoles()->pluck('id')->toArray();
+        collect($request->invitations)->map(function ($invitation) use ($protectedRoleIds) {
+            if (in_array($invitation['role_id'], $protectedRoleIds)) {
+                response()->json(["status" => false, "message" => "Cannot assign protected role id: " . $invitation['role_id'], "data" => []], 403)->throwResponse();
+            }
+        });
+
         $user = auth()->user();
         $business = $user->business;
-        $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
-        // Does this user actually still have this business under them?
-        if (!$businessUser) {
-            return $this->sendError('We could not find this business for this user.', [], 403);
-        }
-        // Is this business the current active business of this user?       
-        if (!$businessUser->is_active) {
-            return $this->sendError('This is not the current active business of this user. Please update active business first.', [], 403);
-        }
-        // Can this user perform this action on this active business?
-        $businessUserRole = Role::find($businessUser->role_id);
-
-        if (!($businessUserRole && $businessUserRole->name == "business_super_admin")) {
-            return $this->sendError('User does not have the roles to perform this action on this business', [], 403);
-        }
+        $this->checkAuthorization($user, $business);
         $window_location = $request->window_location;
+
         // Good to go.
         $invitees = collect($request->invitations)->map(function ($invitation) use ($business, $user, $window_location) {
             $code = rand(10, 99) . rand(10, 99) . rand(10, 99);
-            
+
             // Don't send to invitor
-            if($invitation["email"] == $user->email){
+            if ($invitation["email"] == $user->email) {
+                return;
+            }
+            $alreadyInvited = Invitee::whereEmail($invitation["email"])
+                ->whereBusinessId($business->id)
+                ->first();
+
+            // Don't send to already created invitee 
+            if ($alreadyInvited
+                // && $alreadyInvited->status == 1
+            ) {
                 return;
             }
             $invitee = Invitee::updateOrCreate([
@@ -73,6 +96,87 @@ class InviteeController extends Controller
         });
 
         return $this->sendSuccess('Invitations sent successfully');
+    }
+
+    public function updateRole(Request $request)
+    {
+        $request->validate([
+            "invitee_id" => "required|exists:invitees,id",
+            "role_id" => "required|exists:roles,id"
+        ]);
+
+        // Do Not Assign Protected Roles
+        $protectedRoleIds = $this->getProtectedRoles()->pluck('id')->toArray();
+        if (in_array($request->role_id, $protectedRoleIds)) {
+            return $this->sendError('Cannot assign protected role id: ' . $request->role_id, [], 403);
+        }
+
+        $user = auth()->user();
+        $business = $user->business;
+
+        $this->checkAuthorization($user, $business);
+
+        return 123;
+
+        // Make sure invitee exists and can be updated
+        $invitee = Invitee::whereId($request->invitee_id)->whereBusinessId($business->id)->first();
+        if (!$invitee) {
+            return $this->sendError('Invitee not found for this business', [], 404);
+        }
+        $invitee->role_id = $request->role_id;
+        $invitee->save();
+
+        // Update Business User record if invitee exists as a user
+        $inviteeUser = User::whereEmail($invitee->email)->first();
+        if ($inviteeUser) {
+            $inviteeBusinessUser = BusinessUser::whereUserId($inviteeUser->id)
+                ->whereBusinessId($business->id)->first();
+            $inviteeBusinessUser->role_id = $request->role_id;
+            $inviteeBusinessUser->save();
+        }
+
+        return $this->sendSuccess("Invitee Role updated successfully", [
+            "invitee" => $invitee
+        ]);
+    }
+
+    public function toggleActivity(Request $request)
+    {
+        $request->validate([
+            "invitee_id" => "required|exists:invitees,id",
+            "activity" => "required|string|in:enable,disable",
+        ]);
+        $user = auth()->user();
+        $business = $user->business;
+        $this->checkAuthorization($user, $business);
+
+
+        // Make sure invitee exists and can be updated
+        $invitee = Invitee::whereId($request->invitee_id)->whereBusinessId($business->id)->first();
+        if (!$invitee) {
+            return $this->sendError('Invitee not found for this business', [], 404);
+        }
+
+        // Update Business User record if invitee exists as a user
+        $inviteeUser = User::whereEmail($invitee->email)->first();
+        if ($inviteeUser) {
+            $inviteeBusinessUser = BusinessUser::whereUserId($inviteeUser->id)
+                ->whereBusinessId($business->id)->first();
+            if ($request->activity === "enable") {
+                $inviteeBusinessUser->enabled = true;
+                $invitee->status = 1;
+            }
+            if ($request->activity === "disable") {
+                $inviteeBusinessUser->enabled = false;
+                $invitee->status = 2;
+            }
+            $inviteeBusinessUser->save();
+            $invitee->save();
+        }
+        return $this->sendSuccess("Invitee Role updated successfully", [
+            "invitee" => $invitee
+        ]);
+
     }
 
     public function acceptInvite(Request $request)
@@ -127,7 +231,7 @@ class InviteeController extends Controller
         $user->businesses()->attach($business->id, ["is_active" => $activeBusiness, "role_id" => $invitee->role_id]);
         $invitee->status = 1;
         $invitee->save();
-        $user->load('businesses','business.businessBank');
+        $user->load('businesses', 'business.businessBank', 'businessUser');
         // Fetch User Roles and Permissions
         $roles = $user->roles->pluck('name')->toArray();
         $permissions = $user->permissions->pluck('name')->toArray();
@@ -137,7 +241,6 @@ class InviteeController extends Controller
 
         $data = [
             "user" => $user,
-            // "balance" => $balance,
             "access_token" => $token,
             "user_roles" => $roles,
             "user_permissions" => $permissions,
@@ -145,18 +248,9 @@ class InviteeController extends Controller
 
         // Notifications follow...
         return $this->sendSuccess("Invitation successfully accepted and processed. You are now logged in", $data);
-
-        return $user;
-        return $code;
     }
 
-    public function makeInvitation($email, $business_id)
-    {
-        // $invitee = Invitee::whereEmail($email)->first();
-        // return $invitee;
-    }
-
-    public function notifyInvitee($invitee, $business, $inviter, $url=null)
+    public function notifyInvitee($invitee, $business, $inviter, $url = null)
     {
         $mailContent = new GenericMail('email.invitee-notification', [
             "invitee" => $invitee,
@@ -176,6 +270,25 @@ class InviteeController extends Controller
             return $mailError;
         } else {
             Mail::to($invitee)->send($mailContent);
+        }
+    }
+
+    public function checkAuthorization($user, $business, $permitted_role = "business_super_admin")
+    {
+        $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
+        // Does this user actually still have this business under them?
+        if (!$businessUser) {
+            return $this->sendError('We could not find this business for this user.', [], 403)->throwResponse();
+        }
+        // Is this business the current active business of this user?       
+        if (!$businessUser->is_active) {
+            return $this->sendError('This is not the current active business of this user. Please update active business first.', [], 403)->throwResponse();
+        }
+        // Can this user perform this action on this active business?
+        $businessUserRole = Role::find($businessUser->role_id);
+
+        if (!($businessUserRole && $businessUserRole->name == $permitted_role)) {
+            return $this->sendError('User does not have the role to perform this action on this business', [], 403)->throwResponse();
         }
     }
 }

@@ -82,7 +82,9 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
 
             // Invitations
             Route::post('/invitees', [InviteeController::class, 'sendInvites']);
-
+            Route::get('/invitees', [InviteeController::class, 'showInvitees']);
+            Route::post('/invitees/update-role', [InviteeController::class, 'updateRole']);
+            Route::post('/invitees/toggle-activity', [InviteeController::class, 'toggleActivity']);
             // Whitelist IPs
             Route::get('/whitelist-ips', [BusinessController::class, 'getWhitelistIps']);
             Route::post('/whitelist-ips', [BusinessController::class, 'setWhitelistIps']);
