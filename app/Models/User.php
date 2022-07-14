@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasMany(BusinessUser::class);
     }
 
+    public function businessUser()
+    {
+        return $this->hasOne(BusinessUser::class)->where('is_active', true);
+    }
+
     public function getActiveBusinessAttribute()
     {
         $activeBusiness = BusinessUser::whereUserId($this->id)->whereIsActive(true)->first();

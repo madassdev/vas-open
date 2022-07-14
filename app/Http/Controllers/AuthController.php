@@ -51,13 +51,16 @@ class AuthController extends Controller
             "phone" => $request->business_phone_number,
             "address" => $request->business_address,
             "current_env" => "test",
-            "test_api_key" => $test_api_key,
             "live_enabled" => true,
             "business_category_id" => $request->business_category_id,
         ]);
 
         $business->createDummyAccount();
-
+        $business->test_api_key = "ak_test_" . md5(str()->uuid());
+        $business->live_api_key = "ak_live_" . md5(str()->uuid());
+        $business->test_secret_key = "sk_test_" . md5(str()->uuid());
+        $business->live_secret_key = "sk_live_" . md5(str()->uuid());
+        $business->save();
         // Create User
         $user = User::updateOrCreate([
             "email" => $request->email,
@@ -142,7 +145,7 @@ class AuthController extends Controller
             return $this->sendError("Unauthenticated!", [], 401);
         }
 
-        $user->load('businesses', 'business.businessBank');
+        $user->load('businesses', 'business.businessBank', 'businessUser');
         $balanceService = new BalanceService($user);
         // $balance = $balanceService->getBalance($user);
 
@@ -151,6 +154,7 @@ class AuthController extends Controller
         $permissions = $user->permissions->pluck('name')->toArray();
 
         // Create API Token for user
+        // $token =  "pp";
         $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
         $message = $user->password_changed ? "Login Successful" : "Login successful. | WARNING: Please update your password to continue.";
 
@@ -295,7 +299,7 @@ class AuthController extends Controller
     public function me()
     {
         $user = auth()->user();
-        $user->load('business.businessBank', 'businesses', 'roles');
+        $user->load('business.businessBank', 'businesses', 'roles', 'businessUser');
         return $this->sendSuccess('User details fethched successfully', [
             "user" => $user
         ]);

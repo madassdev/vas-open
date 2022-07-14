@@ -58,20 +58,24 @@ class BusinessController extends Controller
     {
         $business = auth()->user()->business;
         return $this->sendSuccess("Business Low Balance Threshold Fetched successfully", [
-            "low_balance_threshold" => $business->low_balance_threshold
+            "low_balance_threshold" => $business->low_balance_threshold,
+            "balance_notification_recipient" => $business->balance_notification_recipient,
         ]);
     }
 
     public function setLowBalanceThreshold(Request $request)
     {
         $request->validate([
-            "low_balance_threshold" => "required|numeric|min:0"
+            "low_balance_threshold" => "required|numeric|min:0",
+            "balance_notification_recipient" => "required|email|max:100"
         ]);
         $business = auth()->user()->business;
         $business->low_balance_threshold = $request->low_balance_threshold;
+        $business->balance_notification_recipient = $request->balance_notification_recipient;
         $business->save();
         return $this->sendSuccess("Business Low Balance Threshold Updated successfully", [
-            "low_balance_threshold" => $business->low_balance_threshold ?? [],
+            "low_balance_threshold" => $business->low_balance_threshold,
+            "balance_notification_recipient" => $business->balance_notification_recipient,
         ]);
     }
 
@@ -145,6 +149,7 @@ class BusinessController extends Controller
             ->first();
         $businessUser->notify = !$businessUser->notify;
         $businessUser->save();
+        $user->load('businesses', 'business.businessBank', 'businessUser');
         return $this->sendSuccess('Business User Notification Toggled Successfully', [
             "user" => $user,
         ]);
@@ -195,7 +200,7 @@ class BusinessController extends Controller
 
         $business->save();
 
-        return $this->sendSuccess($request->key_type." has been reset successfully.",[
+        return $this->sendSuccess($request->key_type . " has been reset successfully.", [
             "business" => $business
         ]);
     }
