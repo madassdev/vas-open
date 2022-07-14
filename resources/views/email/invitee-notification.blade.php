@@ -5,7 +5,7 @@
     <h3>
         <p style="padding-top: 20px; font-size:12px">Here's the code.</p>
         <p>
-            <a href="{{ makeInviteLink($payload['invitee']) }}" class="button button-{{ $color ?? 'primary' }}" target="_blank" rel="noopener">Accept Invite</a>
+            <a href="{{ makeInviteLink($payload['invitee'], $payload['url']) }}" class="button button-{{ $color ?? 'primary' }}" target="_blank" rel="noopener">Accept Invite</a>
         </p>
         @include('email.unified-template')
         @endcomponent

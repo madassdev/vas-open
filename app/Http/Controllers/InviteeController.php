@@ -24,6 +24,7 @@ class InviteeController extends Controller
     {
 
         $request->validate([
+            "window_location" => "required|string|url",
             "invitations" => "required|array",
             "invitations.*.email" => "required|email",
             "invitations.*.role_id" => "required|exists:roles,id"
@@ -45,10 +46,15 @@ class InviteeController extends Controller
         if (!($businessUserRole && $businessUserRole->name == "business_super_admin")) {
             return $this->sendError('User does not have the roles to perform this action on this business', [], 403);
         }
-
+        $window_location = $request->window_location;
         // Good to go.
-        $invitees = collect($request->invitations)->map(function ($invitation) use ($business, $user) {
+        $invitees = collect($request->invitations)->map(function ($invitation) use ($business, $user, $window_location) {
             $code = rand(10, 99) . rand(10, 99) . rand(10, 99);
+            
+            // Don't send to invitor
+            if($invitation["email"] == $user->email){
+                return;
+            }
             $invitee = Invitee::updateOrCreate([
                 "business_id" => $business->id,
                 "email" => $invitation["email"]
@@ -61,7 +67,7 @@ class InviteeController extends Controller
                 "status" => 0,
             ]);
 
-            $mailing = $this->notifyInvitee($invitee, $business, $user);
+            $mailing = $this->notifyInvitee($invitee, $business, $user, $window_location);
 
             return $invitee;
         });
@@ -146,16 +152,17 @@ class InviteeController extends Controller
 
     public function makeInvitation($email, $business_id)
     {
-        $invitee = Invitee::whereEmail($email)->first();
-        return $invitee;
+        // $invitee = Invitee::whereEmail($email)->first();
+        // return $invitee;
     }
 
-    public function notifyInvitee($invitee, $business, $inviter)
+    public function notifyInvitee($invitee, $business, $inviter, $url=null)
     {
         $mailContent = new GenericMail('email.invitee-notification', [
             "invitee" => $invitee,
             "business" => $business,
-            "inviter" => $inviter
+            "inviter" => $inviter,
+            "url" => $url,
         ], 'payload', 'Invitation mail');
         if (!env("LOCAL_MAIL_SERVER")) {
 
