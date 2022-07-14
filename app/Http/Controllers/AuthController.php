@@ -17,6 +17,7 @@ use App\Services\BalanceService;
 use App\Services\MailApiService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Models\Role;
@@ -307,7 +308,8 @@ class AuthController extends Controller
 
     public function roles()
     {
-        $roles = Role::all();
+        $protectedRoleNames = ["owner_super_admin"];
+        $roles = DB::table('roles')->whereNotIn('name', $protectedRoleNames)->get();
         return $this->sendSuccess("Roles fetched successfully", [
             "roles" => $roles
         ]);
