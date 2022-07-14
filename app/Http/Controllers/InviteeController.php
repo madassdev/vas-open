@@ -116,7 +116,6 @@ class InviteeController extends Controller
 
         $this->checkAuthorization($user, $business);
 
-        return 123;
 
         // Make sure invitee exists and can be updated
         $invitee = Invitee::whereId($request->invitee_id)->whereBusinessId($business->id)->first();
@@ -258,7 +257,7 @@ class InviteeController extends Controller
             "inviter" => $inviter,
             "url" => $url,
         ], 'payload', 'Invitation mail');
-        if (!env("LOCAL_MAIL_SERVER")) {
+        // if (!env("LOCAL_MAIL_SERVER")) {
 
             $mail = new MailApiService($invitee->email, "[Vas Reseller] You have been invited to collaborate", $mailContent->render());
             try {
@@ -266,11 +265,12 @@ class InviteeController extends Controller
                 $mail->send();
             } catch (Exception $e) {
                 $mailError = $e->getMessage();
+                throw $e;
             };
             return $mailError;
-        } else {
-            Mail::to($invitee)->send($mailContent);
-        }
+        // } else {
+        //     Mail::to($invitee)->send($mailContent);
+        // }
     }
 
     public function checkAuthorization($user, $business, $permitted_role = "business_super_admin")
