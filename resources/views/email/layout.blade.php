@@ -29,12 +29,12 @@
                                                     <td style="font-family: ' century gothic', arial, sans-serif; margin: 0px; font-size: 14px; line-height: 17px;'><table width='500'><tbody><tr><td style='font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; margin: 0px;">
                                                         <span style="font-family: 'Century Gothic', sans-serif; font-size: 10pt; line-height: normal;">
                                                             <strong style='line-height: normal;'>
-                                                                Payarena Verification Service</strong>
+                                                                Vas Reseller Service</strong>
                                                         </span>
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                        </table><span style='line-height: 14px;'>Unified Payments Services Limited&nbsp;| 1 Idowu Taylor Street, Victoria Island, Lagos</span>|<span style='line-height: 14px;'><strong>D/L:</strong></span>+234 (1) 280 2623 |&nbsp;<strong>T:</strong>+234 (1) 270 3010 (4)<br /><strong>Web:</strong>&nbsp;<a style='color: #1155cc; line-height: 14px;' href='http://www.up-ng.com/' target='_blank' rel='nofollow noopener noreferrer' data-saferedirecturl='https://www.google.com/url?q=http://www.up-ng.com/&amp;source=gmail&amp;ust=1582097954528000&amp;usg=AFQjCNHIsbyLuyRvvcViXxduBLBAwAwIJQ'>www.upvs-ng.com</a>&nbsp;|&nbsp;<strong>Email:&nbsp;</strong><wbr />&nbsp;<a style='color: #1155cc;' href='mailto:upverificationservice@up-ng.com' target='_blank' rel='noopener'>upverificationservice@up-ng.<wbr />com</a>&nbsp;|<br /><br />
+                                        </table><span style='line-height: 14px;'>Unified Payments Services Limited&nbsp;| 3 Idowu Taylor Street, Victoria Island, Lagos</span>|<span style='line-height: 14px;'><strong>D/L:</strong></span>+234 (1) 280 2623 |&nbsp;<strong>T:</strong>+234 (1) 270 3010 (4)<br /><strong>Web:</strong>&nbsp;<a style='color: #1155cc; line-height: 14px;' href='http://www.up-ng.com/' target='_blank' rel='nofollow noopener noreferrer' data-saferedirecturl='https://www.google.com/url?q=http://www.up-ng.com/&amp;source=gmail&amp;ust=1582097954528000&amp;usg=AFQjCNHIsbyLuyRvvcViXxduBLBAwAwIJQ'>www.upvs-ng.com</a>&nbsp;|&nbsp;<strong>Email:&nbsp;</strong><wbr />&nbsp;<a style='color: #1155cc;' href='mailto:info@vasreseller.com' target='_blank' rel='noopener'>info@vasreseller.com.<wbr />com</a>&nbsp;|<br /><br />
                                     </td>
                                 </tr>
                             </tbody>
