@@ -68,6 +68,7 @@ class BusinessDocumentController extends Controller
         }
         return $this->sendSuccess("User Business Documents fetched successfully.", [
             "business_documents" => $documents,
+            "document_status" => $user->business->document_verified
         ]);
     }
 }
