@@ -306,10 +306,33 @@ class AuthController extends Controller
 
     public function roles()
     {
-        $protectedRoleNames = ["owner_super_admin"];
-        $roles = DB::table('roles')->whereNotIn('name', $protectedRoleNames)->get();
+        $protectedRoleNames = ["owner_super_admin", "business_invitee"];
+        $validroles = DB::table('roles')->whereNotIn('name', $protectedRoleNames)->get();
+        $roles = $validroles->map(function ($r) {
+            $r->title = $this->readableRoleName($r->name);
+            return $r;
+        });
         return $this->sendSuccess("Roles fetched successfully", [
             "roles" => $roles
         ]);
+    }
+
+    public function readableRoleName($name)
+    {
+        switch ($name) {
+            case 'business_developer':
+                return "Developer";
+                break;
+            case 'business_finance':
+                return "Finance";
+                break;
+            case 'business_super_admin':
+                return "Administrator";
+                break;
+
+            default:
+                # code...
+                break;
+        }
     }
 }
