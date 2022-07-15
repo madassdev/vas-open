@@ -67,15 +67,27 @@ class BusinessController extends Controller
     {
         $request->validate([
             "low_balance_threshold" => "required|numeric|min:0",
-            "balance_notification_recipient" => "required|email|max:100"
+            "balance_notification_recipients" => "required|string"
         ]);
+        // $ip_addresses = collect($request->ip_addresses)->unique()->toArray();
+        $comma_separated_string = str_replace(' ', '', $request->balance_notification_recipients);
+        $string_to_array = explode(',', $comma_separated_string);
+        $validator = Validator::make(["balance_notification_recipients" => $string_to_array], [
+            "balance_notification_recipients" => "required|array",
+            "balance_notification_recipients.*" => "required|email",
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => $validator->errors()
+            ], 422);
+        }
         $business = auth()->user()->business;
         $business->low_balance_threshold = $request->low_balance_threshold;
-        $business->balance_notification_recipient = $request->balance_notification_recipient;
+        $business->balance_notification_recipients = $request->balance_notification_recipients;
         $business->save();
         return $this->sendSuccess("Business Low Balance Threshold Updated successfully", [
             "low_balance_threshold" => $business->low_balance_threshold,
-            "balance_notification_recipient" => $business->balance_notification_recipient,
+            "balance_notification_recipients" => $business->balance_notification_recipients,
         ]);
     }
 
