@@ -59,7 +59,7 @@ class BusinessController extends Controller
         $business = auth()->user()->business;
         return $this->sendSuccess("Business Low Balance Threshold Fetched successfully", [
             "low_balance_threshold" => $business->low_balance_threshold,
-            "balance_notification_recipient" => $business->balance_notification_recipient,
+            "balance_notification_recipients" => $business->balance_notification_recipients,
         ]);
     }
 
