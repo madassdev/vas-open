@@ -182,16 +182,16 @@ class BusinessController extends Controller
 
         switch ($request->key_type) {
             case 'test_api_key':
-                $business->test_api_key = "ak_test_" . md5(str()->uuid());
+                $business->test_api_key = strtoupper("pk_test_" . str()->uuid());
                 break;
             case 'live_api_key':
-                $business->live_api_key = "ak_live_" . md5(str()->uuid());
+                $business->live_api_key = strtoupper("pk_live_" . str()->uuid());
                 break;
             case 'test_secret_key':
-                $business->test_secret_key = "sk_test_" . md5(str()->uuid());
+                $business->test_secret_key = strtoupper("sk_test_" . str()->uuid());
                 break;
             case 'live_secret_key':
-                $business->live_secret_key = "sk_live_" . md5(str()->uuid());
+                $business->live_secret_key = strtoupper("sk_live_" . str()->uuid());
                 break;
             default:
                 # code...

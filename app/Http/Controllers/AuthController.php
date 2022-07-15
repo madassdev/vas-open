@@ -41,8 +41,6 @@ class AuthController extends Controller
     {
         // Setup keys and passwords
         $generated_password = $this->generateRandomCharacters() . $this->generateRandomCharacters();
-        $test_api_key = md5($generated_password);
-
         // Create business
         $business = Business::updateOrCreate([
             "email" => $request->business_email,
@@ -57,10 +55,10 @@ class AuthController extends Controller
         ]);
 
         $business->createDummyAccount();
-        $business->test_api_key = "ak_test_" . md5(str()->uuid());
-        $business->live_api_key = "ak_live_" . md5(str()->uuid());
-        $business->test_secret_key = "sk_test_" . md5(str()->uuid());
-        $business->live_secret_key = "sk_live_" . md5(str()->uuid());
+        $business->test_api_key = strtoupper("pk_test_" . str()->uuid());
+        $business->live_api_key = strtoupper("pk_live_" . str()->uuid());
+        $business->test_secret_key = strtoupper("sk_test_" . str()->uuid());
+        $business->live_secret_key = strtoupper("sk_live_" . str()->uuid());
         $business->save();
         // Create User
         $user = User::updateOrCreate([
@@ -93,7 +91,7 @@ class AuthController extends Controller
             "phone" => $request->business_phone_number,
             "address" => $request->business_address,
             "current_env" => "test",
-            "test_api_key" => $test_api_key,
+            "test_api_key" => $business->test_api_key,
             "live_enabled" => true,
             "business_category_id" => $request->business_category_id,
         ]);

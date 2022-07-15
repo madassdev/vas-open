@@ -267,23 +267,9 @@ class InviteeController extends Controller
         $user->businesses()->attach($business->id, ["is_active" => $activeBusiness, "role_id" => $invitee->role_id]);
         $invitee->status = 1;
         $invitee->save();
-        $user->load('businesses', 'business.businessBank', 'businessUser');
-        // Fetch User Roles and Permissions
-        $roles = $user->roles->pluck('name')->toArray();
-        $permissions = $user->permissions->pluck('name')->toArray();
-
-        // Create API Token for user
-        $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
-
-        $data = [
-            "user" => $user,
-            "access_token" => $token,
-            "user_roles" => $roles,
-            "user_permissions" => $permissions,
-        ];
 
         // Notifications follow...
-        return $this->sendSuccess("Invitation successfully accepted and processed. You are now logged in", $data);
+        return $this->sendSuccess("Invitation successfully accepted and processed. You can now log into your dashboard");
     }
 
     public function notifyInvitee($invitee, $business, $inviter, $url = null)
