@@ -178,6 +178,43 @@ class InviteeController extends Controller
 
     }
 
+    public function viewInviteDetails(Request $request)
+    {
+        // return encrypt("935213");
+        $request->validate([
+            "invitation_token" => "required",
+        ]);
+        $invitation_token = $request->invitation_token;
+        try {
+            $code = decrypt($invitation_token);
+        } catch (Exception $e) {
+            return $this->sendError('Invalid token provided', [], 400);
+        }
+
+        $invitee = Invitee::whereCode($code)->first();
+        if (!$invitee) {
+            return $this->sendError('Invitation Token not found', [], 400);
+        }
+        
+
+        if ($invitee->status === 1) {
+            return $this->sendError('This invitation has already been accepted and processed', [], 400);
+        }
+
+        $business = $invitee->business;
+
+        // Check if user exists
+        $user = User::whereEmail($invitee->email)->first();
+        $role = Role::find($invitee->role_id);
+        $userExists = $user ? true:false;
+
+        return $this->sendSuccess("Invitee details fetched successfully", [
+            "invitee" => $invitee,
+            "user" => $user,
+            "role" => $role
+        ]);
+    }
+
     public function acceptInvite(Request $request)
     {
         $request->validate([

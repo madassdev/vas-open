@@ -111,6 +111,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
 
 Route::group(["middleware" => "noTestRoute"], function () {
     Route::post("/invitations/accept", [InviteeController::class, 'acceptInvite']);
+    Route::post("/invitations/view-details", [InviteeController::class, 'viewInviteDetails']);
 });
 
 // Route::group(['prefix' => 'seed'], function () {
