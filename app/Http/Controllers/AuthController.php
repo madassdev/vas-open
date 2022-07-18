@@ -55,6 +55,7 @@ class AuthController extends Controller
         ]);
 
         $business->createDummyAccount();
+        $business->createWallet();
         $business->test_api_key = strtoupper("pk_test_" . str()->uuid());
         $business->live_api_key = strtoupper("pk_live_" . str()->uuid());
         $business->test_secret_key = strtoupper("sk_test_" . str()->uuid());
@@ -96,6 +97,7 @@ class AuthController extends Controller
             "business_category_id" => $request->business_category_id,
         ]);
         $test_business->createDummyAccount();
+        $test_business->createWallet();
         // Create User
         $test_user = User::updateOrCreate([
             "email" => $request->email,

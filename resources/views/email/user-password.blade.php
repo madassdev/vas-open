@@ -1,7 +1,7 @@
 @extends('email.layout')
 @section('content')
 <h3>
-    Your account has been created with the following details:
+    Welcome to Vas Reseller. Your account has been created with the following details:
     <h3>
         <p>
             Email: <b>{{$user->email}}</b>

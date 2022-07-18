@@ -82,6 +82,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
 
             // Invitations
             Route::post('/invitees', [InviteeController::class, 'sendInvites']);
+            Route::post('/invitees/resend-invite', [InviteeController::class, 'resendInvite']);
             Route::get('/invitees', [InviteeController::class, 'showInvitees']);
             Route::post('/invitees/update-role', [InviteeController::class, 'updateRole']);
             Route::post('/invitees/toggle-activity', [InviteeController::class, 'toggleActivity']);

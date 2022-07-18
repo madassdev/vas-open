@@ -67,6 +67,19 @@ class Business extends Model
         return $this->hasOne(BusinessBank::class);
     }
 
+    public function createWallet()
+    {
+        $wallet = $this->wallet;
+        if (!$wallet) {
+            $this->wallet()->create([
+                "main_balance" => 0,
+                "main_locked" => 0,
+                "commission_balance" => 0,
+                "commission_locked" => 0,
+            ]);
+        }
+    }
+
     public function createDummyAccount($type = "live")
     {
         if ($type === "live") {

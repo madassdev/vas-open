@@ -13,6 +13,8 @@ class Wallet extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function splits()
     {
         return $this->hasMany(WalletSplit::class);

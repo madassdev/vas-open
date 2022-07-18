@@ -1,9 +1,9 @@
 @extends('email.layout')
 @section('content')
 <h1>
-    WELCOME TO THE APP
+    Welcome to Vas Reseller
 </h1>
 <p>
-    email: <b>{{$user->email}}</b>
+    Here's your email: <b>{{$user->email}}</b>
 </p>
 @endsection

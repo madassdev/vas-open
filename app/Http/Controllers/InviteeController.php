@@ -99,6 +99,32 @@ class InviteeController extends Controller
         return $this->sendSuccess('Invitations sent successfully');
     }
 
+    public function resendInvite(Request $request)
+    {
+        $request->validate([
+            "invitee_id" => "required|exists:invitees,id",
+            "window_location" => "required|string|url",
+        ]);
+
+        $user = auth()->user();
+        $business = $user->business;
+        $this->checkAuthorization($user, $business);
+        $window_location = $request->window_location;
+
+         // Make sure invitee exists and can be updated
+         $invitee = Invitee::whereId($request->invitee_id)->whereBusinessId($business->id)->first();
+         if (!$invitee) {
+             return $this->sendError('Invitee not found for this business', [], 404);
+         }
+
+         if($invitee->status != 0)
+         {
+            // return $this->sendError("This invitation has already been accepted.", [], 403);
+         }
+
+         $mailing = $this->notifyInvitee($invitee, $business, $user, $window_location);
+    }
+
     public function updateRole(Request $request)
     {
         $request->validate([
@@ -176,7 +202,6 @@ class InviteeController extends Controller
         return $this->sendSuccess("Invitee Role updated successfully", [
             "invitee" => $invitee
         ]);
-
     }
 
     public function viewInviteDetails(Request $request)
@@ -196,7 +221,7 @@ class InviteeController extends Controller
         if (!$invitee) {
             return $this->sendError('Invitation Token not found', [], 400);
         }
-        
+
 
         if ($invitee->status === 1) {
             return $this->sendError('This invitation has already been accepted and processed', [], 400);
@@ -207,7 +232,7 @@ class InviteeController extends Controller
         // Check if user exists
         $user = User::whereEmail($invitee->email)->first();
         $role = Role::find($invitee->role_id);
-        $userExists = $user ? true:false;
+        $userExists = $user ? true : false;
 
         return $this->sendSuccess("Invitee details fetched successfully", [
             "invitee" => $invitee,
@@ -283,15 +308,15 @@ class InviteeController extends Controller
         ], 'payload', 'Invitation mail');
         // if (!env("LOCAL_MAIL_SERVER")) {
 
-            $mail = new MailApiService($invitee->email, "[Vas Reseller] You have been invited to collaborate", $mailContent->render());
-            try {
-                $mailError = null;
-                $mail->send();
-            } catch (Exception $e) {
-                $mailError = $e->getMessage();
-                throw $e;
-            };
-            return $mailError;
+        $mail = new MailApiService($invitee->email, "[Vas Reseller] You have been invited to collaborate", $mailContent->render());
+        try {
+            $mailError = null;
+            $mail->send();
+        } catch (Exception $e) {
+            $mailError = $e->getMessage();
+            throw $e;
+        };
+        return $mailError;
         // } else {
         //     Mail::to($invitee)->send($mailContent);
         // }

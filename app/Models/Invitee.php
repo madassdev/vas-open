@@ -9,9 +9,10 @@ use Illuminate\Notifications\Notifiable;
 class Invitee extends Model
 {
     use HasFactory, Notifiable;
-    
+
     protected $guarded = [];
     protected $hidden = ["code"];
+    protected $appends = ["readable_status"];
 
     public function business()
     {
@@ -21,5 +22,14 @@ class Invitee extends Model
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function getReadableStatusAttribute()
+    {
+        $mappings = [
+            "pending", "accepted", "disabled"
+        ];
+
+        return @$mappings[$this->status] ?? "unknown";
     }
 }
