@@ -6,6 +6,7 @@ use App\Mail\GenericMail;
 use App\Models\Business;
 use App\Models\BusinessUser;
 use App\Models\Invitee;
+use App\Models\Role as ModelsRole;
 use App\Models\User;
 use App\Rules\StandardPassword;
 use App\Services\MailApiService;
@@ -31,7 +32,7 @@ class InviteeController extends Controller
     {
         $user = auth()->user();
         $business = $user->business;
-        $invitees = Invitee::whereBusinessId($business->id)->get();
+        $invitees = Invitee::whereBusinessId($business->id)->with('role')->get();
         return $this->sendSuccess("Invitees fetched successfully", [
             "invitees" => $invitees
         ]);

@@ -17,4 +17,9 @@ class Invitee extends Model
     {
         return $this->belongsTo(Business::class);
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }
