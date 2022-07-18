@@ -16,9 +16,9 @@ class NewBusinessWalletSeeder extends Seeder
     public function run()
     {
         //
-        $businesses = Business::all();
-        $businesses->map(function($business){
-            $business->createWallet();
-        });
+        // $businesses = Business::all();
+        // $businesses->map(function($business){
+        //     $business->createWallet();
+        // });
     }
 }

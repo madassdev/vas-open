@@ -119,7 +119,7 @@ class InviteeController extends Controller
 
          if($invitee->status != 0)
          {
-            // return $this->sendError("This invitation has already been accepted.", [], 403);
+            return $this->sendError("This invitation has already been accepted.", [], 403);
          }
 
          $mailing = $this->notifyInvitee($invitee, $business, $user, $window_location);
