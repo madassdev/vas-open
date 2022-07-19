@@ -6,6 +6,7 @@ use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
 use App\Http\Controllers\InviteeController;
+use App\Http\Controllers\TransactionController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -72,7 +73,11 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
     Route::get('/me', [AuthController::class, 'me']);
     Route::get('/roles', [AuthController::class, 'roles']);
 
-    Route::group(['prefix' => 'business'], function () {
+    Route::group(['prefix' => 'transactions'], function () {
+        Route::get('/', [TransactionController::class, 'index']);
+        
+    });
+        Route::group(['prefix' => 'business'], function () {
         Route::get('/stats', [BusinessController::class, 'getBalance']);
         Route::group(["middleware" => "noTestRoute"], function () {
             Route::post('/switch-env', [BusinessController::class, 'switchEnv']);

@@ -37,9 +37,13 @@ class Business extends Model
         return $this->hasMany(BusinessDirector::class);
     }
 
+    public function businessProducts()
+    {
+        return $this->belongsToMany(BusinessProduct::class);
+    }
     public function products()
     {
-        return $this->hasMany(BusinessProduct::class);
+        return $this->belongsToMany(Product::class, 'business_products');
     }
 
     public function transactions()
@@ -102,6 +106,7 @@ class Business extends Model
         $tx = [];
         for ($i = 0; $i < $count; $i++) {
             # code...
+            $status = $payment_status[array_rand($payment_status)];
             $carbon = Carbon::now();
             $created_at = rand(0, 1) ? $carbon : (rand(0, 1) ? $carbon->subDays(rand(0, 6)) : $carbon->addDays(rand(0, 6)));
             $product = $this->products()->inRandomOrder()->first();
@@ -112,12 +117,16 @@ class Business extends Model
             $t->amount = $product->max_amount;
             // $t->amount = rand(0,50)*100 + rand(0,50)*10 + rand(0,50);
             $t->business_reference = strtoupper(str()->random(12));
+            $t->transaction_reference = strtoupper(str()->random(12));
+            $t->provider_reference = strtoupper(str()->random(12));
             $t->debit_reference = strtoupper(str()->random(12));
             $t->debited_amount = $t->amount;
-            $t->payment_status = $payment_status[array_rand($payment_status)];
+            $t->payment_status = $status;
             $t->value_given = rand(0, 1);
             $t->transaction_status = $t->payment_status;
             $t->phone_number = $this->phone;
+            $t->account_number = $this->phone;
+            $t->provider_message = $status;
             $t->status_code = 200;
             $t->status_message = "Status Message";
             $t->product_price = $product->max_amount;

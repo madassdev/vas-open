@@ -23,11 +23,12 @@ class ApiKeyMiddleware
         DBSwap::setConnection('mysqltest');
         $apiKey = $request->api_key;
         $business = Business::whereTestApiKey($apiKey)->first();
-        if(!$business)
-        {
+        if (!$business) {
             abort(403, "Unauthenticated. Please provide test_api_key");
         }
-        $user = $business->user;
+
+        // Needs extra logic.
+        $user = $business->users()->first();
         auth()->login($user);
         return $next($request);
     }

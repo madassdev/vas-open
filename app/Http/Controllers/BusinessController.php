@@ -212,6 +212,17 @@ class BusinessController extends Controller
 
         $business->save();
 
+        // Update test db
+        DBSwap::setConnection('mysqltest');
+        $test_business = Business::whereEmail($business->email)->first();
+        $test_business->test_secret_key = $business->test_secret_key;
+        $test_business->test_api_key = $business->test_api_key;
+        $test_business->live_api_key = $business->live_api_key;
+        $test_business->live_secret_key = $business->live_secret_key;
+        $test_business->save();
+        DBSwap::setConnection('mysqllive');
+
+
         return $this->sendSuccess($request->key_type . " has been reset successfully.", [
             "business" => $business
         ]);
