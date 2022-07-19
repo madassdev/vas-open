@@ -22,8 +22,8 @@ return new class extends Migration
         });
         Schema::table('products', function (Blueprint $table) {
             //
-            $table->string('shortname')->nullable();
             $table->float('unit_cost')->nullable();
+            $table->string('shortname')->nullable();
         });
     }
 
