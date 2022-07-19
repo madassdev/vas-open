@@ -15,14 +15,15 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
+            $table->string('name');
+            $table->string('shortname');
             $table->bigInteger('biller_id')->unsigned();
             $table->string('description')->nullable();
             $table->string('product_code')->nullable();
             $table->string('logo')->nullable();
             $table->bigInteger('product_category_id')->unsigned();
             $table->tinyInteger('has_validation')->nullable();
-            $table->tinyInteger('enabled')->nullable();
+            $table->tinyInteger('enabled')->default(1);
             $table->tinyInteger('service_status')->nullable();
             $table->tinyInteger('deployed')->nullable();
             $table->float('min_amount')->nullable();

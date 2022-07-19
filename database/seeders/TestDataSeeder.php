@@ -50,6 +50,7 @@ class TestDataSeeder extends Seeder
         $products = [
             [
                 "name" => "MTN 1gb Data",
+                'shortname' => "MTN_1gb_Data",
                 "biller_id" => 1,
                 "category" => "Databundle Services",
                 "category_id" =>2,
@@ -66,7 +67,8 @@ class TestDataSeeder extends Seeder
                 "implementation_code" => "CODE1",
             ],
             [
-                "name" => "MTN 2gb Data",
+                "name" => "MTN2gb Data",
+                'shortname' => "MTN_2gb_Data",
                 "biller_id" => 1,
                 "category" => "Databundle Services",
                 "category_id" =>2,
@@ -84,6 +86,7 @@ class TestDataSeeder extends Seeder
             ],
             [
                 "name" => "GLO 1gb Data",
+                'shortname' => "GLO_1gb_Data",
                 "biller_id" => 2,
                 "category" => "Databundle Services",
                 "category_id" =>2,
@@ -101,6 +104,7 @@ class TestDataSeeder extends Seeder
             ],
             [
                 "name" => "MTN Airtime",
+                'shortname' => "MTN_Airtime",
                 "biller_id" => 1,
                 "category" => "Telco Top Up Services",
                 "category_id" =>1,
