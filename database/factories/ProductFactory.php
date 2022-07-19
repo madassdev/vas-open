@@ -21,6 +21,7 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'shortname' => $this->faker->slug(),
             'biller_id' => Biller::all()->random()->id,
             'description' => $this->faker->randomElement(['fixed', 'percentage']),
             'product_code' => $this->faker->randomElement(['fixed', 'percentage']),
