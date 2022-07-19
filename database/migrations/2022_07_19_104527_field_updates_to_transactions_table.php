@@ -18,12 +18,12 @@ return new class extends Migration
             $table->text('provider_message')->nullable();
             $table->string('provider_reference')->nullable();
             $table->string('transaction_reference')->nullable();
-            $table->renameColumn('value_number', 'account_number');
+            // $table->renameColumn('value_number', 'account_number');
         });
         Schema::table('products', function (Blueprint $table) {
             //
             $table->float('unit_cost')->nullable();
-            $table->string('shortname')->nullable();
+            // $table->string('shortname')->nullable();
         });
     }
 
