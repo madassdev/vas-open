@@ -22,6 +22,9 @@ class BusinessDocumentController extends Controller
         $business = $user->business;
         $document = $business->businessDocument()->firstOrNew();
 
+        if ($business->document_verified === 2) {
+            return $this->sendError("Business already verified", [], 403);
+        }
         // Upload file
         $file = $request->file('file');
         $upload = cloudinary()->upload($file->getRealPath());
@@ -62,8 +65,7 @@ class BusinessDocumentController extends Controller
     {
         $user = auth()->user();
         $documents = $user->business->businessDocument;
-        if(!$documents)
-        {
+        if (!$documents) {
             $documents = $user->business->businessDocument()->create([])->refresh();
         }
         return $this->sendSuccess("User Business Documents fetched successfully.", [

@@ -22,6 +22,13 @@ class TransactionController extends Controller
             });
         }
 
+        if($request->start_date && $request->end_date)
+        {
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;
+            $query = $query->whereBetween('created_at',[$start_date, $end_date]);
+        }
+
         $transactions = $query->paginate($per_page)->appends(request()->query());
 
         return $transactions;
