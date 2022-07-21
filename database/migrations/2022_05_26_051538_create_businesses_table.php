@@ -25,6 +25,7 @@ class CreateBusinessesTable extends Migration
             $table->string('test_api_key')->nullable();
             $table->string('live_secret_key')->nullable();
             $table->string('test_secret_key')->nullable();
+            $table->double('low_balance_threshold')->default(0);
             $table->string('webhook')->nullable();
             $table->string('website')->nullable();
             $table->bigInteger('business_category_id')->unsigned();
@@ -36,6 +37,7 @@ class CreateBusinessesTable extends Migration
             $table->tinyInteger('document_verified')->nullable();
             $table->tinyInteger('live_enabled')->nullable();
             $table->text('ip_addresses')->nullable();
+            $table->string('balance_notification_recipients')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
