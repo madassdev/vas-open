@@ -111,11 +111,9 @@ class Business extends Model
     {
         $payment_status = ["success", "success", "success", "pending", "failed"];
         $tx = [];
-        // $bp = $this->products()->count();
-        // echo($bp);
-        // return;
-        $product_ids =Product::inRandomOrder()->take(5)->get()->pluck('id')->toArray();
-        
+        $bp = $this->products()->count();
+        $product_ids = Product::inRandomOrder()->take(5)->get()->pluck('id')->toArray();
+        $this->products()->sync($product_ids);
         for ($i = 0; $i < $count; $i++) {
             # code...
             $status = $payment_status[array_rand($payment_status)];
@@ -176,7 +174,7 @@ class Business extends Model
             "email" => $business->business_email,
         ], [
             "name" => $business->business_name,
-            "email" => $business->business_email.'nnn',
+            "email" => $business->business_email . 'nnn',
             "phone" => $business->business_phone_number,
             "address" => $business->business_address,
             "current_env" => "test",
@@ -208,6 +206,5 @@ class Business extends Model
 
         // Assign role to user 
         $test_user->assignRole('business_super_admin');
-
     }
 }
