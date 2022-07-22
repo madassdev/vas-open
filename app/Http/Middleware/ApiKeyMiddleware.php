@@ -28,7 +28,7 @@ class ApiKeyMiddleware
             response()->json([
                 "success" => false,
                 "message" => "Unauthenticated. Please provide test_api_key"
-            ])->throwResponse();
+            ], 401)->throwResponse();
         }
 
         // Needs extra logic.
