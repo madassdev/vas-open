@@ -50,6 +50,7 @@ class AppController extends Controller
                     "password" => $user->password,
                     "verification_code" => $user->password,
                     "verified" => false,
+                    "password_changed" => $user->password_changed,
                 ]);
             }else{
                 $test_user = User::create([
