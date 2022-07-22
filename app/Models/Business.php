@@ -104,9 +104,9 @@ class Business extends Model
     {
         $payment_status = ["success", "success", "success", "pending", "failed"];
         $tx = [];
-        $bp = $this->products()->count();
-        echo($bp);
-        return;
+        // $bp = $this->products()->count();
+        // echo($bp);
+        // return;
         $product_ids =Product::inRandomOrder()->take(5)->get()->pluck('id')->toArray();
         
         for ($i = 0; $i < $count; $i++) {
