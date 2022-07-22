@@ -22,7 +22,7 @@ class Product extends Model
 
     public function productCategory()
     {
-        return $this->hasMany(ProductCategory::class);
+        return $this->belongsTo(ProductCategory::class);
     }
 
     
