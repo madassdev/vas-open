@@ -15,6 +15,7 @@ class AppController extends Controller
     //
     public function test()
     {
+        return "Nothing to test";
         $businesses = Business::all()->map(function ($business) {
             $user = $business->businessUsers()->first();
             // return @$user->email;

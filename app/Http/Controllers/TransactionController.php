@@ -46,7 +46,7 @@ class TransactionController extends Controller
             $query = $query->whereBetween('created_at', [$start_date, $end_date]);
         }
 
-        $transactions = $query->paginate($per_page)->appends(request()->query());
+        $transactions = $query->with('product.productCategory')->paginate($per_page)->appends(request()->query());
 
         return $transactions;
 

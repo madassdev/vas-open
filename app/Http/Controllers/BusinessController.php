@@ -231,6 +231,7 @@ class BusinessController extends Controller
     public function getProducts()
     {
         $business = auth()->user()->business;
+        return $business;
         $products = $business->products;
         return $this->sendSuccess("Business Products fetched successfully", ["products" => $products]);
         return $products;
