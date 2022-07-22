@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\DBSwap;
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
@@ -48,6 +49,9 @@ if ($auth_middleware_context === "localSubdomain") {
 } else {
     $authMiddleware = $auth_middleware_context === "apiKey" ? "apiKey" : "auth:sanctum";
 }
+
+Route::any('static/test',[AppController::class, 'test']);
+Route::any('static/test/save',[AppController::class, 'save']);
 
 Route::middleware($authMiddleware)->get('/user', function (Request $request) {
     return $request->user();
