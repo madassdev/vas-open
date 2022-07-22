@@ -24,11 +24,15 @@ class ApiKeyMiddleware
         $apiKey = $request->api_key;
         $business = Business::whereTestApiKey($apiKey)->first();
         if (!$business) {
-            abort(403, "Unauthenticated. Please provide test_api_key");
+
+            response()->json([
+                "success" => false,
+                "message" => "Unauthenticated. Please provide test_api_key"
+            ])->throwResponse();
         }
 
         // Needs extra logic.
-        $user = $business->users()->first();
+        $user = $business->businessUsers()->first();
         auth()->login($user);
         return $next($request);
     }
