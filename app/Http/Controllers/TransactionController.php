@@ -27,6 +27,11 @@ class TransactionController extends Controller
                 $q->where('shortname', '=', $shortname);
             });
         }
+
+        if ($request->product_id) {
+            $query = $query->where('product_id', '=', $request->product_id);
+        }
+
         if ($request->transaction_status) {
             $query = $query->where('transaction_status', '=', $request->transaction_status);
         }

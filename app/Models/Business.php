@@ -104,11 +104,16 @@ class Business extends Model
     {
         $payment_status = ["success", "success", "success", "pending", "failed"];
         $tx = [];
+        $bp = $this->products()->count();
+        echo($bp);
+        return;
+        $product_ids =Product::inRandomOrder()->take(5)->get()->pluck('id')->toArray();
+        
         for ($i = 0; $i < $count; $i++) {
             # code...
             $status = $payment_status[array_rand($payment_status)];
             $carbon = Carbon::now();
-            $created_at = rand(0, 1) ? $carbon : (rand(0, 1) ? $carbon->subDays(rand(0, 6)) : $carbon->addDays(rand(0, 6)));
+            $created_at = rand(0, 1) ? $carbon : (rand(0, 1) ? $carbon->subDays(rand(0, 10)) : $carbon->addDays(rand(0, 8)));
             $product = $this->products()->inRandomOrder()->first();
             $t = new Transaction();
             $t->product_id = $product->id;
