@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('role_id')->constrained()->cascadeOnDelete();
             $table->boolean('is_active')->default(false);
+            $table->boolean('enabled')->default(true);
+            $table->boolean('notify')->default(true);
             $table->timestamps();
         });
     }

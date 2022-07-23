@@ -18,9 +18,7 @@ class CreateBusinessProductsTable extends Migration
             $table->bigInteger('business_id')->unsigned();
             $table->bigInteger('product_id')->unsigned();
             $table->float('commission_value')->nullable();
-            $table->text('fee_configuration')->nullable();
             $table->tinyInteger('enabled')->nullable();
-            $table->integer('created_by')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });

@@ -16,7 +16,8 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            // $table->string('shortname'); // Added in later migrations
+            $table->float('unit_cost')->nullable();
+            $table->string('shortname')->nullable();
             $table->bigInteger('biller_id')->unsigned();
             $table->string('description')->nullable();
             $table->string('product_code')->nullable();
@@ -28,6 +29,7 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('deployed')->nullable();
             $table->float('min_amount')->nullable();
             $table->float('max_amount')->nullable();
+            $table->float('max_quantity')->nullable();
             $table->string('commission_type')->nullable();
             $table->float('provider_commission_value')->nullable();
             $table->float('provider_commission_cap')->nullable();
