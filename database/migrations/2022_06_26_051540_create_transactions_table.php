@@ -17,16 +17,17 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->bigInteger('business_id')->unsigned();
             $table->bigInteger('product_id')->unsigned();
-            $table->string('idempotency_hash')->unique()->nullable();
             $table->double('amount')->nullable();
+            $table->double('integrator_debited_amount')->nullable();
+            $table->double('provider_debited_amount')->nullable();
             $table->string('business_reference')->nullable();
+            $table->string('idempotency_hash')->unique()->nullable();
             $table->string('debit_reference')->nullable();
-            $table->double('debited_amount')->nullable();
             $table->string('payment_status')->nullable();
             $table->tinyInteger('value_given')->nullable();
             $table->string('transaction_status')->nullable();
             $table->string('phone_number')->nullable();
-            $table->string('value_number')->nullable();
+            $table->string('account_number')->nullable();
             $table->string('status_code')->nullable();
             $table->string('status_message')->nullable();
             $table->tinyInteger('retries')->nullable();
@@ -35,10 +36,14 @@ class CreateTransactionsTable extends Migration
             $table->decimal('fee')->nullable();
             $table->decimal('integrator_commission')->nullable();
             $table->decimal('owner_commission')->nullable();
+            $table->text('provider_message')->nullable();
+            $table->string('provider_reference')->nullable();
+            $table->string('transaction_reference')->nullable();
             // $table->tinyInteger('is_settled')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->unique(['business_id', 'business_reference']);
+
         });
 
         Schema::table('transactions', function (Blueprint $table) {

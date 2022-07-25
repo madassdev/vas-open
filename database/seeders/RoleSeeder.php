@@ -30,5 +30,9 @@ class RoleSeeder extends Seeder
                 ["name" => $r]
             );
         });
+
+        Role::updateOrCreate(
+            ["name" => "business_invitee"],
+        );
     }
 }
