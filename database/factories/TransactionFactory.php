@@ -18,7 +18,7 @@ class TransactionFactory extends Factory
      */
     public function definition()
     {
- 
+
         return [
             'business_id' => Business::all()->random()->id,
             'product_id' => Product::all()->random()->id,
@@ -30,7 +30,9 @@ class TransactionFactory extends Factory
             'integrator_debited_amount' => $this->faker->randomFloat(2, 0, 100),
             'payment_status' => $this->faker->boolean,
             'value_given' => $this->faker->boolean,
-            'transaction_status' => $this->faker->boolean,
+            'transaction_status' => $this->faker->randomElement([
+                'successful', 'failed', 'pending'
+            ]),
             'phone_number' => $this->faker->phoneNumber,
             'account_number' => $this->faker->phoneNumber,
             'status_code' => $this->faker->boolean,
