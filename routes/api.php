@@ -1,11 +1,13 @@
 <?php
 
 use App\Helpers\DBSwap;
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
 use App\Http\Controllers\InviteeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -49,6 +51,9 @@ if ($auth_middleware_context === "localSubdomain") {
     $authMiddleware = $auth_middleware_context === "apiKey" ? "apiKey" : "auth:sanctum";
 }
 
+Route::any('static/test', [AppController::class, 'test']);
+Route::any('static/test/save', [AppController::class, 'save']);
+
 Route::middleware($authMiddleware)->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -75,10 +80,10 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
 
     Route::group(['prefix' => 'transactions'], function () {
         Route::get('/', [TransactionController::class, 'index']);
-        
     });
-        Route::group(['prefix' => 'business'], function () {
+    Route::group(['prefix' => 'business'], function () {
         Route::get('/stats', [BusinessController::class, 'getBalance']);
+        Route::get('/products', [BusinessController::class, 'getProducts']);
         Route::group(["middleware" => "noTestRoute"], function () {
             Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
             Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness']);
@@ -98,7 +103,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
 
             Route::post('/user/toggle-notification', [BusinessController::class, 'toggleBusinessNotification']);
             Route::post('/reset-keys', [BusinessController::class, 'resetKeys']);
-            
+
             // Low Balance Threshold
             Route::get('/low-balance-threshold', [BusinessController::class, 'getLowBalanceThreshold']);
             Route::post('/low-balance-threshold', [BusinessController::class, 'setLowBalanceThreshold']);
@@ -128,3 +133,4 @@ Route::group(["middleware" => "noTestRoute"], function () {
 
 
 Route::get('business-categories', [BusinessCategoryController::class, 'list']);
+Route::get('product-categories', [ProductController::class, 'listCategories']);

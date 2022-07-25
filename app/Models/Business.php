@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\DBSwap;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Wallet;
@@ -14,6 +15,7 @@ use App\Models\BusinessDirector;
 use App\Models\BusinessDocument;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class Business extends Model
 {
@@ -61,6 +63,11 @@ class Business extends Model
         return $this->hasMany(User::class);
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
     public function businessDocument()
     {
         return $this->hasOne(BusinessDocument::class);
@@ -104,11 +111,14 @@ class Business extends Model
     {
         $payment_status = ["success", "success", "success", "pending", "failed"];
         $tx = [];
+        $bp = $this->products()->count();
+        $product_ids = Product::inRandomOrder()->take(5)->get()->pluck('id')->toArray();
+        $this->products()->sync($product_ids);
         for ($i = 0; $i < $count; $i++) {
             # code...
             $status = $payment_status[array_rand($payment_status)];
             $carbon = Carbon::now();
-            $created_at = rand(0, 1) ? $carbon : (rand(0, 1) ? $carbon->subDays(rand(0, 6)) : $carbon->addDays(rand(0, 6)));
+            $created_at = rand(0, 1) ? $carbon : (rand(0, 1) ? $carbon->subDays(rand(0, 10)) : $carbon->addDays(rand(0, 8)));
             $product = $this->products()->inRandomOrder()->first();
             $t = new Transaction();
             $t->product_id = $product->id;
@@ -153,5 +163,48 @@ class Business extends Model
     public function wallet()
     {
         return $this->hasOne(Wallet::class);
+    }
+
+    public function moveToTestDb()
+    {
+        $user = $this->user;
+        $business = $this;
+        DBSwap::setConnection('mysqltest');
+        $test_business = Business::updateOrCreate([
+            "email" => $business->business_email,
+        ], [
+            "name" => $business->business_name,
+            "email" => $business->business_email . 'nnn',
+            "phone" => $business->business_phone_number,
+            "address" => $business->business_address,
+            "current_env" => "test",
+            "test_api_key" => $business->test_api_key,
+            "live_enabled" => true,
+            "business_category_id" => $business->business_category_id,
+        ]);
+
+        return $test_business;
+        $test_business->createDummyAccount();
+        $test_business->createWallet();
+        // Create User
+        $test_user = User::updateOrCreate([
+            "email" => $user->email,
+        ], [
+            "first_name" => $user->first_name,
+            "last_name" => $user->last_name,
+            "email" => $user->email,
+            "phone" => $user->phone_number,
+            "business_id" => $test_business->id,
+            "password" => $user->password,
+            "verification_code" => $user->password,
+            "verified" => false,
+        ]);
+
+        $test_role = Role::whereName('business_super_admin')->first();
+        // Attach business to user
+        $test_user->businesses()->attach($test_business->id, ["is_active" => true, "role_id" => $test_role->id]);
+
+        // Assign role to user 
+        $test_user->assignRole('business_super_admin');
     }
 }

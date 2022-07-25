@@ -11,6 +11,7 @@ use App\Mail\PasswordUpdatedMail;
 use App\Mail\UserCreatedPasswordMail;
 use App\Mail\UserWelcomeMail;
 use App\Models\Business;
+use App\Models\Role as ModelsRole;
 use App\Models\User;
 use App\Rules\StandardPassword;
 use App\Services\BalanceService;
@@ -76,7 +77,8 @@ class AuthController extends Controller
         ]);
 
         // Attach business to user
-        $user->businesses()->attach($business->id, ["is_active" => true]);
+        $role = ModelsRole::whereName('business_super_admin')->first();
+        $user->businesses()->attach($business->id, ["is_active" => true, 'role_id' => $role->id]);
 
         // Assign role to user 
         $user->assignRole('business_super_admin');
@@ -112,8 +114,9 @@ class AuthController extends Controller
             "verified" => false,
         ]);
 
+        $test_role = ModelsRole::whereName('business_super_admin')->first();
         // Attach business to user
-        $test_user->businesses()->attach($test_business->id, ["is_active" => true]);
+        $test_user->businesses()->attach($test_business->id, ["is_active" => true, "role_id" => $test_role->id]);
 
         // Assign role to user 
         $test_user->assignRole('business_super_admin');

@@ -20,6 +20,11 @@ class Product extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function productCategory()
+    {
+        return $this->belongsTo(ProductCategory::class);
+    }
+
     
 
     // $items[array_rand($items)]
