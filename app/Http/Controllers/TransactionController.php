@@ -138,7 +138,7 @@ class TransactionController extends Controller
 
         $downloader = new TransactionExport($query);
         $date = date('d-m-Y');
-        return $downloader->download("VAS-TRANSACTIONS-$date.xlsx");
+        return $downloader->download("VAS-TRANSACTIONS-$date.csv");
 
         $transactions = $query->with('product.productCategory')->paginate($per_page)->appends(request()->query());
 
