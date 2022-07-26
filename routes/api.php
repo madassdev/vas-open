@@ -135,3 +135,4 @@ Route::group(["middleware" => "noTestRoute"], function () {
 
 Route::get('business-categories', [BusinessCategoryController::class, 'list']);
 Route::get('product-categories', [ProductController::class, 'listCategories']);
+Route::get('/transactions/download', [TransactionController::class, 'download'])->middleware('downloadRoute');
