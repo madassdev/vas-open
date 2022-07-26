@@ -27,7 +27,7 @@ class BusinessController extends Controller
         }
         $business->current_env = $request->env;
         $business->save();
-        return $this->sendSuccess("Bussiness Env switched to live");
+        return $this->sendSuccess("Bussiness environment switched to ".$request->env);
     }
 
     public function switchActiveBusiness(Request $request)
