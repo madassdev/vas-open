@@ -17,7 +17,7 @@ class ProductController extends Controller
 
     public function listCategories()
     {
-        $product_categories = ProductCategory::all();
+        $product_categories = ProductCategory::with('products')->get();
         return $this->sendSuccess("Product categories fetched successfully", ["product_categories" => $product_categories]);
     }
 }
