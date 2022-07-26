@@ -14,6 +14,7 @@ class TransactionController extends Controller
         $per_page = $request->per_page ?? 20;
         $user = auth()->user();
         $business = $user->business;
+        // $business->createDemoTransaction(rand(30,80));
         $query = Transaction::query()->where('business_id', $business->id);
         if ($request->category_id) {
             $category_id = $request->product_category_id;
@@ -48,8 +49,51 @@ class TransactionController extends Controller
 
         $transactions = $query->with('product.productCategory')->paginate($per_page)->appends(request()->query());
 
-        return $transactions;
+        return $this->sendSuccess("Transactions fetched successful", [
+            "transactions" => $transactions
+        ]);
 
         // $business->createDemoTransaction(20);
+    }
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            "term" => "required|string|max:250",
+        ]);
+        $per_page = $request->per_page ?? 20;
+        $user = auth()->user();
+        $business = $user->business;
+        $term = $request->term;
+
+        $base_columns = [
+            'business_reference',
+            'transaction_reference',
+            'provider_reference',
+            'debit_reference',
+            'idempotency_hash',
+            'phone_number',
+            'account_number',
+        ];
+        // $business->createDemoTransaction(rand(30,80));
+        $query = Transaction::query()->where('business_id', $business->id);
+        $query = $query->where(function ($q) use ($term, $base_columns) {
+            $q->orWhereHas('product', function ($qu) use ($term) {
+                $qu->where('name', 'LIKE', '%' . $term . '%')
+                    ->orWhere('description', 'LIKE', '%' . $term . '%')
+                    ->orWhere('shortname', 'LIKE', '%' . $term . '%')
+                    ->orWhere('product_code', 'LIKE', '%' . $term . '%')
+                    ->orWhereHas('productCategory', function ($q) use ($term) {
+                        $q->where('name', 'LIKE', '%' . $term . '%');
+                    });
+            });
+            foreach ($base_columns as $column) {
+                $q->orWhere($column, 'LIKE', '%' . $term . '%');
+            }
+        });
+        $transactions = $query->with('product.productCategory')->paginate($per_page)->appends(request()->query());
+        return $this->sendSuccess("Transactions search successful", [
+            "transactions" => $transactions
+        ]);
     }
 }

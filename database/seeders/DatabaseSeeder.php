@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         // $billers = Biller::factory()->count(5)->create();
         $product_categories = ProductCategory::all();
         foreach ($product_categories as $product_category) {
-            $product_category->products()->saveMany(Product::factory()->count(5)->make());
+            $product_category->products()->saveMany(Product::factory()->count(2)->make());
         }
         $business_categories = BusinessCategory::take(2)->get();
         foreach ($business_categories as $business_category) {

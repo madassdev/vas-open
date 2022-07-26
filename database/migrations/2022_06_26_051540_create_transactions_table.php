@@ -23,6 +23,7 @@ class CreateTransactionsTable extends Migration
             $table->string('business_reference')->nullable();
             $table->string('idempotency_hash')->unique()->nullable();
             $table->string('debit_reference')->nullable();
+            $table->double('debited_amount')->nullable();
             $table->string('payment_status')->nullable();
             $table->tinyInteger('value_given')->nullable();
             $table->string('transaction_status')->nullable();
