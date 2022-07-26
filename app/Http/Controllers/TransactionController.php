@@ -150,11 +150,12 @@ class TransactionController extends Controller
             $query = $query->whereBetween('created_at', [$start_date, $end_date]);
         }
 
-        $downloader = new TransactionExport($query);
+        $transactions = $query->take(5)->with('business','product.productCategory', 'product.biller');
+        $downloader = new TransactionExport($transactions);
         $date = date('d-m-Y');
+
         return $downloader->download("VAS-TRANSACTIONS-$date.csv");
 
-        $transactions = $query->with('product.productCategory', 'product.biller')->paginate($per_page)->appends(request()->query());
 
         return $this->sendSuccess("Transactions fetched successful", [
             "transactions" => $transactions
