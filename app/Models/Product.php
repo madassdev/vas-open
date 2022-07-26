@@ -25,6 +25,11 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class);
     }
 
+    public function biller()
+    {
+        return $this->belongsTo(Biller::class);
+    }
+
     
 
     // $items[array_rand($items)]

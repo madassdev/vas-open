@@ -48,7 +48,7 @@ class TransactionController extends Controller
             $query = $query->whereBetween('created_at', [$start_date, $end_date]);
         }
 
-        $transactions = $query->with('product.productCategory')->paginate($per_page)->appends(request()->query());
+        $transactions = $query->with('product.productCategory', 'product.biller')->paginate($per_page)->appends(request()->query());
 
         return $this->sendSuccess("Transactions fetched successful", [
             "transactions" => $transactions
@@ -92,7 +92,7 @@ class TransactionController extends Controller
                 $q->orWhere($column, 'LIKE', '%' . $term . '%');
             }
         });
-        $transactions = $query->with('product.productCategory')->paginate($per_page)->appends(request()->query());
+        $transactions = $query->with('product.productCategory', 'product.biller')->paginate($per_page)->appends(request()->query());
         return $this->sendSuccess("Transactions search successful", [
             "transactions" => $transactions
         ]);
@@ -140,7 +140,7 @@ class TransactionController extends Controller
         $date = date('d-m-Y');
         return $downloader->download("VAS-TRANSACTIONS-$date.csv");
 
-        $transactions = $query->with('product.productCategory')->paginate($per_page)->appends(request()->query());
+        $transactions = $query->with('product.productCategory', 'product.biller')->paginate($per_page)->appends(request()->query());
 
         return $this->sendSuccess("Transactions fetched successful", [
             "transactions" => $transactions
