@@ -112,8 +112,10 @@ class Business extends Model
         $payment_status = ["success", "success", "success", "pending", "failed"];
         $tx = [];
         $bp = $this->products()->count();
-        $product_ids = Product::inRandomOrder()->take(5)->get()->pluck('id')->toArray();
-        $this->products()->sync($product_ids);
+        if ($bp < 3) {
+            $product_ids = Product::inRandomOrder()->take(5)->get()->pluck('id')->toArray();
+            $this->products()->sync($product_ids);
+        }
         for ($i = 0; $i < $count; $i++) {
             # code...
             $status = $payment_status[array_rand($payment_status)];
@@ -130,7 +132,7 @@ class Business extends Model
             $t->transaction_reference = strtoupper(str()->random(12));
             $t->provider_reference = strtoupper(str()->random(12));
             $t->debit_reference = strtoupper(str()->random(12));
-            $t->debited_amount = $t->amount;
+            // $t->debited_amount = $t->amount;
             $t->payment_status = $status;
             $t->value_given = rand(0, 1);
             $t->transaction_status = $t->payment_status;
