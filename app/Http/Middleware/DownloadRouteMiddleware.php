@@ -19,7 +19,7 @@ class DownloadRouteMiddleware
     public function handle(Request $request, Closure $next)
     {
         $auth_context = config('app.auth_context');
-        $apiKey = $request->api_key;
+        $apiKey = $request->bearerToken();
         if ($auth_context === "live") {
             $business = Business::whereLiveApiKey($apiKey)->first();
         }

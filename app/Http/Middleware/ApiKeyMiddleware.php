@@ -21,7 +21,7 @@ class ApiKeyMiddleware
     {
         // Find business by apiKey in headers
         DBSwap::setConnection('mysqltest');
-        $apiKey = $request->api_key;
+        $apiKey = $request->bearerToken();
         $business = Business::whereTestApiKey($apiKey)->first();
         if (!$business) {
 

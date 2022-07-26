@@ -81,6 +81,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
     Route::group(['prefix' => 'transactions'], function () {
         Route::get('/', [TransactionController::class, 'index']);
         Route::get('/search', [TransactionController::class, 'search']);
+        Route::get('/{transaction}/details', [TransactionController::class, 'index']);
     });
     Route::group(['prefix' => 'business'], function () {
         Route::get('/stats', [BusinessController::class, 'getBalance']);

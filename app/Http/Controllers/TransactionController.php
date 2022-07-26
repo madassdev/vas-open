@@ -57,6 +57,20 @@ class TransactionController extends Controller
         // $business->createDemoTransaction(20);
     }
 
+    public function show($transaction_id)
+    {
+        $user = auth()->user();
+        $business = $user->business;
+        $transaction = Transaction::whereId($transaction_id)->whereBusinessId($business->id)->first();
+        if (!$transaction) {
+            return $this->sendError("Transaction not found for this business"[], 404);
+        }
+        $transaction->load('product.productCategory', 'product.biller');
+        return $this->sendSuccess("Transaction details retrieved successfully", [
+            "transaction" => $transaction
+        ]);
+    }
+
     public function search(Request $request)
     {
         $request->validate([
