@@ -86,6 +86,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
     Route::group(['prefix' => 'business'], function () {
         Route::get('/stats', [BusinessController::class, 'getBalance']);
         Route::get('/products', [BusinessController::class, 'getProducts']);
+        Route::get('/products-configuration', [ProductController::class, 'getProductsConfiguration']);
         Route::group(["middleware" => "noTestRoute"], function () {
             Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
             Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness']);
