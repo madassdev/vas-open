@@ -30,6 +30,7 @@ class ProductController extends Controller
                 return $p->createConfigDto()->only(
                     'name',
                     'shortname',
+                    'category_name',
                     'unit_cost',
                     'description',
                     'logo',
