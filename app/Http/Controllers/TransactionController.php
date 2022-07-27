@@ -75,7 +75,7 @@ class TransactionController extends Controller
         $business = $user->business;
         $transaction = Transaction::whereId($transaction_id)->whereBusinessId($business->id)->first();
         if (!$transaction) {
-            return $this->sendError("Transaction not found for this business"[], 404);
+            return $this->sendError("Transaction not found for this business",[], 404);
         }
         $transaction->load('product.productCategory', 'product.biller');
         return $this->sendSuccess("Transaction details retrieved successfully", [
