@@ -24,26 +24,32 @@ class ProductController extends Controller
     public function getProductsConfiguration()
     {
         $business = auth()->user()->business;
-        $products = $business->products;
-        // ->map(function($p){
-            
-        //     $custom_commission = $p->pivot->commission_value;
-        //     return $custom_commission;
-        //     $commission_config = [
-        //         "provider_commsision_value" => $p->provider_commission_value,
-        //     ];
-        //     return [
-        //         "name"=>$p->name,
-        //         "shortname"=>$p->shortname,
-        //         "unit_cost"=>$p->unit_cost,
-        //         "biller"=>$p->biller,
-        //         "product_code" => $p->product_code,
-        //         "min_amount" => $p->min_amount,
-        //         "max_amount" => $p->max_amount,
-        //         "max_quantity" => $p->max_quantity,
-        //         "commission_type" => $p->commission_type,
-        //     ]+$commission_config;
-        // });
-        return $products;
+        $products = $business->products
+            ->map(function ($p) {
+
+                return $p->createConfigDto()->only(
+                    'name',
+                    'shortname',
+                    'unit_cost',
+                    'description',
+                    'logo',
+                    'enabled',
+                    'service_status',
+                    'deployed',
+                    'min_amount',
+                    'max_amount',
+                    'max_quantity',
+                    'configurations',
+                    'commission_type',
+                    'has_fee',
+                    'fee_configuration',
+                    'type',
+                    'created_at',
+                    'updated_at',
+                );
+            });
+        return $this->sendSuccess("Products configuration fetched successfully", [
+            "products" => $products,
+        ]);
     }
 }

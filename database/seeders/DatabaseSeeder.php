@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
         }
         $business_categories = BusinessCategory::take(2)->get();
         foreach ($business_categories as $business_category) {
-            $business_category->businesses()->saveMany(Business::factory()->count(2)->make());
+            $business_category->businesses()->saveMany(Business::factory()->count(1)->make());
         }
         // create 50 businesses
         $businesses = Business::all();
@@ -72,6 +72,8 @@ class DatabaseSeeder extends Seeder
             $wallet->splits()->saveMany(WalletSplit::factory()->count(5)->make());
             $wallet->logs()->saveMany(WalletLog::factory()->count(5)->make());
         }
+
+        $this->call(DevUsersSeeder::class);
         // create 20 accounts
         // create 50 billers
         // create 50 transactions
