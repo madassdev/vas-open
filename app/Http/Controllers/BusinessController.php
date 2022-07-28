@@ -27,7 +27,7 @@ class BusinessController extends Controller
         }
         $business->current_env = $request->env;
         $business->save();
-        return $this->sendSuccess("Bussiness environment switched to ".$request->env);
+        return $this->sendSuccess("Bussiness environment switched to " . $request->env);
     }
 
     public function switchActiveBusiness(Request $request)
@@ -270,7 +270,8 @@ class BusinessController extends Controller
 
         $stats = $env == "live" ? $live_stats : $test_stats;
 
-        return $this->sendSuccess("Stats fetched successfully!", ["stats" => $stats]);;
+        $recent_transactions = Transaction::with('product.productCategory', 'product.biller')->latest()->take(5)->get();
+        return $this->sendSuccess("Stats fetched successfully!", ["stats" => $stats, "recent_transactions" => $recent_transactions]);;
     }
 
     // 1. Percentage of failed, pending and successful transaction 
