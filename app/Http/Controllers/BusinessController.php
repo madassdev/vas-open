@@ -228,13 +228,39 @@ class BusinessController extends Controller
         ]);
     }
 
-    public function getProducts()
+    public function getProducts(Request $request)
     {
         $business = auth()->user()->business;
-        $products = $business->products->load('productCategory');
+        $query = $business->products();
+        if ($request->product_name) {
+            $query = $query->whereName($request->product_name);
+        }
+        if ($request->product_shortname) {
+            $query = $query->whereName($request->product_shortname);
+        }
+
+        if ($request->biller_name) {
+            $biller_name = $request->biller_name;
+            $query = $query->whereHas('biller', function ($q) use ($biller_name) {
+                $q->where('name', '=', $biller_name);
+            });
+        }
+
+        if ($request->category_name) {
+            $category_name = $request->category_name;
+            $query = $query->whereHas('productCategory', function ($q) use ($category_name) {
+                $q->where('name', '=', $category_name);
+            });
+        }
+
+        if ($request->category_id) {
+            $category_id = $request->category_id;
+            $query = $query->whereHas('productCategory', function ($q) use ($category_id) {
+                $q->where('id', '=', $category_id);
+            });
+        }
+        $products = $query->with('productCategory')->get();
         return $this->sendSuccess("Business Products fetched successfully", ["products" => $products]);
-        return $products;
-        return $business;
     }
     public function getBalance()
     {
