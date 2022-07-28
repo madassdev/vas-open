@@ -259,7 +259,7 @@ class BusinessController extends Controller
                 $q->where('id', '=', $category_id);
             });
         }
-        $products = $query->with('productCategory')->get();
+        $products = $query->with('productCategory', 'biller')->get();
         return $this->sendSuccess("Business Products fetched successfully", ["products" => $products]);
     }
     public function getBalance()
