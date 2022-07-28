@@ -38,7 +38,7 @@ class BusinessController extends Controller
         $user = auth()->user();
         $switch = $user->switchActiveBusiness($request->business_id);
 
-        $user->load('businesses', 'business');
+        $user->load('businesses', 'business.businessBank');
 
         return $this->sendSuccess("User Active Business switched successfully", [
             "user" => $user
