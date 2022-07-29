@@ -41,8 +41,233 @@ class DatabaseSeeder extends Seeder
         $this->call(BusinessCategoriesSeeder::class);
         // $billers = Biller::factory()->count(5)->create();
         $product_categories = ProductCategory::all();
-        foreach ($product_categories as $product_category) {
-            $product_category->products()->saveMany(Product::factory()->count(2)->make());
+        // foreach ($product_categories as $product_category) {
+        //     $product_category->products()->saveMany(Product::factory()->count(2)->make());
+        // }
+        $products =  [
+            [
+                'name' => '9mobile',
+                'shortname' => '9mobile',
+            ],
+            [
+                'name' => 'Abuja Electricty Distribution Company Postpaid',
+                'shortname' => 'AEDC-Postpaid',
+            ],
+            [
+                'name' => 'Abuja Electricty Distribution Company Prepaid',
+                'shortname' => 'AEDC-Prepaid',
+            ],
+            [
+                'name' => 'Aiico Motor Insurance',
+                'shortname' => 'AiicoMotorInsurance',
+            ],
+            [
+                'name' => 'Airtel',
+                'shortname' => 'Airtel',
+            ],
+            [
+                'name' => 'Akwa Ibom Internal Revenue Services',
+                'shortname' => 'AIIRS',
+            ],
+            [
+                'name' => 'Bayelsa Internal Revenue Service',
+                'shortname' => 'BIRS',
+            ],
+            [
+                'name' => 'Benin Electricty Distribution Company Postpaid',
+                'shortname' => 'BEDC-Postpaid',
+            ],
+            [
+                'name' => 'Benin Electricty Distribution Company Prepaid',
+                'shortname' => 'BEDC-Prepaid',
+            ],
+            [
+                'name' => 'College of Agriculture Wurno',
+                'shortname' => 'CAGW',
+            ],
+            [
+                'name' => 'CollegeBasicRemedialStudies',
+                'shortname' => 'CBR',
+            ],
+            [
+                'name' => 'College of Legal Islamic Studies',
+                'shortname' => 'COLIS',
+            ],
+            [
+                'name' => 'College of Nursing Science Sokoto',
+                'shortname' => 'CNCS',
+            ],
+            [
+                'name' => 'Consolidated',
+                'shortname' => 'Consolidated',
+            ],
+            [
+                'name' => 'CyberSpace',
+                'shortname' => 'CyberSpace',
+            ],
+            [
+                'name' => 'DSTV',
+                'shortname' => 'DSTV',
+            ],
+            [
+                'name' => 'EKEDC Postpaid',
+                'shortname' => 'EKEDC-Postpaid',
+            ],
+            [
+                'name' => 'EKEDC Prepaid',
+                'shortname' => 'EKEDC-Prepaid',
+            ],
+            [
+                'name' => 'FCMB Pension Fund Administrator',
+                'shortname' => 'FCMB-PFA',
+            ],
+            [
+                'name' => 'FRSC',
+                'shortname' => 'FRSC',
+            ],
+            [
+                'name' => 'GLO',
+                'shortname' => 'GLO',
+            ],
+            [
+                'name' => 'GOTV',
+                'shortname' => 'GOTV',
+            ],
+            [
+                'name' => 'Ibadan Electricity Distribution Company Postpaid',
+                'shortname' => 'IEDC-Postpaid',
+            ],
+            [
+                'name' => 'Ibadan Electricity Distribution Company Prepaid',
+                'shortname' => 'IEDC-Prepaid',
+            ],
+            [
+                'name' => 'IKEDC Postpaid',
+                'shortname' => 'IKEDC-Postpaid',
+            ],
+            [
+                'name' => 'IKEDC Prepaid',
+                'shortname' => 'IKEDC-Prepaid',
+            ],
+            [
+                'name' => 'JambEpin',
+                'shortname' => 'JambEpin',
+            ],
+            [
+                'name' => 'JambReference',
+                'shortname' => 'JambReference',
+            ],
+            [
+                'name' => 'Jos Electricty Distribution Company Postpaid',
+                'shortname' => 'JEDC-Postpaid',
+            ],
+            [
+                'name' => 'Jos Electricty Distribution Company Prepaid',
+                'shortname' => 'JEDC-Prepaid',
+            ],
+            [
+                'name' => 'Kaduna Electricty Distribution Company Prepaid',
+                'shortname' => 'KEDC-Prepaid',
+            ],
+            [
+                'name' => 'LCC',
+                'shortname' => 'LCC',
+            ],
+            [
+                'name' => 'LASHMA',
+                'shortname' => 'LASHMA',
+            ],
+            [
+                'name' => 'MTN',
+                'shortname' => 'MTN',
+            ],
+            [
+                'name' => 'Sultan Muhammadu Maccido Institute for Qur\'an and General Studies',
+                'shortname' => 'SMMCIS',
+            ],
+            [
+                'name'  => 'Nigeria Immigration Service',
+                'shortname' => 'NIS',
+            ],
+            [
+                'name' => 'Portharcourt Electricty Distribution Company Postpaid',
+                'shortname' => 'PEDC-Postpaid',
+            ],
+            [
+                'name' => 'Portharcourt Electricty Distribution Company Prepaid',
+                'shortname' => 'PEDC-Prepaid',
+            ],
+            [
+                'name' => 'RoyalExchange Insurance',
+                'shortname' => 'RoyalExchangeInsurance',
+            ],
+            [
+                'name' => 'Sultan Abdulrahaman College of Health Technology',
+                'shortname' => 'SACHT',
+            ],
+            [
+                'name' => 'Shehu Shagari College of Education',
+                'shortname' => 'SSCE',
+            ],
+            [
+                'name' => 'Smile Bundle',
+                'shortname' => 'SmileBundle',
+            ],
+            [
+                'name' => 'Sokoto College of Nursing Science',
+                'shortname' => 'SNCS',
+            ],
+            [
+                'name' => 'Sokoto E-tax',
+                'shortname' => 'SET',
+            ],
+            [
+                'name' => 'Sokoto State University',
+                'shortname' => 'SSU',
+            ],
+            [
+                'name' => 'Spectranet',
+                'shortname' => 'Spectranet',
+            ],
+            [
+                'name' => 'STARTIMES',
+                'shortname' => 'STARTIMES',
+            ],
+            [
+                'name' => 'Swift',
+                'shortname' => 'Swift',
+            ],
+            [
+                'name' => 'Umaru Shinkafi College of Education',
+                'shortname' => 'USCE',
+            ],
+            [
+                'name' => 'Veritas Pension Fund Administrator',
+                'shortname' => 'VPFA',
+            ],
+            [
+                'name' => 'Waec PIN Service',
+                'shortname' => 'WPS',
+            ],
+            [
+                'name' => 'Waec Token Service',
+                'shortname' => 'WTS',
+            ],
+            [
+                'name' => 'Wakanow',
+                'shortname' => 'Wakanow',
+            ],
+            [
+                'name' => 'Zamtel',
+                'shortname' => 'Zamtel',
+            ],
+
+        ];
+        foreach ($products as $product) {
+            Product::factory()->make([
+                'name' => $product['name'],
+                'shortname' => $product['shortname'],
+            ])->save();
         }
         $business_categories = BusinessCategory::take(2)->get();
         foreach ($business_categories as $business_category) {
