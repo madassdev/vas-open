@@ -9,4 +9,9 @@ class BusinessUser extends Pivot
 {
     //
     use HasRoles;
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

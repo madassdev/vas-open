@@ -4,11 +4,10 @@ namespace App\Http\Middleware;
 
 use App\Helpers\DBSwap;
 use App\Models\Business;
-use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 
-class ApiKeyMiddleware
+class DownloadRouteMiddleware
 {
     /**
      * Handle an incoming request.
@@ -19,16 +18,21 @@ class ApiKeyMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // Find business by apiKey in headers
-        DBSwap::setConnection('mysqltest');
+        $auth_context = config('app.auth_context');
         $apiKey = $request->api_key;
         // $apiKey = $request->bearerToken();
-        $business = Business::whereTestApiKey($apiKey)->first();
+        if ($auth_context === "live") {
+            $business = Business::whereLiveApiKey($apiKey)->first();
+        }
+        if ($auth_context === "test") {
+            DBSwap::setConnection('mysqltest');
+            $business = Business::whereTestApiKey($apiKey)->first();
+        }
         if (!$business) {
 
             response()->json([
                 "success" => false,
-                "message" => "Unauthenticated. Please provide test_api_key"
+                "message" => "Unauthenticated. Please provide $auth_context api key"
             ], 401)->throwResponse();
         }
 

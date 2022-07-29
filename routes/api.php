@@ -80,10 +80,13 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
 
     Route::group(['prefix' => 'transactions'], function () {
         Route::get('/', [TransactionController::class, 'index']);
+        Route::get('/search', [TransactionController::class, 'show']);
+        Route::get('/{transaction_id}/details', [TransactionController::class, 'show']);
     });
     Route::group(['prefix' => 'business'], function () {
         Route::get('/stats', [BusinessController::class, 'getBalance']);
         Route::get('/products', [BusinessController::class, 'getProducts']);
+        Route::get('/products-configuration', [ProductController::class, 'getProductsConfiguration']);
         Route::group(["middleware" => "noTestRoute"], function () {
             Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
             Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness']);
@@ -134,3 +137,4 @@ Route::group(["middleware" => "noTestRoute"], function () {
 
 Route::get('business-categories', [BusinessCategoryController::class, 'list']);
 Route::get('product-categories', [ProductController::class, 'listCategories']);
+Route::get('/transactions/download', [TransactionController::class, 'download'])->middleware('downloadRoute');

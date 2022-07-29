@@ -27,7 +27,7 @@ class BusinessController extends Controller
         }
         $business->current_env = $request->env;
         $business->save();
-        return $this->sendSuccess("Bussiness Env switched to live");
+        return $this->sendSuccess("Bussiness environment switched to " . $request->env);
     }
 
     public function switchActiveBusiness(Request $request)
@@ -38,7 +38,7 @@ class BusinessController extends Controller
         $user = auth()->user();
         $switch = $user->switchActiveBusiness($request->business_id);
 
-        $user->load('businesses', 'business');
+        $user->load('businesses', 'business.businessBank');
 
         return $this->sendSuccess("User Active Business switched successfully", [
             "user" => $user
@@ -228,13 +228,39 @@ class BusinessController extends Controller
         ]);
     }
 
-    public function getProducts()
+    public function getProducts(Request $request)
     {
         $business = auth()->user()->business;
-        $products = $business->products;
+        $query = $business->products();
+        if ($request->product_name) {
+            $query = $query->whereName($request->product_name);
+        }
+        if ($request->product_shortname) {
+            $query = $query->whereName($request->product_shortname);
+        }
+
+        if ($request->biller_name) {
+            $biller_name = $request->biller_name;
+            $query = $query->whereHas('biller', function ($q) use ($biller_name) {
+                $q->where('name', '=', $biller_name);
+            });
+        }
+
+        if ($request->category_name) {
+            $category_name = $request->category_name;
+            $query = $query->whereHas('productCategory', function ($q) use ($category_name) {
+                $q->where('name', '=', $category_name);
+            });
+        }
+
+        if ($request->category_id) {
+            $category_id = $request->category_id;
+            $query = $query->whereHas('productCategory', function ($q) use ($category_id) {
+                $q->where('id', '=', $category_id);
+            });
+        }
+        $products = $query->with('productCategory', 'biller')->get();
         return $this->sendSuccess("Business Products fetched successfully", ["products" => $products]);
-        return $products;
-        return $business;
     }
     public function getBalance()
     {
@@ -270,7 +296,8 @@ class BusinessController extends Controller
 
         $stats = $env == "live" ? $live_stats : $test_stats;
 
-        return $this->sendSuccess("Stats fetched successfully!", ["stats" => $stats]);;
+        $recent_transactions = Transaction::with('product.productCategory', 'product.biller')->latest()->take(5)->get();
+        return $this->sendSuccess("Stats fetched successfully!", ["stats" => $stats, "recent_transactions" => $recent_transactions]);;
     }
 
     // 1. Percentage of failed, pending and successful transaction 

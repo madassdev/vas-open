@@ -32,4 +32,13 @@ class Transaction extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    
+    const exportColumns = [
+        'id',
+        'business_id',
+        'business_name',
+        'product_id',
+        'product_name',
+        'product_category_name',
+    ];
 }

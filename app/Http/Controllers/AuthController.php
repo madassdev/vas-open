@@ -161,8 +161,7 @@ class AuthController extends Controller
         // $token =  "pp";
         $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
         $message = $user->password_changed ? "Login Successful" : "Login successful. | WARNING: Please update your password to continue.";
-
-
+        $user->active_business_role = $user->businessUser->role;
         $data = [
             "user" => $user,
             // "balance" => $balance,
@@ -304,6 +303,7 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $user->load('business.businessBank', 'businesses', 'roles', 'businessUser');
+        $user->active_business_role = $user->businessUser->role;
         return $this->sendSuccess('User details fethched successfully', [
             "user" => $user
         ]);

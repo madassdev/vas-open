@@ -18,10 +18,10 @@ return new class extends Migration
             //
         });
         Business::all()->map(function ($business) {
-            $business->test_api_key = "ak_test_" . md5(str()->uuid());
-            $business->live_api_key = "ak_live_" . md5(str()->uuid());
-            $business->test_secret_key = "sk_test_" . md5(str()->uuid());
-            $business->live_secret_key = "sk_live_" . md5(str()->uuid());
+            $business->test_api_key = strtoupper("ak_test_" . md5(str()->uuid()));
+            $business->live_api_key = strtoupper("ak_live_" . md5(str()->uuid()));
+            $business->test_secret_key = strtoupper("sk_test_" . md5(str()->uuid()));
+            $business->live_secret_key = strtoupper("sk_live_" . md5(str()->uuid()));
             $business->save();
         });
     }
