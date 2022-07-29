@@ -6,7 +6,7 @@ use App\Mail\GenericMail;
 use App\Models\Business;
 use App\Models\BusinessUser;
 use App\Models\Invitee;
-use App\Models\Role as ModelsRole;
+use App\Models\Role;
 use App\Models\User;
 use App\Rules\StandardPassword;
 use App\Services\MailApiService;
@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rules\Password;
-use Spatie\Permission\Models\Role;
 
 class InviteeController extends Controller
 {
@@ -79,6 +78,7 @@ class InviteeController extends Controller
             ) {
                 return;
             }
+            $role = Role::find($invitation["role_id"]);
             $invitee = Invitee::updateOrCreate([
                 "business_id" => $business->id,
                 "email" => $invitation["email"]
@@ -91,7 +91,7 @@ class InviteeController extends Controller
                 "status" => 0,
             ]);
 
-            $mailing = $this->notifyInvitee($invitee, $business, $user, $window_location);
+            $mailing = $this->notifyInvitee($invitee, $business, $user, $role, $window_location);
 
             return $invitee;
         });
@@ -298,12 +298,13 @@ class InviteeController extends Controller
         return $this->sendSuccess("Invitation successfully accepted and processed. You can now log into your dashboard");
     }
 
-    public function notifyInvitee($invitee, $business, $inviter, $url = null)
+    public function notifyInvitee($invitee, $business, $inviter, $role, $url = null)
     {
         $mailContent = new GenericMail('email.invitee-notification', [
             "invitee" => $invitee,
             "business" => $business,
             "inviter" => $inviter,
+            "role" => $role,
             "url" => $url,
         ], 'payload', 'Invitation mail');
         // if (!env("LOCAL_MAIL_SERVER")) {
