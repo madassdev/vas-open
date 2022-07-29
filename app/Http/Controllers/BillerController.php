@@ -12,7 +12,7 @@ class BillerController extends Controller
     {
         $billers = Biller::all();
 
-        return $this->sendSuccess("Bilelrs fetched successfully", [
+        return $this->sendSuccess("Billers fetched successfully", [
             "billers" => $billers
         ]);
     }
