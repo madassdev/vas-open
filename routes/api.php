@@ -3,6 +3,7 @@
 use App\Helpers\DBSwap;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BillerController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
@@ -136,5 +137,6 @@ Route::group(["middleware" => "noTestRoute"], function () {
 
 
 Route::get('business-categories', [BusinessCategoryController::class, 'list']);
+Route::get('billers', [BillerController::class, 'index']);
 Route::get('product-categories', [ProductController::class, 'listCategories']);
 Route::get('/transactions/download', [TransactionController::class, 'download'])->middleware('downloadRoute');

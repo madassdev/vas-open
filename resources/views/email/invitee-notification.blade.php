@@ -1,8 +1,9 @@
 @extends('email.layout')
 @section('content')
 <h3>
+    Hello, {{$payload["user"]->firstname}}
     You have been invited by {{$payload["inviter"]->email}} to collaborate on
-    {{$payload["business"]->name}}
+    {{$payload["business"]->name}} as "{{$payload["role"]->title}}" role
     <h3>
         <p style="padding-top: 20px; font-size:12px">Click on the link below to accept invitation.</p>
         <p>
@@ -13,5 +14,5 @@
                 background:#ff8000;
                 color:white;" target="_blank" rel="noopener">Accept Invite</a>
         </p>
-        <p style="padding-top: 20px; font-size:12px">You can now work together on this business.</p>
+        <!-- <p style="padding-top: 20px; font-size:12px">You can now work together on this business.</p> -->
         @endsection
