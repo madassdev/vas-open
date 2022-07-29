@@ -146,7 +146,7 @@ class AuthController extends Controller
         auth()->attempt($request->only(['email', 'password']));
         $user = auth()->user();
         if (!$user) {
-            return $this->sendError("Unauthenticated!", [], 401);
+            return $this->sendError("Invalid email or password", [], 401);
         }
 
         $user->load('businesses', 'business.businessBank', 'businessUser');
