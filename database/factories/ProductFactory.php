@@ -80,11 +80,11 @@ class ProductFactory extends Factory
                 [
                     'type' => $this->faker->randomElement(['fixed', 'percentage']),
                     'has_range' => $has_range,
-                    'range' => $has_range ? [
-                        'min' => $this->faker->randomFloat(2, 0, 100),
-                        'max' => $this->faker->randomFloat(2, 0, 100),
-                        'value' => $this->faker->randomFloat(2, 0, 100),
-                    ] : null,
+                    'range' => $has_range ? [[
+                        'min' => $this->faker->randomFloat(2, 0, 30),
+                        'max' => $this->faker->randomFloat(2, 30, 100),
+                        'value' => $this->faker->randomFloat(2, 0, 10),
+                    ]] : null,
                     'cap' => $this->faker->randomFloat(2, 0, 100),
                     'value' => $this->faker->randomFloat(2, 0, 100),
                 ]
