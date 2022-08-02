@@ -43,4 +43,42 @@ class BalanceService
             throw new ApiCallException($e->getMessage, 400);
         }
     }
+
+    public function validateAccount($account_number, $bank_code)
+    {
+        $account = "1020000589";
+        $hash = config('api.balanceTestApi.hash');
+        $url = config('api.bankAccountVerification.url');
+        $payload = ["Account" => $account_number, "BankCode" => $bank_code];
+        try {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'hash' => $hash,
+            ])->post($url, $payload)->json();
+
+            return $response;
+        } catch (Exception $e) {
+            throw new ApiCallException($e->getMessage, 400);
+        }
+    }
+
+    public function validateOtp($account_number, $otp, $reference_id)
+    {
+        $account = "1020000589";
+        $hash = config('api.balanceTestApi.hash');
+        $url = config('api.bankOtpVerification.url');
+        $payload = ["Account" => $account_number, "Otp" => $otp, "ReferenceId" => $reference_id];
+        try {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'hash' => $hash,
+            ])->post($url, $payload)->json();
+
+            return $response;
+        } catch (Exception $e) {
+            throw new ApiCallException($e->getMessage, 400);
+        }
+    }
 }

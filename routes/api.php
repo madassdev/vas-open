@@ -3,12 +3,14 @@
 use App\Helpers\DBSwap;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\BillerController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
 use App\Http\Controllers\InviteeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TransactionController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -93,7 +95,10 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
             Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness']);
             Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
             Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
-
+            
+            // Banks
+            Route::post('/banks/validate-account', [BankController::class, 'validateAccount']);
+            Route::post('/banks/validate-otp', [BankController::class, 'validateOtp']);
             // Invitations
             Route::post('/invitees', [InviteeController::class, 'sendInvites']);
             Route::post('/invitees/resend-invite', [InviteeController::class, 'resendInvite']);
@@ -129,6 +134,13 @@ Route::group(["middleware" => "noTestRoute"], function () {
     Route::post("/invitations/view-details", [InviteeController::class, 'viewInviteDetails']);
 });
 
+// SUPER ADMIN ROUTES
+Route::group(["middleware" => ["noTestRoute", $authMiddleware, "role:owner_super_admin"]], function () {
+    Route::group(['prefix' => 'super'], function () {
+        Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport']);
+    });
+});
+
 // Route::group(['prefix' => 'seed'], function () {
 //     // Route::post('/business', [BusinessController::class, 'seed']);
 // });
@@ -138,5 +150,6 @@ Route::group(["middleware" => "noTestRoute"], function () {
 
 Route::get('business-categories', [BusinessCategoryController::class, 'list']);
 Route::get('billers', [BillerController::class, 'index']);
+Route::get('banks', [BankController::class, 'getBanks']);
 Route::get('product-categories', [ProductController::class, 'listCategories']);
 Route::get('/transactions/download', [TransactionController::class, 'download'])->middleware('downloadRoute');
