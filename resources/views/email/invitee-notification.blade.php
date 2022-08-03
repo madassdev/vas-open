@@ -1,7 +1,7 @@
 @extends('email.layout')
 @section('content')
 <h3>
-    Hello, {{$payload["user"]->firstname}}
+    Hello, {{$payload["invitee"]->email}}
     You have been invited by {{$payload["inviter"]->email}} to collaborate on
     {{$payload["business"]->name}} as "{{$payload["role"]->title}}" role
     <h3>
