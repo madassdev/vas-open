@@ -39,15 +39,15 @@ class TransactionController extends Controller
         }
 
         if ($request->transaction_reference) {
-            $query = $query->where('transaction_reference', '=', $request->transaction_status);
+            $query = $query->where('transaction_reference', '=', $request->transaction_reference);
         }
 
         if ($request->business_reference) {
-            $query = $query->where('business_reference', '=', $request->transaction_status);
+            $query = $query->where('business_reference', '=', $request->business_reference);
         }
 
         if ($request->provider_reference) {
-            $query = $query->where('provider_reference', '=', $request->transaction_status);
+            $query = $query->where('provider_reference', '=', $request->provider_reference);
         }
 
         if ($request->account_number) {
