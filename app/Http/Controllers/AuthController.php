@@ -234,7 +234,7 @@ class AuthController extends Controller
         $user->save();
 
         $mailContent = new GenericMail('email.password-reset-token', $user, 'user');
-        return $mailContent;
+        // return $mailContent
         $mail = new MailApiService($user->email, "[Vas Reseller] Reset your password", $mailContent->render());
 
         try {
