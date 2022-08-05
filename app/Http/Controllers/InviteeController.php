@@ -184,6 +184,9 @@ class InviteeController extends Controller
 
         // Update Business User record if invitee exists as a user
         $inviteeUser = User::whereEmail($invitee->email)->first();
+        if ($request->activity === "disable") {
+            $invitee->status = 2;
+        }
         if ($inviteeUser) {
             $inviteeBusinessUser = BusinessUser::whereUserId($inviteeUser->id)
                 ->whereBusinessId($business->id)->first();
@@ -195,6 +198,7 @@ class InviteeController extends Controller
                 $inviteeBusinessUser->enabled = false;
                 $invitee->status = 2;
             }
+
             $inviteeBusinessUser->save();
             $invitee->save();
         }
@@ -226,7 +230,7 @@ class InviteeController extends Controller
             return $this->sendError('This invitation has already been accepted and processed', [], 400);
         }
 
-        // $business = $invitee->business;
+        $business = $invitee->business;
 
         // Check if user exists
         $user = User::whereEmail($invitee->email)->first();
@@ -235,6 +239,7 @@ class InviteeController extends Controller
 
         return $this->sendSuccess("Invitee details fetched successfully", [
             "invitee" => $invitee,
+            "business" => $business,
             "user" => $user,
             "role" => $role,
             "user_exists" => $userExists,

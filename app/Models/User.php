@@ -82,6 +82,9 @@ class User extends Authenticatable
             response()->json(["status" => false, "message" => "Business not found for this user", "data" => []], 403)->throwResponse();
         }
 
+        if (!$businessUser->enabled) {
+            response()->json(["status" => false, "message" => "This user is not enabled on this business, and cannot switch to this business", "data" => []], 403)->throwResponse();
+        }
         // Deactivate all existing records 
         BusinessUser::whereUserId($this->id)->update(['is_active' => false]);
         
