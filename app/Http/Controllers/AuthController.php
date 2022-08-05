@@ -55,7 +55,6 @@ class AuthController extends Controller
             "business_category_id" => $request->business_category_id,
         ]);
 
-        $business->createDummyAccount();
         $business->createWallet();
         $business->test_api_key = strtoupper("pk_test_" . str()->uuid());
         $business->live_api_key = strtoupper("pk_live_" . str()->uuid());
@@ -98,7 +97,6 @@ class AuthController extends Controller
             "live_enabled" => true,
             "business_category_id" => $request->business_category_id,
         ]);
-        $test_business->createDummyAccount();
         $test_business->createWallet();
         // Create User
         $test_user = User::updateOrCreate([
@@ -146,7 +144,7 @@ class AuthController extends Controller
         auth()->attempt($request->only(['email', 'password']));
         $user = auth()->user();
         if (!$user) {
-            return $this->sendError("Unauthenticated!", [], 401);
+            return $this->sendError("Invalid email or password", [], 401);
         }
 
         $user->load('businesses', 'business.businessBank', 'businessUser');

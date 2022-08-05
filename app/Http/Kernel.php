@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'noTestRoute' => NoTestEndpoints::class,
         'apiKey' => ApiKeyMiddleware::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'downloadRoute' => DownloadRouteMiddleware::class,
         'hasChangedPassword' => PasswordUpdated::class,
     ];
