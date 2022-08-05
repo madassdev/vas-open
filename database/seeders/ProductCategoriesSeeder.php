@@ -15,7 +15,7 @@ class ProductCategoriesSeeder extends Seeder
      */
     public function run()
     {
-        $productCategories = collect([
+        $productCategories = [
             "Telco Top Up Services",
             "Databundle Services",
             "Electricity Services",
@@ -26,15 +26,21 @@ class ProductCategoriesSeeder extends Seeder
             "Validation Services",
             "Education Services",
             "Internet Services",
-        ]);
+        ];
 
-        $productCategories->map(function ($category) {
-            ProductCategory::updateOrcreate([
-                "name" => $category
-            ], [
-                "name" => $category
+        // $productCategories->map(function ($category) {
+        //     ProductCategory::updateOrcreate([
+        //         "name" => $category
+        //     ], [
+        //         "name" => $category
+        //     ]);
+        // });
+        foreach ($productCategories as $index=>$category) {
+            ProductCategory::create([
+                "name" => $category,
+                "id" => $index+1
             ]);
-        });
+        }
         //
     }
 }
