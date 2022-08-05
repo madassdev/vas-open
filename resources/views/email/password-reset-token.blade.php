@@ -1,5 +1,8 @@
 @extends('email.layout')
 @section('content')
+<p>
+    Hello, <b>{{$user->email}}</b>
+</p>
 <h3>
     You requested for a password reset token.
     <h3>

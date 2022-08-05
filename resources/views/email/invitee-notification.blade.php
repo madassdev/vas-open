@@ -1,10 +1,10 @@
 @extends('email.layout')
 @section('content')
-<h3>
-    Hello, {{$payload["invitee"]->email}}
+<p>Hello, {{$payload["invitee"]->email}}</p>
+<p>
     You have been invited by {{$payload["inviter"]->email}} to collaborate on
     {{$payload["business"]->name}}
-    <h3>
+    <p>
         <p style="padding-top: 20px; font-size:12px">Click on the link below to accept invitation.</p>
         <p>
             <a href="{{ makeInviteLink($payload['invitee'], $payload['url']) }}" style="display:inline-flex; 

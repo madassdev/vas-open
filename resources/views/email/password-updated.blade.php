@@ -1,9 +1,9 @@
 @extends('email.layout')
 @section('content')
-<h3>
-YOUR EXISTING PASSWORD HAS BEEN UPDATED, SECURE YOUR ACCOUNT...
-</h3>
 <p>
-    Email: <b>{{$user->email}}</b>
+    Hello, <b>{{$user->email}}</b>
 </p>
+<h3>
+    Your password has been updated successfully
+</h3>
 @endsection

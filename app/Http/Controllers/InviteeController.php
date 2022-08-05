@@ -111,18 +111,17 @@ class InviteeController extends Controller
         $this->checkAuthorization($user, $business);
         $window_location = $request->window_location;
 
-         // Make sure invitee exists and can be updated
-         $invitee = Invitee::whereId($request->invitee_id)->whereBusinessId($business->id)->first();
-         if (!$invitee) {
-             return $this->sendError('Invitee not found for this business', [], 404);
-         }
+        // Make sure invitee exists and can be updated
+        $invitee = Invitee::whereId($request->invitee_id)->whereBusinessId($business->id)->first();
+        if (!$invitee) {
+            return $this->sendError('Invitee not found for this business', [], 404);
+        }
 
-         if($invitee->status != 0)
-         {
+        if ($invitee->status != 0) {
             return $this->sendError("This invitation has already been accepted.", [], 403);
-         }
+        }
 
-         $mailing = $this->notifyInvitee($invitee, $business, $user, $window_location);
+        $mailing = $this->notifyInvitee($invitee, $business, $user, $window_location);
     }
 
     public function updateRole(Request $request)
@@ -227,7 +226,7 @@ class InviteeController extends Controller
             return $this->sendError('This invitation has already been accepted and processed', [], 400);
         }
 
-        $business = $invitee->business;
+        // $business = $invitee->business;
 
         // Check if user exists
         $user = User::whereEmail($invitee->email)->first();
@@ -237,7 +236,8 @@ class InviteeController extends Controller
         return $this->sendSuccess("Invitee details fetched successfully", [
             "invitee" => $invitee,
             "user" => $user,
-            "role" => $role
+            "role" => $role,
+            "user_exists" => $userExists,
         ]);
     }
 
