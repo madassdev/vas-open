@@ -68,9 +68,12 @@ class BusinessDocumentController extends Controller
         if (!$documents) {
             $documents = $user->business->businessDocument()->create([])->refresh();
         }
+
+        
         return $this->sendSuccess("User Business Documents fetched successfully.", [
             "business_documents" => $documents,
-            "document_status" => $user->business->document_verified
+            "document_status" => $user->business->document_verified,
+            "documents_count" => $documents->documents_count,
         ]);
     }
 }

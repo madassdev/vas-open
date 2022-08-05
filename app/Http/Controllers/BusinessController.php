@@ -295,11 +295,11 @@ class BusinessController extends Controller
         ];
 
         $stats = $env == "live" ? $live_stats : $test_stats;
+        $recent_transactions = Transaction::with('product.productCategory', 'product.biller')->whereBusinessId($business->id)->latest()->take(5)->get();
         if(auth()->user()->email != "oluwaseunoffice@gmail.com"){
             $stats = $live_stats;
         }
 
-        $recent_transactions = Transaction::with('product.productCategory', 'product.biller')->latest()->take(5)->get();
         return $this->sendSuccess("Stats fetched successfully!", ["stats" => $stats, "recent_transactions" => $recent_transactions]);;
     }
 
