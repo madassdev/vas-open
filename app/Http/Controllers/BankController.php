@@ -74,7 +74,7 @@ class BankController extends Controller
     
             if (!$res['success']) {
                 return $this->sendError("OTP verification failed from provider", [
-                    $res['data']
+                    $res
                 ], 400);
             }
         }

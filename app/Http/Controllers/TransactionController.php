@@ -57,7 +57,7 @@ class TransactionController extends Controller
         if ($request->start_date && $request->end_date) {
             $start_date = $request->start_date;
             $end_date = $request->end_date;
-            $query = $query->whereBetween('created_at', [$start_date, $end_date]);
+            $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
 
         $transactions = $query->with('product.productCategory', 'product.biller')->paginate($per_page)->appends(request()->query());
@@ -153,15 +153,15 @@ class TransactionController extends Controller
         }
 
         if ($request->transaction_reference) {
-            $query = $query->where('transaction_reference', '=', $request->transaction_status);
+            $query = $query->where('transaction_reference', '=', $request->transaction_reference);
         }
 
         if ($request->business_reference) {
-            $query = $query->where('business_reference', '=', $request->transaction_status);
+            $query = $query->where('business_reference', '=', $request->business_reference);
         }
 
         if ($request->provider_reference) {
-            $query = $query->where('provider_reference', '=', $request->transaction_status);
+            $query = $query->where('provider_reference', '=', $request->provider_reference);
         }
 
         if ($request->account_number) {
@@ -171,7 +171,7 @@ class TransactionController extends Controller
         if ($request->start_date && $request->end_date) {
             $start_date = $request->start_date;
             $end_date = $request->end_date;
-            $query = $query->whereBetween('created_at', [$start_date, $end_date]);
+            $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
 
         $transactions = $query->take(5)->with('business','product.productCategory', 'product.biller');
