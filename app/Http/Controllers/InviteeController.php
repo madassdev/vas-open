@@ -270,11 +270,11 @@ class InviteeController extends Controller
         }
 
         $business = $invitee->business;
-
+        $activeBusiness = false;
         // Check if user exists
         $user = User::whereEmail($request->email)->first();
-        $activeBusiness = !$user;
         if (!$user) {
+            $activeBusiness = true;
             $request->validate([
                 "first_name" => "required|string|max:50",
                 "last_name" => "required|string|max:50",
