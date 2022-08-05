@@ -38,7 +38,7 @@ class BankController extends Controller
         $service = new BalanceService($user);
         $res = $service->validateAccount($request->account_number, $request->bank_code);
         if (!$res['success']) {
-            return $this->sendError("OTP request failed from provider", [], 400);
+            return $this->sendError("OTP request failed from provider", [$res], 400);
         }
 
         $business->bank_reference_id = $res['data']['referenceId'];
@@ -67,11 +67,11 @@ class BankController extends Controller
             return $this->sendError("Bank is currently not enabled", [], 403);
         }
 
-        if($request->otp != "1111"){
+        if ($request->otp != "1111") {
 
             $service = new BalanceService($user);
             $res = $service->validateOtp($request->account_number, $request->otp, $request->reference_id);
-    
+
             if (!$res['success']) {
                 return $this->sendError("OTP verification failed from provider", [
                     $res
