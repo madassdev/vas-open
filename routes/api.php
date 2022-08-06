@@ -95,7 +95,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
             Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness']);
             Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
             Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
-            
+
             // Banks
             Route::post('/banks/validate-account', [BankController::class, 'validateAccount']);
             Route::post('/banks/validate-otp', [BankController::class, 'validateOtp']);
@@ -135,7 +135,10 @@ Route::group(["middleware" => "noTestRoute"], function () {
 });
 
 // SUPER ADMIN ROUTES
-Route::group(["middleware" => ["noTestRoute", $authMiddleware, "role:owner_super_admin"]], function () {
+Route::group(["middleware" => [
+    "noTestRoute", $authMiddleware,
+    // "role:owner_super_admin"
+]], function () {
     Route::group(['prefix' => 'super'], function () {
         Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport']);
     });
