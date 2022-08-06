@@ -32,13 +32,13 @@ class SuperAdminController extends Controller
                 "value" => $failed->sum('amount'),
                 "count" => $failed->count()
             ],
-            "businesses" => [
-                "count" => $businesses_count
-            ]
         ];
 
         return $this->sendSuccess("Transaction Report fetched successfully", [
-            "report" => $report
+            "transactions_report" => $report,
+            "businesses" => [
+                "count" => $businesses_count
+            ]
         ]);
     }
 
