@@ -232,7 +232,8 @@ class AuthController extends Controller
         $user = User::whereEmail($request->email)->firstOrFail();
         $user->verification_code = $token;
         $user->save();
-
+        $url = $request->window_location;
+        $user->url->$url;
         $mailContent = new GenericMail('email.password-reset-token', $user, 'user');
         // return $mailContent
         $mail = new MailApiService($user->email, "[Vas Reseller] Reset your password", $mailContent->render());
