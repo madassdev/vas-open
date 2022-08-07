@@ -23,6 +23,18 @@ function makeInviteLink($invitee, $url = null)
     return $url ? $url . $queryString : $backend_link . $queryString;
 }
 
+function makePasswordLink($token, $url)
+{
+    $token = encrypt($token);
+    $queryString = "?reset_token=$token&email";
+
+    // Prepare frontend url
+    $frontendDomain = env("APP_FRONTEND_DOMAIN", "http://localhost");
+    $path = "auth/passwwords/reset-password";
+    $backend_link = $frontendDomain . $path;
+    return $url ? $url . $queryString : $backend_link . $queryString;
+}
+
 function bankCodes()
 {
     return [

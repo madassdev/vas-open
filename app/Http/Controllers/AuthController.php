@@ -233,7 +233,7 @@ class AuthController extends Controller
         $user->verification_code = $token;
         $user->save();
         $url = $request->window_location;
-        $user->url->$url;
+        $user->url = $url;
         $mailContent = new GenericMail('email.password-reset-token', $user, 'user');
         // return $mailContent
         $mail = new MailApiService($user->email, "[Vas Reseller] Reset your password", $mailContent->render());
@@ -255,12 +255,16 @@ class AuthController extends Controller
     {
         $request->validate([
             "email" => "required|email|exists:users,email",
-            "token" => "required|exists:users,verification_code"
+            "token" => "required|string"
         ]);
-
+        try {
+            $token = decrypt($request->token);
+        } catch (Exception $e) {
+            return $this->sendError('Invalid token provided', [], 400);
+        }
         // Validate token against user
         $user = User::whereEmail($request->email)->firstOrFail();
-        if ($user->verification_code !== $request->token) {
+        if ($user->verification_code !== $token) {
             return $this->sendError("[Token mismatch] - The token supplied does not exist for this user!", [], 401);
         }
 
@@ -271,7 +275,7 @@ class AuthController extends Controller
     {
         $request->validate([
             "email" => "required|email|exists:users,email",
-            "token" => "required|exists:users,verification_code",
+            "token" => "required|string",
             "new_password" => [
                 "required", Password::min(8)
                     ->letters()
@@ -283,8 +287,13 @@ class AuthController extends Controller
         ]);
 
         // Validate token against user
+        try {
+            $token = decrypt($request->token);
+        } catch (Exception $e) {
+            return $this->sendError('Invalid token provided', [], 400);
+        }
         $user = User::whereEmail($request->email)->firstOrFail();
-        if ($user->verification_code !== $request->token) {
+        if ($user->verification_code !== $token) {
             return $this->sendError("[Token mismatch] - The token supplied does not exist for this user!", [], 401);
         }
 
