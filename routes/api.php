@@ -5,6 +5,7 @@ use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\BillerController;
+use App\Http\Controllers\BusinessAdminController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
@@ -141,7 +142,14 @@ Route::group(["middleware" => [
 ]], function () {
     Route::group(['prefix' => 'super'], function () {
         Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport']);
-        Route::get("/businesses", [SuperAdminController::class, 'getBusinesses']);
+        Route::get("/products-commissions", [SuperAdminController::class, 'getProductsCommissions']);
+        Route::get("/businesses", [BusinessAdminController::class, 'getBusinesses']);
+        Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails']);
+        Route::get("/businesses/{business_id}/documents", [BusinessAdminController::class, 'getBusinessDocuments']);
+        Route::post("/businesses/{business_id}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
+        Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers']);
+        Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts']);
+        Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
     });
 });
 

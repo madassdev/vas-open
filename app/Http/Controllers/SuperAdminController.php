@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Business;
+use App\Models\BusinessDocument;
+use App\Models\Product;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +19,7 @@ class SuperAdminController extends Controller
         $success = Transaction::whereDate('created_at', $tx_date)->whereTransactionStatus('success')->get();
         $failed = Transaction::whereDate('created_at', $tx_date)->whereTransactionStatus('failed')->get();
         $businesses_count = Business::count();
-       
+
         $report = [
             "tx_date" => $tx_date,
             "success" => [
@@ -50,12 +52,23 @@ class SuperAdminController extends Controller
         ]);
     }
 
-    public function getBusinesses(Request $request)
+
+    public function getProductsCommissions(Request $request)
     {
-        $per_page = $request->per_page ?? 10;
-        $businesses = Business::paginate($per_page)->appends(request()->query());
-        return $this->sendSuccess("Businesses fetched successful", [
-            "businesses" => $businesses
+        $per_page = $request->per_page ?? 20;
+        $products = Product::with('biller', 'productCategory',)
+            ->withSum(
+                ['transactions' => function ($query) {
+                    $query->where('transaction_status', "success");
+                }],
+                'owner_commission'
+            )
+            // ->whereId(2)->first()
+            ->paginate()->appends(request()->query())
+            ;
+
+        return $this->sendSuccess("Products commissions fetched successfully", [
+            "products" => $products
         ]);
     }
 }

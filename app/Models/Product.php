@@ -10,6 +10,10 @@ class Product extends Model
     use HasFactory;
     protected $guarded = [];
 
+    protected $casts = [
+        "fee_configuration" => "array"
+    ];
+
     public function businesses()
     {
         return $this->belongsToMany(Business::class, 'business_products');
