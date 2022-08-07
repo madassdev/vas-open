@@ -141,6 +141,7 @@ Route::group(["middleware" => [
 ]], function () {
     Route::group(['prefix' => 'super'], function () {
         Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport']);
+        Route::get("/businesses", [SuperAdminController::class, 'getBusinesses']);
     });
 });
 
