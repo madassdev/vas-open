@@ -31,7 +31,7 @@ class MailApiService
     public function send()
     {
         $payload = $this->build();
-        return Http::withHeaders([
+        return Http::timeout(10)->withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ])->post($this->url, $payload)->json();
