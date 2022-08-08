@@ -13,6 +13,9 @@ class Invitee extends Model
     protected $guarded = [];
     protected $hidden = ["code"];
     protected $appends = ["readable_status"];
+    public static $STATUS_PENDING = 0;
+    public static $STATUS_ENABLED = 1;
+    public static $STATUS_DISABLED = 2;
 
     public function business()
     {

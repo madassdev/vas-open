@@ -2,10 +2,13 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ActiveBusinessMiddleware;
 use App\Http\Middleware\ApiKeyMiddleware;
+use App\Http\Middleware\BusinessUserPermission;
 use App\Http\Middleware\DownloadRouteMiddleware;
 use App\Http\Middleware\NoTestEndpoints;
 use App\Http\Middleware\PasswordUpdated;
+use App\Http\Middleware\UserPermission;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,7 +73,11 @@ class Kernel extends HttpKernel
         'noTestRoute' => NoTestEndpoints::class,
         'apiKey' => ApiKeyMiddleware::class,
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'downloadRoute' => DownloadRouteMiddleware::class,
         'hasChangedPassword' => PasswordUpdated::class,
+        'activeBusiness' => ActiveBusinessMiddleware::class,
+        'businessUserPermission' => BusinessUserPermission::class,
+        'userPermission' => UserPermission::class,
     ];
 }

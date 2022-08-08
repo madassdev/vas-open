@@ -9,6 +9,7 @@ class BusinessUser extends Pivot
 {
     //
     use HasRoles;
+    protected $guard_name = 'web';
 
     public function role()
     {

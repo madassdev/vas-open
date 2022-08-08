@@ -11,6 +11,7 @@ use App\Mail\PasswordUpdatedMail;
 use App\Mail\UserCreatedPasswordMail;
 use App\Mail\UserWelcomeMail;
 use App\Models\Business;
+use App\Models\BusinessUser;
 use App\Models\Role as ModelsRole;
 use App\Models\User;
 use App\Rules\StandardPassword;
@@ -80,7 +81,9 @@ class AuthController extends Controller
         $user->businesses()->attach($business->id, ["is_active" => true, 'role_id' => $role->id]);
 
         // Assign role to user 
+        $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
         $user->assignRole('business_super_admin');
+        $businessUser->assignRole('business_super_admin');
 
         // Create user and business on test env
         DBSwap::setConnection('mysqltest');
@@ -117,7 +120,9 @@ class AuthController extends Controller
         $test_user->businesses()->attach($test_business->id, ["is_active" => true, "role_id" => $test_role->id]);
 
         // Assign role to user 
+        $testBusinessUser = BusinessUser::whereBusinessId($test_business->id)->whereUserId($test_user->id)->first();
         $test_user->assignRole('business_super_admin');
+        $testBusinessUser->assignRole('business_super_admin');
 
 
         DBSwap::setConnection('mysqllive');
