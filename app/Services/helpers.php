@@ -30,7 +30,7 @@ function makePasswordLink($token, $url)
 
     // Prepare frontend url
     $frontendDomain = env("APP_FRONTEND_DOMAIN", "http://localhost");
-    $path = "auth/passwwords/reset-password";
+    $path = "/auth/passwwords/reset-password";
     $backend_link = $frontendDomain . $path;
     return $url ? $url . $queryString : $backend_link . $queryString;
 }
