@@ -18,7 +18,7 @@ function makeInviteLink($invitee, $url = null)
 
     // Prepare frontend url
     $frontendDomain = env("APP_FRONTEND_DOMAIN", "http://localhost");
-    $path = "auth/accept-invite";
+    $path = "/auth/accept-invite";
     $backend_link = $frontendDomain . $path;
     return $url ? $url . $queryString : $backend_link . $queryString;
 }
@@ -30,7 +30,7 @@ function makePasswordLink($token, $url)
 
     // Prepare frontend url
     $frontendDomain = env("APP_FRONTEND_DOMAIN", "http://localhost");
-    $path = "/auth/passwwords/reset-password";
+    $path = "/auth/passwords/reset-password";
     $backend_link = $frontendDomain . $path;
     return $url ? $url . $queryString : $backend_link . $queryString;
 }
