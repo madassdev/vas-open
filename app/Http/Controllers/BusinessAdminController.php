@@ -40,7 +40,7 @@ class BusinessAdminController extends Controller
         return $this->sendSuccess("Business documents fetched successfully", [
             // "business" => $business,
             "business_document" => $business->businessDocument,
-            "document_status" => $business->document_verified,
+            "document_status" => $business->document_verified ?true:false,
         ]);
     }
 
