@@ -11,6 +11,8 @@ class BusinessProduct extends Model
 
     protected $guarded = [];
 
+    protected $table = 'business_products';
+
     public function businesses()
     {
         return $this->belongsToMany(Business::class);

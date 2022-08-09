@@ -48,6 +48,11 @@ class Business extends Model
         return $this->belongsToMany(Product::class, 'business_products')->withPivot('commission_value', 'enabled');
     }
 
+    public function product_with_pivot($product_id)
+    {
+        return $this->products()->where('id', $product_id)->first();
+    }
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
