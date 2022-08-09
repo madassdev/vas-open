@@ -21,6 +21,7 @@ class CreateBusinessProductsTable extends Migration
             $table->tinyInteger('enabled')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+            $table->unique(['business_id', 'product_id']);
         });
 
         Schema::table('business_products', function (Blueprint $table) {
