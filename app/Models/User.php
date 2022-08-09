@@ -87,7 +87,7 @@ class User extends Authenticatable
         }
         // Deactivate all existing records 
         BusinessUser::whereUserId($this->id)->update(['is_active' => false]);
-        
+
         // Activate this record
         $businessUser->is_active = true;
         $businessUser->save();
@@ -97,4 +97,5 @@ class User extends Authenticatable
         $this->save();
         return true;
     }
+
 }

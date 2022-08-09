@@ -12,6 +12,8 @@ class Role extends ModelsRole
     protected $appends = [
         "title"
     ];
+    protected $guard_name = 'web';
+
 
     public function getTitleAttribute()
     {

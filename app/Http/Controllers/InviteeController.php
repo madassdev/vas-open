@@ -158,6 +158,10 @@ class InviteeController extends Controller
                 ->whereBusinessId($business->id)->first();
             $inviteeBusinessUser->role_id = $request->role_id;
             $inviteeBusinessUser->save();
+
+            // Resync roles on Business User
+            $role = Role::find($request->role_id);
+            $inviteeBusinessUser->syncRoles([$role->name]);
         }
 
         return $this->sendSuccess("Invitee Role updated successfully", [
@@ -185,18 +189,18 @@ class InviteeController extends Controller
         // Update Business User record if invitee exists as a user
         $inviteeUser = User::whereEmail($invitee->email)->first();
         if ($request->activity === "disable") {
-            $invitee->status = 2;
+            $invitee->status = Invitee::$STATUS_DISABLED;
         }
         if ($inviteeUser) {
             $inviteeBusinessUser = BusinessUser::whereUserId($inviteeUser->id)
                 ->whereBusinessId($business->id)->first();
             if ($request->activity === "enable") {
                 $inviteeBusinessUser->enabled = true;
-                $invitee->status = 1;
+                $invitee->status = Invitee::$STATUS_ENABLED;
             }
             if ($request->activity === "disable") {
                 $inviteeBusinessUser->enabled = false;
-                $invitee->status = 2;
+                $invitee->status = Invitee::$STATUS_DISABLED;
             }
 
             $inviteeBusinessUser->save();
@@ -296,7 +300,10 @@ class InviteeController extends Controller
             ]);
         }
         $user->businesses()->attach($business->id, ["is_active" => $activeBusiness, "role_id" => $invitee->role_id]);
-        $invitee->status = 1;
+        $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
+        $role = Role::find($invitee->role_id);
+        $businessUser->syncRoles([$role->name]);
+        $invitee->status = Invitee::$STATUS_ENABLED;
         $invitee->save();
 
         // Notifications follow...

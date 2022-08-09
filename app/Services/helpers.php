@@ -60,3 +60,12 @@ function bankCodes()
         "057" =>    "Zenith Bank International",
     ];
 }
+
+function sr($message = "", $data = [], $code = 200)
+{
+    return response()->json([
+        'status' => false,
+        'message' => $message,
+        'data' => array_merge([], $data)
+    ], $code)->throwResponse();
+}

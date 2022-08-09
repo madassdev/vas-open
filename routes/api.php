@@ -91,38 +91,36 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
         Route::get('/stats', [BusinessController::class, 'getBalance']);
         Route::get('/products', [BusinessController::class, 'getProducts']);
         Route::get('/products-configuration', [ProductController::class, 'getProductsConfiguration']);
-        Route::group(["middleware" => "noTestRoute"], function () {
-            Route::post('/switch-env', [BusinessController::class, 'switchEnv']);
-            Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness']);
-            Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments']);
-            Route::get('/documents', [BusinessDocumentController::class, 'showDocuments']);
+        Route::group(["middleware" => ["noTestRoute", "activeBusiness"]], function () {
+            Route::post('/switch-env', [BusinessController::class, 'switchEnv'])->middleware('businessUserPermission:business_switch_environment');
+            Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness'])->middleware('businessUserPermission:business_switch_active_business');
+            Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments'])->middleware('businessUserPermission:business_upload_documents');
+            Route::get('/documents', [BusinessDocumentController::class, 'showDocuments'])->middleware('businessUserPermission:business_get_documents');
 
             // Banks
-            Route::post('/banks/validate-account', [BankController::class, 'validateAccount']);
-            Route::post('/banks/validate-otp', [BankController::class, 'validateOtp']);
+            Route::post('/banks/validate-account', [BankController::class, 'validateAccount'])->middleware('businessUserPermission:business_validate_bank_account');
+            Route::post('/banks/validate-otp', [BankController::class, 'validateOtp'])->middleware('businessUserPermission:busness_validate_bank_otp');
             // Invitations
-            Route::post('/invitees', [InviteeController::class, 'sendInvites']);
-            Route::post('/invitees/resend-invite', [InviteeController::class, 'resendInvite']);
-            Route::get('/invitees', [InviteeController::class, 'showInvitees']);
-            Route::post('/invitees/update-role', [InviteeController::class, 'updateRole']);
-            Route::post('/invitees/toggle-activity', [InviteeController::class, 'toggleActivity']);
+            Route::post('/invitees', [InviteeController::class, 'sendInvites'])->middleware('businessUserPermission:business_send_invitations');
+            Route::post('/invitees/resend-invite', [InviteeController::class, 'resendInvite'])->middleware('businessUserPermission:business_resend_invitations');
+            Route::get('/invitees', [InviteeController::class, 'showInvitees'])->middleware('businessUserPermission:business_get_invitations');
+            Route::post('/invitees/update-role', [InviteeController::class, 'updateRole'])->middleware('businessUserPermission:business_update_invitee_role');
+            Route::post('/invitees/toggle-activity', [InviteeController::class, 'toggleActivity'])->middleware('businessUserPermission:business_update_invitee_activity');
             // Whitelist IPs
-            Route::get('/whitelist-ips', [BusinessController::class, 'getWhitelistIps']);
-            Route::post('/whitelist-ips', [BusinessController::class, 'setWhitelistIps']);
+            Route::get('/whitelist-ips', [BusinessController::class, 'getWhitelistIps'])->middleware('businessUserPermission:business_get_whitelist_ips');
+            Route::post('/whitelist-ips', [BusinessController::class, 'setWhitelistIps'])->middleware('businessUserPermission:business_set_whitelist_ips');
 
 
-            Route::post('/user/toggle-notification', [BusinessController::class, 'toggleBusinessNotification']);
-            Route::post('/reset-keys', [BusinessController::class, 'resetKeys']);
-
-            // Low Balance Threshold
-            Route::get('/low-balance-threshold', [BusinessController::class, 'getLowBalanceThreshold']);
-            Route::post('/low-balance-threshold', [BusinessController::class, 'setLowBalanceThreshold']);
+            Route::post('/user/toggle-notification', [BusinessController::class, 'toggleBusinessNotification'])->middleware('businessUserPermission:business_toggle_notification');
+            Route::post('/reset-keys', [BusinessController::class, 'resetKeys'])->middleware('businessUserPermission:business_reset_keys');
 
             // Low Balance Threshold
-            Route::get('/webhook-url', [BusinessController::class, 'getWebhookUrl']);
-            Route::post('/webhook-url', [BusinessController::class, 'setWebhookUrl']);
+            Route::get('/low-balance-threshold', [BusinessController::class, 'getLowBalanceThreshold'])->middleware('businessUserPermission:business_get_low_balance_threshold');
+            Route::post('/low-balance-threshold', [BusinessController::class, 'setLowBalanceThreshold'])->middleware('businessUserPermission:business_set_low_balance_threshold');
 
-            // Webhook setup
+            // Webhook URL
+            Route::get('/webhook-url', [BusinessController::class, 'getWebhookUrl'])->middleware('businessUserPermission:business_set_webhook_url');
+            Route::post('/webhook-url', [BusinessController::class, 'setWebhookUrl'])->middleware('businessUserPermission:business_set_webhook_url');
 
             // Enable/Disable Users
 
@@ -141,15 +139,15 @@ Route::group(["middleware" => [
     // "role:owner_super_admin"
 ]], function () {
     Route::group(['prefix' => 'super'], function () {
-        Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport']);
-        Route::get("/products-commissions", [SuperAdminController::class, 'getProductsCommissions']);
-        Route::get("/businesses", [BusinessAdminController::class, 'getBusinesses']);
-        Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails']);
-        Route::get("/businesses/{business_id}/documents", [BusinessAdminController::class, 'getBusinessDocuments']);
-        Route::post("/businesses/{business_id}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
-        Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers']);
-        Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts']);
-        Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
+        Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport'])->middleware('userPermission:admin_get_stats');
+        Route::get("/products-commissions", [SuperAdminController::class, 'getProductsCommissions'])->middleware('userPermission:admin_get_products_commissions');
+        Route::get("/businesses", [BusinessAdminController::class, 'getBusinesses'])->middleware('userPermission:admin_get_businesses');
+        Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails'])->middleware('userPermission:admin_show_business');
+        Route::get("/businesses/{business_id}/documents", [BusinessAdminController::class, 'getBusinessDocuments'])->middleware('userPermission:admin_show_business_documents');
+        Route::post("/businesses/{business_id}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments'])->middleware('userPermission:admin_approve_business_documents');
+        Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers'])->middleware('userPermission:admin_get_business_users');
+        Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts'])->middleware('userPermission:admin_get_business_products');
+        // Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
     });
 });
 
