@@ -135,7 +135,7 @@ Route::group(["middleware" => "noTestRoute"], function () {
     Route::post("/invitations/view-details", [InviteeController::class, 'viewInviteDetails']);
 });
 
-// SUPER ADMIN ROUTES
+// SUPER ADMIN ROUTES, @madassdev pls remember to add the admin middleware to the routes
 Route::group(["middleware" => [
     "noTestRoute", $authMiddleware,
     // "role:owner_super_admin"
@@ -150,6 +150,31 @@ Route::group(["middleware" => [
         Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers']);
         Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts']);
         Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
+
+        /**  Product Configuration
+            - Add Product Configurations
+            - View Product Configurations
+            - Update Product Configurations
+            - Delete Product Configurations
+            - Commission configuration per product for individual business
+            - Product Limits
+         */
+        Route::group(['prefix' => 'products'], function () {
+            Route::get("/", [ProductController::class, 'getAllProducts']);
+            Route::post("/", [ProductController::class, 'addProduct']);
+            Route::get("/{product}", [ProductController::class, 'getOneProduct']);
+            Route::put("/{product}", [ProductController::class, 'updateProduct']);
+            Route::delete("/{product}", [ProductController::class, 'deleteProduct']);
+            // Per business
+            Route::get("/{product}/{business}", [ProductController::class, 'getProductConfigurationForBusiness']);
+            Route::put("/{product}/{business}", [ProductController::class, 'updateProductConfigurationForBusiness']);
+            Route::delete("/{product}/{business}", [ProductController::class, 'deleteProductForBusiness'])->where('product', '[0-9]+')->where('business', '[0-9]+');
+            Route::post("/{product}/{business}", [ProductController::class, 'addProductForBusiness'])->where('product', '[0-9]+')->where('business', '[0-9]+');
+            // add product to multiple businesses
+            Route::post("/{product}/businesses", [ProductController::class, 'addProductForBusinesses']);
+            // remove product from multiple businesses
+            Route::delete("/{product}/businesses", [ProductController::class, 'removeProductForBusinesses']);
+        });
     });
 });
 
