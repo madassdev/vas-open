@@ -36,7 +36,7 @@ class Product extends Model
 
     public function createConfigDto()
     {
-        $p = $this;
+        $p = $this; 
         $custom_commission = $p->pivot->commission_value;
         $p->category_name = $this->productCategory->name;
         $p->configurations = [
