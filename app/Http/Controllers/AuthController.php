@@ -158,7 +158,7 @@ class AuthController extends Controller
 
         // Fetch User Roles and Permissions
         $roles = $user->roles->pluck('name')->toArray();
-        $permissions = $user->permissions->pluck('name')->toArray();
+        $permissions = $user->getAllPermissions()->pluck('name')->toArray();
 
         // Create API Token for user
         // $token =  "pp";
@@ -317,9 +317,13 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $user->load('business.businessBank', 'businesses', 'roles', 'businessUser');
+        $roles = $user->roles->pluck('name')->toArray();
+        $permissions = $user->getAllPermissions()->pluck('name')->toArray();
         $user->active_business_role = $user->businessUser->role;
         return $this->sendSuccess('User details fethched successfully', [
-            "user" => $user
+            "user" => $user,
+            "user_roles" => $roles,
+            "user_permissions" => $permissions,
         ]);
     }
 
