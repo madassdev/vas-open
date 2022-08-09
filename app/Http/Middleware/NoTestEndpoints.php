@@ -17,7 +17,7 @@ class NoTestEndpoints
     public function handle(Request $request, Closure $next)
     {
         $request_root = $request->root();
-        $live_domain = env('LIVE_APP_DOMAIN');
+        $live_domain = env('LIVE_APP_DOMAIN', 'http://localhost:8000');
         if ($request_root !== $live_domain) {
             return response()->json([
                 "success" => false,
