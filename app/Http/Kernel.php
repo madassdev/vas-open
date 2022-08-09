@@ -6,7 +6,7 @@ use App\Http\Middleware\ActiveBusinessMiddleware;
 use App\Http\Middleware\ApiKeyMiddleware;
 use App\Http\Middleware\BusinessUserPermission;
 use App\Http\Middleware\DownloadRouteMiddleware;
-// use App\Http\Middleware\EnsureJSONResponse;
+use App\Http\Middleware\EnsureJsonResponse;
 use App\Http\Middleware\NoTestEndpoints;
 use App\Http\Middleware\PasswordUpdated;
 use App\Http\Middleware\UserPermission;
@@ -29,7 +29,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        // EnsureJSONResponse::class,
+        EnsureJsonResponse::class,
     ];
 
     /**
