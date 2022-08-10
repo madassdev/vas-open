@@ -165,7 +165,7 @@ class ProductController extends Controller
             'created_at',
             'updated_at',
         );
-        $configuration->commission_value = $business->commission_value;
+        $configuration['commission_value'] = $business->commission_value;
         return $this->sendSuccess("Product configuration fetched successfully", [
             "configuration" => $configuration,
         ]);
