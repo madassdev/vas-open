@@ -9,7 +9,7 @@ class MailApiService
     private $recipient;
     private $subject;
     private $content;
-    private $url = "http://196.46.20.97/comms/api/PayarenaVerification Service/email";
+    private $url = "http://196.46.20.56:8096/api/Payarena/email";
 
     public function __construct($recipient, $subject, $content)
     {
