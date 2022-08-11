@@ -18,22 +18,28 @@ class BusinessAdminController extends Controller
         ]);
     }
 
+    public function maskKey($key)
+    {
+        $total = strlen($key);
+        return substr($key,0,12)."*******".substr($key, $total-6,6);
+    }
+
     public function getBusinessDetails($business_id)
     {
-        $business = Business::find($business_id)->makeHidden([
-            'live_api_key',
-            'test_api_key',
-            'live_secret_key',
-            'test_secret_key'
-        ]);
+        $business = Business::find($business_id);
         if (!$business) {
             return $this->sendError("Business not found with that id", [], 404);
         }
 
+        $business->test_api_key = $this->maskKey($business->test_api_key);
+        $business->live_api_key = $this->maskKey($business->live_api_key);
+        $business->test_secret_key = $this->maskKey($business->test_secret_key);
+        $business->live_secret_key = $this->maskKey($business->live_secret_key);
         $business = new AdminBusinessDetails(
 
             $business->load('users', 'products', 'businessDocument', 'businessBank', 'invitees')
         );
+
         return $this->sendSuccess("Business details fetched successfully", [
             "business" => $business
         ]);
