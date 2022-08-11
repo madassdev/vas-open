@@ -120,8 +120,9 @@ class SuperAdminController extends Controller
 
     private function fetchTxByDate(string $date)
     {
+        // no need to worry about SQL injection as the date was validated and it was also gotten as an output from thr date function from carbon
         $result = Cache::remember("admin_tx_stats_" . $date, 100000, function () use ($date) {
-            $res = DB::select("
+            $res = DB::select(DB::raw("
             select 
             null as pending_tx_count,
             count(*) as successful_tx_count,
@@ -132,7 +133,7 @@ class SuperAdminController extends Controller
             null as total_businesses
             from transactions
             where transaction_status = 'successful'
-            and created_at >= '" . $date . " 00:00:00'
+            and created_at >= ':morning'
             and created_at <= '" . $date . " 23:59:59'
             
             
@@ -177,7 +178,7 @@ class SuperAdminController extends Controller
             from businesses
             where created_at >= '" . $date . " 00:00:00'
             and created_at <= '" . $date . " 23:59:59'       
-");
+"));
             return [
                 "success" => [
                     "value" => $res[0]->total_successful_amount,
