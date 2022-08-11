@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AdminBusinessDetails;
 use App\Models\Business;
 use Illuminate\Http\Request;
 
@@ -19,12 +20,20 @@ class BusinessAdminController extends Controller
 
     public function getBusinessDetails($business_id)
     {
-        $business = Business::find($business_id);
+        $business = Business::find($business_id)->makeHidden([
+            'live_api_key',
+            'test_api_key',
+            'live_secret_key',
+            'test_secret_key'
+        ]);
         if (!$business) {
             return $this->sendError("Business not found with that id", [], 404);
         }
 
-        $business->load('users', 'products');
+        $business = new AdminBusinessDetails(
+
+            $business->load('users', 'products', 'businessDocument', 'businessBank', 'invitees')
+        );
         return $this->sendSuccess("Business details fetched successfully", [
             "business" => $business
         ]);
@@ -40,7 +49,7 @@ class BusinessAdminController extends Controller
         return $this->sendSuccess("Business documents fetched successfully", [
             // "business" => $business,
             "business_document" => $business->businessDocument,
-            "document_status" => $business->document_verified ?true:false,
+            "document_status" => $business->document_verified ? true : false,
         ]);
     }
 
