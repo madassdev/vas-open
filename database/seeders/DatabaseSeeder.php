@@ -344,7 +344,7 @@ class DatabaseSeeder extends Seeder
             // foreach business create directors, documents and products
             $business->directors()->saveMany(BusinessDirector::factory()->count(2)->make());
             $business->documents()->saveMany(BusinessDocument::factory()->count(2)->make());
-            $business->products()->saveMany(BusinessProduct::factory()->count(2)->make());
+            $business->products()->saveMany(BusinessProduct::factory()->count(1)->make());
             $business->wallet()->save(Wallet::factory()->make());
             $business->users()->saveMany(User::factory()->count(1)->make());
             $business->invitees()->saveMany(Invitee::factory()->count(2)->make());

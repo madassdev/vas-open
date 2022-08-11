@@ -47,9 +47,9 @@ class CreateTransactionsTable extends Migration
             $table->text('narration')->nullable();
             
             // $table->tinyInteger('is_settled')->nullable();
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
-            $table->index('created_at','tx.created_at');
+            $table->timestamps();
+            $table->index('created_at');
+            $table->index('transaction_status');
             $table->unique(['business_id', 'business_reference']);
 
         });
