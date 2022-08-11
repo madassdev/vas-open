@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\TransactionExport;
+use App\Http\Requests\Transactions\FetchAdminTransactions;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -75,7 +76,7 @@ class TransactionController extends Controller
         $business = $user->business;
         $transaction = Transaction::whereId($transaction_id)->whereBusinessId($business->id)->first();
         if (!$transaction) {
-            return $this->sendError("Transaction not found for this business",[], 404);
+            return $this->sendError("Transaction not found for this business", [], 404);
         }
         $transaction->load('product.productCategory', 'product.biller');
         return $this->sendSuccess("Transaction details retrieved successfully", [
@@ -174,7 +175,7 @@ class TransactionController extends Controller
             $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
 
-        $transactions = $query->take(5)->with('business','product.productCategory', 'product.biller');
+        $transactions = $query->take(5)->with('business', 'product.productCategory', 'product.biller');
         $downloader = new TransactionExport($transactions);
         $date = date('d-m-Y');
 
@@ -186,5 +187,35 @@ class TransactionController extends Controller
         ]);
 
         // $business->createDemoTransaction(20);
+    }
+
+    public function getAllTransactions(FetchAdminTransactions $request)
+    {
+        $per_page = $request->per_page ?? 20;
+        // $business->createDemoTransaction(rand(30,80));
+        $query = Transaction::query();
+        // if ($request->category_id) {
+        //     $category_id = $request->product_category_id;
+        //     $query = $query->whereHas('product', function ($q) use ($category_id) {
+        //         $q->where('product_category_id', '=', $category_id);
+        //     });
+        // }
+        // if ($request->product_shortname) {
+        //     $shortname = $request->product_shortname;
+        //     $query = $query->whereHas('product', function ($q) use ($shortname) {
+        //         $q->where('shortname', '=', $shortname);
+        //     });
+        // }
+        // if ($request->product_id) {
+        //     $query = $query->where('product_id', '=', $request->product_id);
+        // }
+        // if ($request->transaction_status) {
+        //     $query = $query->where('transaction_status', '=', $request->transaction_status);
+        // }
+        return $this->sendSuccess("Transactions fetched successful", [
+            "transactions" => $query->with('business', 'product.productCategory', 'product.biller')
+            ->paginate($per_page, ['id', 'business_id', 'product_id', 'transaction_status', 'transaction_reference', 'business_reference', 'provider_reference', 'debit_reference', 'idempotency_hash', 'phone_number', 'account_number', 'created_at'])
+            ->appends(request()->query())
+        ]);
     }
 }

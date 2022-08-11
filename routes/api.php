@@ -175,6 +175,15 @@ Route::group(["middleware" => [
             // remove product from multiple businesses
             Route::delete("/{product}/businesses", [ProductController::class, 'removeProductForBusinesses']);
         });
+
+        /**  Transactions
+            - View all tansactions
+            - View transaction details paginated with query params
+         */
+        Route::group(['prefix' => 'transactions'], function () {
+            Route::get("/", [TransactionController::class, 'getAllTransactions']);
+            Route::get("/{transaction}", [TransactionController::class, 'getTransactionDetails']);
+        });
     });
 });
 
