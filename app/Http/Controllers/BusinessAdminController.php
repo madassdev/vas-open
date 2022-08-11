@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AdminBusinessDetails;
 use App\Models\Business;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class BusinessAdminController extends Controller
@@ -35,6 +36,8 @@ class BusinessAdminController extends Controller
         $business->live_api_key = $this->maskKey($business->live_api_key);
         $business->test_secret_key = $this->maskKey($business->test_secret_key);
         $business->live_secret_key = $this->maskKey($business->live_secret_key);
+        $recent_transactions = Transaction::with('product.productCategory', 'product.biller')->whereBusinessId($business->id)->latest()->take(5)->get();
+        $business->recent_transactions = $recent_transactions;
         $business = new AdminBusinessDetails(
 
             $business->load('users', 'products', 'businessDocument', 'businessBank', 'invitees')
