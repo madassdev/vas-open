@@ -139,7 +139,7 @@ Route::group(["middleware" => "noTestRoute"], function () {
 // SUPER ADMIN ROUTES, @madassdev pls remember to add the admin middleware to the routes
 Route::group(["middleware" => [
     "noTestRoute", $authMiddleware,
-    // "role:owner_super_admin"
+    "role:owner_super_admin"
 ]], function () {
     Route::group(['prefix' => 'super'], function () {
         Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport']);
