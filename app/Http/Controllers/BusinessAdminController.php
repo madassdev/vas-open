@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DBSwap;
+use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\AdminBusinessDetails;
+use App\Mail\UserCreatedPasswordMail;
 use App\Models\Business;
 use App\Models\BusinessDocumentRequest;
+use App\Models\BusinessUser;
+use App\Models\Role;
 use App\Models\Transaction;
+use App\Models\User;
+use App\Services\MailApiService;
+use Exception;
 use Illuminate\Http\Request;
 
 class BusinessAdminController extends Controller
@@ -171,5 +179,121 @@ class BusinessAdminController extends Controller
                 "business" => $business->load('businessDocument.businessDocumentRequests'),
             ]);
         }
+    }
+
+    public function generateRandomCharacters($length = 4)
+    {
+        $seed = str_split('abcdefghijklmnopqrstuvwxyz'
+            . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            . '0123456789!@#$%^&*()'); // and any other characters
+        shuffle($seed); // probably optional since array_is randomized; this may be redundant
+        $rand = '';
+        foreach (array_rand($seed, $length) as $k) $rand .= $seed[$k];
+        return $rand;
+    }
+
+    public function createBusiness(RegistrationRequest $request)
+    {
+        // Setup keys and passwords
+        $generated_password = $this->generateRandomCharacters() . $this->generateRandomCharacters();
+        
+        // Create business
+        $business = Business::updateOrCreate([
+            "email" => $request->business_email,
+        ], [
+            "name" => $request->business_name,
+            "email" => $request->business_email,
+            "phone" => $request->business_phone_number,
+            "address" => $request->business_address,
+            "current_env" => "test",
+            "live_enabled" => true,
+            "business_category_id" => $request->business_category_id,
+        ]);
+
+        $business->createWallet();
+        $business->test_api_key = strtoupper("pk_test_" . str()->uuid());
+        $business->live_api_key = strtoupper("pk_live_" . str()->uuid());
+        $business->test_secret_key = strtoupper("sk_test_" . str()->uuid());
+        $business->live_secret_key = strtoupper("sk_live_" . str()->uuid());
+        $business->save();
+        // Create User
+        $user = User::updateOrCreate([
+            "email" => $request->email,
+        ], [
+            "first_name" => $request->first_name,
+            "last_name" => $request->last_name,
+            "email" => $request->email,
+            "phone" => $request->phone_number,
+            "business_id" => $business->id,
+            "password" => bcrypt($generated_password),
+            "verification_code" => $generated_password,
+            "verified" => false,
+        ]);
+
+        // Attach business to user
+        $role = Role::whereName('business_super_admin')->first();
+        $user->businesses()->attach($business->id, ["is_active" => true, 'role_id' => $role->id]);
+
+        // Assign role to user 
+        $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
+        $user->assignRole('business_super_admin');
+        $businessUser->assignRole('business_super_admin');
+
+        // Create user and business on test env
+        DBSwap::setConnection('mysqltest');
+
+        $test_business = Business::updateOrCreate([
+            "email" => $request->business_email,
+        ], [
+            "name" => $request->business_name,
+            "email" => $request->business_email,
+            "phone" => $request->business_phone_number,
+            "address" => $request->business_address,
+            "current_env" => "test",
+            "test_api_key" => $business->test_api_key,
+            "live_enabled" => true,
+            "business_category_id" => $request->business_category_id,
+        ]);
+        $test_business->createWallet();
+        // Create User
+        $test_user = User::updateOrCreate([
+            "email" => $request->email,
+        ], [
+            "first_name" => $request->first_name,
+            "last_name" => $request->last_name,
+            "email" => $request->email,
+            "phone" => $request->phone_number,
+            "business_id" => $test_business->id,
+            "password" => bcrypt($generated_password),
+            "verification_code" => $generated_password,
+            "verified" => false,
+        ]);
+
+        $test_role = Role::whereName('business_super_admin')->first();
+        // Attach business to user
+        $test_user->businesses()->attach($test_business->id, ["is_active" => true, "role_id" => $test_role->id]);
+
+        // Assign role to user 
+        $testBusinessUser = BusinessUser::whereBusinessId($test_business->id)->whereUserId($test_user->id)->first();
+        $test_user->assignRole('business_super_admin');
+        $testBusinessUser->assignRole('business_super_admin');
+
+
+        DBSwap::setConnection('mysqllive');
+        // TODO: Create user on test env
+
+        // Notify user
+        $mailError = null;
+        $passwordMail = new MailApiService($user->email, "[Vas Reseller] Here's your account details!", (new UserCreatedPasswordMail($user))->render());
+        try {
+            $passwordMail->send();
+        } catch (Exception $e) {
+            $mailError = $e->getMessage();
+        };
+
+        // Create response for test environments where mail may not be setup yet.
+        $data = config('app.env') !== 'production' ? ["generated_password" => $generated_password, "mail_error" => $mailError] : [];
+
+        return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
     }
 }

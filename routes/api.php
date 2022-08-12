@@ -145,6 +145,7 @@ Route::group(["middleware" => [
         Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport']);
         Route::get("/products-commissions", [SuperAdminController::class, 'getProductsCommissions']);
         Route::get("/businesses", [BusinessAdminController::class, 'getBusinesses']);
+        Route::post("/businesses", [BusinessAdminController::class, 'createBusiness']);
         Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails']);
         Route::get("/businesses/{business_id}/documents", [BusinessAdminController::class, 'getBusinessDocuments']);
         Route::post("/businesses/{business_document_request_id}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
