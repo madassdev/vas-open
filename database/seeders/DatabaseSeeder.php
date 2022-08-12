@@ -358,6 +358,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $product['name'],
                 'shortname' => $product['shortname'],
                 'product_category_id' => $product['product_category_id'],
+                'product_code' => $product['product_code']??null,
             ])->save();
         }
         $business_categories = BusinessCategory::take(2)->get();
@@ -390,6 +391,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(DevUsersSeeder::class);
+        $this->call(UpBusinessSeeder::class);
         // create 20 accounts
         // create 50 billers
         // create 50 transactions
