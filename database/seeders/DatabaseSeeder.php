@@ -59,16 +59,19 @@ class DatabaseSeeder extends Seeder
                 'name' => '9mobile',
                 'shortname' => '9mobile',
                 'product_category_id' => 1,
+                'product_code' => '12700',
             ],
             [
                 'name' => 'Abuja Electricty Distribution Company Postpaid',
                 'shortname' => 'AEDC-Postpaid',
                 'product_category_id' => 3,
+                'product_code' => '3300',
             ],
             [
                 'name' => 'Abuja Electricty Distribution Company Prepaid',
                 'shortname' => 'AEDC-Prepaid',
                 'product_category_id' => 3,
+                'product_code' => '3322',
             ],
             [
                 'name' => 'Aiico Motor Insurance',
@@ -79,6 +82,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Airtel',
                 'shortname' => 'Airtel',
                 'product_category_id' => 1,
+                'product_code' => '2347087214896',
             ],
             [
                 'name' => 'Akwa Ibom Internal Revenue Services',
@@ -94,11 +98,13 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Benin Electricty Distribution Company Postpaid',
                 'shortname' => 'BEDC-Postpaid',
                 'product_category_id' => 3,
+                'product_code' => '20018',
             ],
             [
                 'name' => 'Benin Electricty Distribution Company Prepaid',
                 'shortname' => 'BEDC-Prepaid',
                 'product_category_id' => 3,
+                'product_code' => '20017',
             ],
             [
                 'name' => 'College of Agriculture Wurno',
@@ -139,11 +145,13 @@ class DatabaseSeeder extends Seeder
                 'name' => 'EKEDC Postpaid',
                 'shortname' => 'EKEDC-Postpaid',
                 'product_category_id' => 3,
+                'product_code' => '717',
             ],
             [
                 'name' => 'EKEDC Prepaid',
                 'shortname' => 'EKEDC-Prepaid',
                 'product_category_id' => 3,
+                'product_code' => '716',
             ],
             [
                 'name' => 'FCMB Pension Fund Administrator',
@@ -159,6 +167,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'GLO',
                 'shortname' => 'GLO',
                 'product_category_id' => 1,
+                'product_code' => '12699',
             ],
             [
                 'name' => 'GOTV',
@@ -169,21 +178,25 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Ibadan Electricity Distribution Company Postpaid',
                 'shortname' => 'IEDC-Postpaid',
                 'product_category_id' => 3,
+                'product_code' => '12685',
             ],
             [
                 'name' => 'Ibadan Electricity Distribution Company Prepaid',
                 'shortname' => 'IEDC-Prepaid',
                 'product_category_id' => 3,
+                'product_code' => '12684',
             ],
             [
                 'name' => 'IKEDC Postpaid',
                 'shortname' => 'IKEDC-Postpaid',
                 'product_category_id' => 3,
+                'product_code' => '12696',
             ],
             [
                 'name' => 'IKEDC Prepaid',
                 'shortname' => 'IKEDC-Prepaid',
                 'product_category_id' => 3,
+                'product_code' => '12697',
             ],
             [
                 'name' => 'JambEpin',
@@ -199,21 +212,31 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Jos Electricty Distribution Company Postpaid',
                 'shortname' => 'JEDC-Postpaid',
                 'product_category_id' => 3,
+                'product_code' => '3662',
             ],
             [
                 'name' => 'Jos Electricty Distribution Company Prepaid',
                 'shortname' => 'JEDC-Prepaid',
                 'product_category_id' => 3,
+                'product_code' => '3663',
             ],
             [
                 'name' => 'Kaduna Electricty Distribution Company Prepaid',
                 'shortname' => 'KEDC-Prepaid',
                 'product_category_id' => 3,
+                'product_code' => '3264',
+            ],
+            [
+                'name' => 'Kaduna Electricty Distribution Company Postpaid',
+                'shortname' => 'KEDC-Postpaid',
+                'product_category_id' => 3,
+                'product_code' => '3265',
             ],
             [
                 'name' => 'LCC',
                 'shortname' => 'LCC',
                 'product_category_id' => 9,
+
             ],
             [
                 'name' => 'LASHMA',
@@ -224,6 +247,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'MTN',
                 'shortname' => 'MTN',
                 'product_category_id' => 1,
+                'product_code' => '12682',
             ],
             [
                 'name' => 'Sultan Muhammadu Maccido Institute for Qur\'an and General Studies',
@@ -239,11 +263,13 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Portharcourt Electricty Distribution Company Postpaid',
                 'shortname' => 'PEDC-Postpaid',
                 'product_category_id' => 3,
+                'product_code' => '959',
             ],
             [
                 'name' => 'Portharcourt Electricty Distribution Company Prepaid',
                 'shortname' => 'PEDC-Prepaid',
                 'product_category_id' => 3,
+                'product_code' => '817',
             ],
             [
                 'name' => 'RoyalExchange Insurance',
