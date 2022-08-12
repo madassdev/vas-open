@@ -22,6 +22,7 @@ class SuperAdminController extends Controller
             'tx_date' => 'date',
         ]);
 
+        $tx_date = $request->tx_date ?? now()->format('Y-m-d');
         // Dashboard (3 subsections)
         // Businesses
         // [All: 0 ] [Live: 3 ] [Testing: 5] [Transacting: ]
@@ -40,13 +41,10 @@ class SuperAdminController extends Controller
 
         // request date can be empty for all time or have a value for a particular day
         $result = null;
-        if ($request->tx_date) {
-            $startOfMonth = Carbon::parse($request->tx_date)->startOfMonth()->format('Y-m-d');
-            $monthly_report = $this->fetchTxByMonth($startOfMonth);
-            $result = $this->fetchTxByDate(Date::parse($request->tx_date)->format('Y-m-d'));
-        } else {
-            $result = $this->fetchAllTx();
-        }
+
+        $startOfMonth = Carbon::parse($tx_date)->startOfMonth()->format('Y-m-d');
+        $monthly_report = $this->fetchTxByMonth($startOfMonth);
+        $result = $this->fetchTxByDate(Date::parse($tx_date)->format('Y-m-d'));
 
         $business_report = $this->fetchBusinessReport();
 
