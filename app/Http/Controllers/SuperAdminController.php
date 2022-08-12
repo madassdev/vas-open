@@ -52,7 +52,7 @@ class SuperAdminController extends Controller
             "day_report" => $result,
             "month_report" => $monthly_report,
             "businesses" => $business_report,
-            "tx_date" => $request->tx_date,
+            "tx_date" => $tx_date,
         ]);
     }
 
