@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\UserWelcomeMail;
+use App\Models\BusinessDocumentRequest;
 use App\Services\MailApiService;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Markdown;
@@ -22,7 +23,7 @@ class BusinessDocumentController extends Controller
         $business = $user->business;
         $document = $business->businessDocument()->firstOrNew();
 
-        if ($business->document_verified === 2) {
+        if ($business->document_verified === 1) {
             return $this->sendError("Business already verified", [], 403);
         }
         // Upload file
@@ -61,6 +62,26 @@ class BusinessDocumentController extends Controller
         return $this->sendSuccess('Business document of type ' . strtoupper($request->type) . ' uploaded and saved successfully.', ["business" => $business->load('businessDocument')]);
     }
 
+    public function requestApproval()
+    {
+        $user = auth()->user();
+        $business = $user->business;
+        $business_document = $business->businessDocument;
+
+        if($business_document->hasPendingRequest()){
+            return $this->sendError("There's a pending request on your business documents.",[],403);
+        }
+        BusinessDocumentRequest::create([
+            "business_id" => $business->id,
+            "business_document_id" => $business_document->id,
+        ]);
+
+        // Notify Admin?
+        return $this->sendSuccess('Business Documents submitted for approval.', [
+            "business" => $business
+        ]);
+    }
+
     public function showDocuments()
     {
         $user = auth()->user();
@@ -69,7 +90,7 @@ class BusinessDocumentController extends Controller
             $documents = $user->business->businessDocument()->create([])->refresh();
         }
 
-        
+
         return $this->sendSuccess("User Business Documents fetched successfully.", [
             "business_documents" => $documents,
             "document_status" => $user->business->document_verified,

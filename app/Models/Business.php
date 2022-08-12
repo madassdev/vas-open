@@ -214,4 +214,10 @@ class Business extends Model
         // Assign role to user 
         $test_user->assignRole('business_super_admin');
     }
+    
+
+    public function businessDocumentRequests()
+    {
+        return $this->hasMany(BusinessDocumentRequest::class);
+    }
 }

@@ -44,4 +44,14 @@ class BusinessDocument extends Model
         }
         return $count;
     }
+
+    public function businessDocumentRequests()
+    {
+        return $this->hasMany(BusinessDocumentRequest::class);
+    }
+
+    public function hasPendingRequest()
+    {
+        return $this->businessDocumentRequests()->where('status','pending')->count();
+    }
 }

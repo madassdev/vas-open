@@ -95,6 +95,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
             Route::post('/switch-env', [BusinessController::class, 'switchEnv'])->middleware('businessUserPermission:business_switch_environment');
             Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness'])->middleware('businessUserPermission:business_switch_active_business');
             Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments'])->middleware('businessUserPermission:business_upload_documents');
+            Route::post('/documents/request-approval', [BusinessDocumentController::class, 'requestApproval'])->middleware('businessUserPermission:business_upload_documents');
             Route::get('/documents', [BusinessDocumentController::class, 'showDocuments'])->middleware('businessUserPermission:business_get_documents');
 
             // Banks
@@ -146,7 +147,7 @@ Route::group(["middleware" => [
         Route::get("/businesses", [BusinessAdminController::class, 'getBusinesses']);
         Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails']);
         Route::get("/businesses/{business_id}/documents", [BusinessAdminController::class, 'getBusinessDocuments']);
-        Route::post("/businesses/{business_id}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
+        Route::post("/businesses/{business_document_request_id}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
         Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers']);
         Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts']);
         Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
