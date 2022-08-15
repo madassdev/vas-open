@@ -25,6 +25,7 @@ use Database\Factories\RoleFactory;
 use Database\Seeders\BillerSeeder;
 use Database\Seeders\ProductCategoriesSeeder;
 use Database\Seeders\BusinessCategoriesSeeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -35,6 +36,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Artisan::call('permissions:sync');
         $this->call(BillerSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(ProductCategoriesSeeder::class);
