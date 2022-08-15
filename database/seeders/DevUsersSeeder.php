@@ -38,6 +38,15 @@ class DevUsersSeeder extends Seeder
                 "business_name" => "Seun's Business",
                 "business_address" => "Somewhere here",
             ],
+            [
+                "first_name" => "Oluwatoyin",
+                "last_name" => "Dev",
+                "email" => "oluwatoyinfolarin3@gmail.com",
+                "phone" => "00000000",
+                "password" => "Oluwatoyin1@",
+                "business_name" => "Oluwatoyin's Business",
+                "business_address" => "Somewhere there",
+            ],
         ])->map(function ($dev) {
             $this->createDevAccounts($dev);
         });
