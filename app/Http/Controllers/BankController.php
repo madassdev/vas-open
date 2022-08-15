@@ -38,7 +38,7 @@ class BankController extends Controller
         $service = new BalanceService($user);
         $res = $service->validateAccount($request->account_number, $request->bank_code);
         if (!$res['success']) {
-            return $this->sendError(@$res['message'] || "Account Validation failed", [$res], 400);
+            return $this->sendError($res['message'], [], 400);
         }
 
         $business->bank_reference_id = $res['data']['referenceId'];
