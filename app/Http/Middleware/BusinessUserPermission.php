@@ -18,11 +18,10 @@ class BusinessUserPermission
     {
         $user = auth()->user();
         $activeBusiness = $user->active_business;
-        $p = $activeBusiness->role->permissions->pluck('name');
-        // return $p;
+        $role = $activeBusiness->role;
+        $hasPermission = $activeBusiness->isPermittedTo($permission);
 
-        sr("data", [$p]);
-        if (!$activeBusiness->hasPermissionTo($permission)) {
+        if (!$hasPermission) {
             sr("User does not have the permission: [" . strtoupper($permission) . "]", [], 403);
         }
         // sr();

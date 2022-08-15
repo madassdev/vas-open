@@ -15,4 +15,10 @@ class BusinessUser extends Pivot
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function isPermittedTo($permission)
+    {
+        $role = $this->role;
+        return $role->permissions->where('name',$permission)->first();
+    }
 }
