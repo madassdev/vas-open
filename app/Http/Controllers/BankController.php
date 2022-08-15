@@ -73,9 +73,7 @@ class BankController extends Controller
             $res = $service->validateOtp($request->account_number, $request->otp, $request->reference_id);
 
             if (!$res['success']) {
-                return $this->sendError(@$res['message'] || "OTP validation failed", [
-                    $res
-                ], 400);
+                return $this->sendError($res['message'], [], 400);
             }
         }
 
