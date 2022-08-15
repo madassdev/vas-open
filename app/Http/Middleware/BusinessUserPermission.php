@@ -18,7 +18,7 @@ class BusinessUserPermission
     {
         $user = auth()->user();
         $activeBusiness = $user->active_business;
-        $p = $activeBusiness->role->load('permissions');
+        $p = $activeBusiness->role->permissions->pluck('name');
         // return $p;
 
         sr("data", [$p]);
