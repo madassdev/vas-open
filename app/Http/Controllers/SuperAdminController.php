@@ -234,16 +234,20 @@ class SuperAdminController extends Controller
                         "value" => $res[2]->total_failed_amount,
                         "count" => $res[2]->failed_tx_count
                     ],
-                    "commissions" => [
-                        "successful" => $res[0]->total_commission,
-                        "pending" => $res[1]->total_commission,
-                        "failed" => $res[2]->total_commission,
+                    "total" => [
+                        "value" => $res[0]->total_successful_amount + $res[1]->total_pending_amount + $res[2]->total_failed_amount,
+                        "count" => $res[0]->successful_tx_count + $res[1]->pending_tx_count + $res[2]->failed_tx_count
                     ],
-                    "fees" => [
-                        "successful" => $res[0]->total_fees,
-                        "pending" => $res[1]->total_fees,
-                        "failed" => $res[2]->total_fees,
-                    ],
+                ],
+                "commissions" => [
+                    "successful" => $res[0]->total_commission,
+                    "pending" => $res[1]->total_commission,
+                    "failed" => $res[2]->total_commission,
+                ],
+                "fees" => [
+                    "successful" => $res[0]->total_fees,
+                    "pending" => $res[1]->total_fees,
+                    "failed" => $res[2]->total_fees,
                 ],
 
             ];
@@ -351,6 +355,10 @@ class SuperAdminController extends Controller
                         "value" => $res[2]->total_failed_amount,
                         "count" => $res[2]->failed_tx_count
                     ],
+                    "total" => [
+                        "value" => $res[0]->total_successful_amount + $res[1]->total_pending_amount + $res[2]->total_failed_amount,
+                        "count" => $res[0]->successful_tx_count + $res[1]->pending_tx_count + $res[2]->failed_tx_count
+                    ]
                 ],
                 "commissions" => [
                     "successful" => $res[0]->total_commission,
