@@ -327,7 +327,7 @@ class InviteeController extends Controller
             $mail->send();
         } catch (Exception $e) {
             // $mailError = $e->getMessage();
-            throw $e;
+            // throw $e;
         };
         return $mailError;
         // } else {
