@@ -36,9 +36,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(RoleSeeder::class);
         Artisan::call('permissions:sync');
         $this->call(BillerSeeder::class);
-        $this->call(RoleSeeder::class);
         $this->call(ProductCategoriesSeeder::class);
         $this->call(BusinessCategoriesSeeder::class);
         // "Telco Top Up Services", 1

@@ -3,8 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Permission;
-use App\Models\Role;
+// use App\Models\Role;
 use Illuminate\Console\Command;
+use Spatie\Permission\Models\Role;
 
 class RolesAndPermissionsSync extends Command
 {

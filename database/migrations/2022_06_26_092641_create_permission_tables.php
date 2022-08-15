@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Role;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Spatie\Permission\PermissionRegistrar;
 use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Role;
 
 class CreatePermissionTables extends Migration
 {
