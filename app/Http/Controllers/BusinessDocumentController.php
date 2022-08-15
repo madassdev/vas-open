@@ -16,7 +16,7 @@ class BusinessDocumentController extends Controller
         $user = auth()->user();
         $request->validate([
             "type" => "required|string|in:cac_2,cac_7,certificate,director_1,director_2,director_3",
-            "file" => "required|file|mimes:png,jpg,pdf,doc,docx",
+            "file" => "required|file|max:50000|mimes:png,jpg,pdf,doc,docx",
         ]);
 
         // Get business documents
