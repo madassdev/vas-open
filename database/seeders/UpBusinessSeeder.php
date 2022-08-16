@@ -21,7 +21,7 @@ class UpBusinessSeeder extends Seeder
         $details= [
             "first_name" => "UP",
             "last_name" => "Admin",
-            "email" => "admin@up-ng.com",
+            "email" => Business::$ADMIN_BUSINESS_EMAIL,
             "phone" => "00000000",
             "password" => "AdminUp123...",
             "business_name" => "Up Admin's Business",

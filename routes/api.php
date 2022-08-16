@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\DBSwap;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
@@ -152,6 +153,8 @@ Route::group(["middleware" => [
         Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers']);
         Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts']);
         Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
+        Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData']);
+        Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled']);
 
         /**  Product Configuration
             - Add Product Configurations
@@ -185,6 +188,10 @@ Route::group(["middleware" => [
         Route::group(['prefix' => 'transactions'], function () {
             Route::get("/", [TransactionController::class, 'getAllTransactions']);
             Route::get("/{transaction}", [TransactionController::class, 'getTransactionDetails']);
+        });
+
+        Route::group(['prefix' => 'admin'], function () {
+            Route::post('/', [AdminUserController::class, 'addAdmin']);
         });
     });
 });

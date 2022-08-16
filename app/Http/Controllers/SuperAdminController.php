@@ -243,11 +243,13 @@ class SuperAdminController extends Controller
                     "successful" => $res[0]->total_commission,
                     "pending" => $res[1]->total_commission,
                     "failed" => $res[2]->total_commission,
+                    "total" => $res[0]->total_commission + $res[1]->total_commission + $res[2]->total_commission
                 ],
                 "fees" => [
                     "successful" => $res[0]->total_fees,
                     "pending" => $res[1]->total_fees,
                     "failed" => $res[2]->total_fees,
+                    "total" => $res[0]->total_fees + $res[1]->total_fees + $res[2]->total_fees
                 ],
 
             ];
@@ -364,11 +366,13 @@ class SuperAdminController extends Controller
                     "successful" => $res[0]->total_commission,
                     "pending" => $res[1]->total_commission,
                     "failed" => $res[2]->total_commission,
+                    "total" => $res[0]->total_commission + $res[1]->total_commission + $res[2]->total_commission
                 ],
                 "fees" => [
                     "successful" => $res[0]->total_fees,
                     "pending" => $res[1]->total_fees,
                     "failed" => $res[2]->total_fees,
+                    "total" => $res[0]->total_fees + $res[1]->total_fees + $res[2]->total_fees
                 ],
             ];
         });

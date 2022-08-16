@@ -28,4 +28,13 @@ class Controller extends BaseController
             'data' => array_merge([], $data)
         ], $httpcode);
     }
+
+    public function authorizeAdmin($permission)
+    {
+        $user = auth()->user();
+        if(!$user->can($permission)){
+            sr("User does not have the permission: [" . strtoupper($permission) . "]", [], 403);
+        }
+
+    }
 }

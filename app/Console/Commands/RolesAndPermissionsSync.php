@@ -37,13 +37,16 @@ class RolesAndPermissionsSync extends Command
         $this->withProgressBar($permissions, function ($permission) {
             Permission::updateOrCreate(["name" => $permission["name"]], $permission + ["guard_name" => "web"]);
         });
+        $this->newLine();
+        $this->newLine();
         $this->info("Total roles to sync: " . $permissionForRoles->count());
-
         $this->line('Syncing Roles with permissions...');
         $this->withProgressBar($permissionForRoles, function ($permissionRole) {
             $role = Role::whereName($permissionRole["role"])->first();
             $role->syncPermissions($permissionRole["permissions"]);
         });
+        $this->newLine();
+        $this->newLine();
         $this->info("Operation Complete.");
         return 0;
     }

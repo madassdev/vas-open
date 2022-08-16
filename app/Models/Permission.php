@@ -181,6 +181,16 @@ class Permission extends Model
                         "readable_name" => "Get Business Products (Admin)",
                         "description" => ""
                     ],
+                    [
+                        "name" => "admin_toggle_live_enabled",
+                        "readable_name" => "Toggle a business' ability to go live (Admin)",
+                        "description" => ""
+                    ],
+                    [
+                        "name" => "admin_set_merchant_data",
+                        "readable_name" => "Set Business Merchant and Terminal IDs (Admin)",
+                        "description" => ""
+                    ],
                 ]
             );
     }
@@ -252,6 +262,8 @@ class Permission extends Model
                     "admin_approve_business_documents",
                     "admin_get_business_users",
                     "admin_get_business_products",
+                    "admin_toggle_live_enabled",
+                    "admin_set_merchant_data",
                 ],
             ],
         ]);
@@ -296,6 +308,8 @@ class Permission extends Model
             "admin_approve_business_documents",
             "admin_get_business_users",
             "admin_get_business_products",
+            "admin_toggle_live_enabled",
+            "admin_set_merchant_data",
         ];
     }
 }

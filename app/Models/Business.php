@@ -26,6 +26,8 @@ class Business extends Model
         "live_enabled" => "boolean",
         "enabled" => "boolean",
     ];
+    public static $ADMIN_BUSINESS_EMAIL = "admin@up-ng.com";
+    public static $BUSINESS_ADMIN_ROLE = "business_super_admin";
 
 
     public function documents()

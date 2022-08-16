@@ -196,7 +196,7 @@ class BusinessAdminController extends Controller
     {
         // Setup keys and passwords
         $generated_password = $this->generateRandomCharacters() . $this->generateRandomCharacters();
-        
+
         // Create business
         $business = Business::updateOrCreate([
             "email" => $request->business_email,
@@ -295,5 +295,63 @@ class BusinessAdminController extends Controller
         $data = config('app.env') !== 'production' ? ["generated_password" => $generated_password, "mail_error" => $mailError] : [];
 
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
+    }
+
+    public function toggleLiveEnabled(Request $request, $business_id)
+    {
+        $this->authorizeAdmin('admin_toggle_live_enabled');
+        $business = Business::find($business_id);
+        if (!$business) {
+            return $this->sendError("Business not found with that id", [], 404);
+        }
+
+        $request->validate([
+            "live_enabled" => "required|boolean"
+        ]);
+
+        if ($request->live_enabled == true) {
+            if (!$business->document_verified) {
+                return $this->sendError("Business documents must be verified before they can be enabled to go live", [], 403);
+            }
+            if (!$business->merchant_id) {
+                return $this->sendError("Business Merchant ID must be set before they can be enabled to go live", [], 403);
+            }
+            if (!$business->client_id) {
+                return $this->sendError("Business Client ID must be set before they can be enabled to go live", [], 403);
+            }
+            if (!$business->terminal_id) {
+                return $this->sendError("Business Terminal ID must be set before they can be enabled to go live", [], 403);
+            }
+
+            $business->live_enabled = true;
+        } else {
+            $business->live_enabled = false;
+        }
+        $business->save();
+
+        return $this->sendSuccess("Business live enable status set successfully", [
+            "business" => $business
+        ]);
+    }
+
+    public function setMerchantData(Request $request, $business_id)
+    {
+        $this->authorizeAdmin('admin_set_merchant_data');
+        $business = Business::find($business_id);
+        if (!$business) {
+            return $this->sendError("Business not found with that id", [], 404);
+        }
+
+        $request->validate([
+            "merchant_id" => "string",
+            "terminal_id" => "string"
+        ]);
+
+        $business->merchant_id = $request->merchant_id;
+        $business->terminal_id = $request->terminal_id;
+        $business->save();
+        return $this->sendSuccess("Business Data updated successfully", [
+            "business" => $business
+        ]);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Business;
 use App\Models\User;
 
 function generateFrontendLink($param, $value, $path = '')
@@ -68,4 +69,36 @@ function sr($message = "", $data = [], $code = 200)
         'message' => $message,
         'data' => array_merge([], $data)
     ], $code)->throwResponse();
+}
+
+function generateRandomCharacters($length = 4)
+{
+    $seed = str_split('abcdefghijklmnopqrstuvwxyz'
+        . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        . '0123456789!@#$%^&*()'); // and any other characters
+    shuffle($seed); // probably optional since array_is randomized; this may be redundant
+    $rand = '';
+    foreach (array_rand($seed, $length) as $k) $rand .= $seed[$k];
+    return $rand;
+}
+
+function softCode($string)
+{
+    switch ($string) {
+        case 'BUSINESS_ADMIN_ROLE':
+            return Business::$BUSINESS_ADMIN_ROLE;
+            break;
+        case 'ADMIN_BUSINESS_EMAIL':
+            return Business::$ADMIN_BUSINESS_EMAIL;
+            break;
+
+        default:
+            return $string;
+            break;
+    }
+}
+
+function sc($string)
+{
+    return softCode($string);
 }
