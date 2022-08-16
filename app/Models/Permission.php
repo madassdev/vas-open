@@ -191,6 +191,11 @@ class Permission extends Model
                         "readable_name" => "Set Business Merchant and Terminal IDs (Admin)",
                         "description" => ""
                     ],
+                    [
+                        "name" => "admin_create_admin",
+                        "readable_name" => "Create an admin and assign role (Admin)",
+                        "description" => ""
+                    ],
                 ]
             );
     }
@@ -264,6 +269,7 @@ class Permission extends Model
                     "admin_get_business_products",
                     "admin_toggle_live_enabled",
                     "admin_set_merchant_data",
+                    "admin_create_admin",
                 ],
             ],
         ]);
@@ -310,6 +316,7 @@ class Permission extends Model
             "admin_get_business_products",
             "admin_toggle_live_enabled",
             "admin_set_merchant_data",
+            "admin_create_admin",
         ];
     }
 }
