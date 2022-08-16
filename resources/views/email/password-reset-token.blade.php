@@ -1,12 +1,12 @@
 @extends('email.layout')
 @section('content')
 <p>
-    Hello, <b>{{$user->email}}</b>
+    Hello, <b>{{ucfirst($user->first_name)}}</b>
 </p>
 <p>
     You requested for a password reset.
 <p>
-<p style="padding-top: 20px; font-size:12px">Click on the link below to reset password.</p>
+<p style="padding-top: 20px;">Click on the link below to reset password.</p>
 <p>
     <a href="{{ makePasswordLink($user->verification_code, $user->url) }}" style="display:inline-flex; 
                 text-align:center; 
