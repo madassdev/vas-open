@@ -138,7 +138,7 @@ class AuthController extends Controller
         };
 
         // Create response for test environments where mail may not be setup yet.
-        $data = config('app.env') !== 'production' ? ["generated_password" => $generated_password, "mail_error" => $mailError] : [];
+        $data = [];
 
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
     }
@@ -251,9 +251,9 @@ class AuthController extends Controller
         };
 
         // Create response for test environments where mail may not be setup yet.
-        $data = config('app.env') !== 'production' ? ["reset_token" => $token, "mail_error" => $mailError] : [];
+        // $data = config('app.env') !== 'production' ? ["reset_token" => $token, "mail_error" => $mailError] : [];
 
-        return $this->sendSuccess('Password reset request token has been sent. Please check your mail to proceed with requests.', $data);
+        return $this->sendSuccess('Password reset request token has been sent. Please check your mail to proceed with requests.', []);
     }
 
     public function verifyResetToken(Request $request)

@@ -292,7 +292,7 @@ class BusinessAdminController extends Controller
         };
 
         // Create response for test environments where mail may not be setup yet.
-        $data = config('app.env') !== 'production' ? ["generated_password" => $generated_password, "mail_error" => $mailError] : [];
+        $data =  [];
 
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
     }
