@@ -192,6 +192,7 @@ Route::group(["middleware" => [
 
         Route::group(['prefix' => 'admin'], function () {
             Route::post('/', [AdminUserController::class, 'addAdmin']);
+            Route::get('/roles', [AdminUserController::class, 'getRoles']);
         });
     });
 });

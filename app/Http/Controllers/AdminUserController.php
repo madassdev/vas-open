@@ -6,6 +6,7 @@ use App\Helpers\DBSwap;
 use App\Mail\GenericMail;
 use App\Models\Business;
 use App\Models\BusinessUser;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\MailApiService;
@@ -77,5 +78,16 @@ class AdminUserController extends Controller
         $data =  [];
 
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
+    }
+
+    public function getRoles()
+    {
+        $this->authorizeAdmin('admin_create_admin');
+        $roles = Role::with('permissions')->get();
+        $permissions = Permission::all();
+        return $this->sendSuccess("Roles and Permissions fetched successfully",[
+            "roles" => $roles,
+            "permissions" => $permissions,
+        ]);
     }
 }
