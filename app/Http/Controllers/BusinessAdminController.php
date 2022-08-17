@@ -343,8 +343,8 @@ class BusinessAdminController extends Controller
         }
 
         $request->validate([
-            "merchant_id" => "string",
-            "terminal_id" => "string"
+            "merchant_id" => "required",
+            "terminal_id" => "required"
         ]);
 
         $business->merchant_id = $request->merchant_id;

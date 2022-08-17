@@ -279,7 +279,6 @@ class AuthController extends Controller
     public function resetPassword(Request $request)
     {
         $request->validate([
-            "email" => "required|email|exists:users,email",
             "token" => "required|string",
             "new_password" => [
                 "required", Password::min(8)
@@ -297,10 +296,10 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return $this->sendError('Invalid token provided', [], 400);
         }
-        $user = User::whereEmail($request->email)->firstOrFail();
-        if ($user->verification_code !== $token) {
-            return $this->sendError("[Token mismatch] - The token supplied does not exist for this user!", [], 401);
-        }
+        $user = User::whereVerificationCode($token)->firstOrFail();
+        // if ($user->verification_code !== $token) {
+        //     return $this->sendError("[Token mismatch] - The token supplied does not exist for this user!", [], 401);
+        // }
 
         $user->password = bcrypt($request->new_password);
         $user->verification_code = null;
