@@ -33,6 +33,7 @@ class Controller extends BaseController
     {
         $user = auth()->user();
         if(!$user->can($permission)){
+            if(!$user->hasRole(sc('SUPER_ADMIN_ROLE')))
             sr("User does not have the permission: [" . strtoupper($permission) . "]", [], 403);
         }
 

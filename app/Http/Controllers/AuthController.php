@@ -329,11 +329,12 @@ class AuthController extends Controller
     public function roles()
     {
         $protectedRoleNames = ["owner_super_admin", "business_invitee"];
-        $validroles = DB::table('roles')->whereNotIn('name', $protectedRoleNames)->get();
-        $roles = $validroles->map(function ($r) {
-            $r->title = $this->readableRoleName($r->name);
-            return $r;
-        });
+        // $validroles = DB::table('roles')->whereNotIn('name', $protectedRoleNames)->get();
+        // $roles = $validroles->map(function ($r) {
+        //     $r->title = $this->readableRoleName($r->name);
+        //     return $r;
+        // });
+        $roles = ModelsRole::whereNotIn('name', $protectedRoleNames)->get();
         return $this->sendSuccess("Roles fetched successfully", [
             "roles" => $roles
         ]);

@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Services\MailApiService;
 use Exception;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role as SpatieRole;
 
 class AdminUserController extends Controller
 {
@@ -80,14 +81,136 @@ class AdminUserController extends Controller
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
     }
 
+    public function getAdmins()
+    {
+        $this->authorizeAdmin('admin_create_admin');
+        $user = auth()->user();
+        $adminBusiness = Business::whereEmail(sc('ADMIN_BUSINESS_EMAIL'))->first();
+        if (!$adminBusiness) {
+            $this->sendError('Admin Business not found.', [], 404);
+        }
+        return $this->sendSuccess("Admin users fetched successfully", ["admin_users" => $adminBusiness->users]);
+    }
+
     public function getRoles()
     {
         $this->authorizeAdmin('admin_create_admin');
-        $roles = Role::with('permissions')->get();
+        $roles = Role::adminRoles()->load('permissions');
         $permissions = Permission::all();
-        return $this->sendSuccess("Roles and Permissions fetched successfully",[
+        return $this->sendSuccess("Roles and Permissions fetched successfully", [
             "roles" => $roles,
             "permissions" => $permissions,
         ]);
     }
+
+    public function assignAdminRole(Request $request)
+    {
+        $this->authorizeAdmin('admin_assign_role');
+        // $this->authorizeAdmin('admin_create_admin');
+        $request->validate([
+            "user_id" => "required|exists:users,id",
+            "role" => "required|string"
+        ]);
+
+        // Can role be assigned to admin?
+        $role_name = str()->snake($request->role);
+        $adminableRoles = Role::adminRoles();
+
+        $role = Role::whereName($request->role)
+            ->orWhere('readable_name', $request->role)
+            ->orWhere('name', $role_name)
+            ->orWhere('readable_name', $role_name)
+            ->first();
+
+        if (!$role) {
+            return $this->sendError("The role does not exist: [" . $role_name . "]", [], 404);
+        }
+
+        if (!$adminableRoles->where('name', $role->name)->first()) {
+            return $this->sendError("Non admin role cannot be assigned: [" . $role_name . "]", [], 404);
+        }
+
+        // Can user be assigned an admin role?
+        $adminBusiness = Business::whereEmail(sc('ADMIN_BUSINESS_EMAIL'))->first();
+        if (!$adminBusiness) {
+            $this->sendError('Admin Business not found.', [], 404);
+        }
+
+        $user = $adminBusiness->users->find($request->user_id);
+        if (!$user) {
+            return $this->sendError("Admin role cannot be assigned to non admin user", [], 404);
+        }
+
+        $user->assignRole($role->name);
+        return $this->sendSuccess("Role assigned to admin successsfully", [
+            "admin" => $user
+        ]);
+    }
+
+    public function createRole(Request $request)
+    {
+        $this->authorizeAdmin('admin_create_admin');
+        $request->validate([
+            "name" => "required|string",
+            "description" => "string|max:500",
+            "permissions" => "required|array",
+            "permissions.*" => "required|exists:permissions,name"
+        ]);
+
+        $role_name = str()->snake($request->name);
+        $role = SpatieRole::whereName($request->name)
+            ->orWhere('readable_name', $request->name)
+            ->orWhere('name', $role_name)
+            ->orWhere('readable_name', $role_name)
+            ->first();
+
+        if ($role) {
+            return $this->sendError("The role already exists: [" . $role_name . "]", [], 403);
+        }
+
+        $role = SpatieRole::create([
+            "name" => $role_name,
+            "readable_name" => ucfirst($request->name),
+            "description" => $request->description,
+            "guard_name" => "web"
+        ]);
+
+        $role->syncPermissions($request->permissions);
+
+        return $this->sendSuccess("Role created successfully", [
+            "role" => $role->load('permissions')
+        ]);
+    }
+
+    public function setPermissions(Request $request)
+    {
+        $this->authorizeAdmin('admin_create_admin');
+        $request->validate([
+            "role" => "required",
+            "permissions" => "required|array",
+            "permissions.*" => "required|exists:permissions,name"
+        ]);
+
+        $role_name = str()->snake($request->role);
+        $role = SpatieRole::whereName($request->role)
+            ->orWhere('readable_name', $request->role)
+            ->orWhere('name', $role_name)
+            ->orWhere('readable_name', $role_name)
+            ->first();
+        
+
+        if (!$role) {
+            return $this->sendError("The role does not exist: [" . $role_name . "]", [], 404);
+        }
+
+        $role->syncPermissions($request->permissions);
+
+        return $this->sendSuccess("Role permissions set successfully", [
+            "role" => $role->load('permissions')
+        ]);
+    }
+
+    
+
+
 }

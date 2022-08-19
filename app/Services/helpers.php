@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Business;
+use App\Models\Role;
 use App\Models\User;
 
 function generateFrontendLink($param, $value, $path = '')
@@ -91,6 +92,9 @@ function softCode($string)
         case 'ADMIN_BUSINESS_EMAIL':
             return Business::$ADMIN_BUSINESS_EMAIL;
             break;
+        case 'SUPER_ADMIN_ROLE':
+                return "owner_super_admin";
+                break;
 
         default:
             return $string;
@@ -102,3 +106,4 @@ function sc($string)
 {
     return softCode($string);
 }
+

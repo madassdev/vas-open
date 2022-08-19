@@ -19,13 +19,16 @@ class Role extends Model
     {
         switch ($this->name) {
             case 'business_developer':
-                return "Developer";
+                return $this->readable_name ?? "Business Developer";
                 break;
             case 'business_finance':
-                return "Finance";
+                return $this->readable_name ?? "Business Finance";
                 break;
             case 'business_super_admin':
-                return "Administrator";
+                return $this->readable_name ?? "Business Administrator";
+                break;
+            case 'owner_super_admin':
+                return $this->readable_name ?? "Super Administrator";
                 break;
 
             default:
@@ -36,6 +39,14 @@ class Role extends Model
 
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class,'role_has_permissions');
+        return $this->belongsToMany(Permission::class, 'role_has_permissions');
+    }
+
+    public static function adminRoles()
+    {
+        $exemptRoles = ["business_invitee", "business_super_admin", "business_developer", "business_finance"];
+    
+        $adminableRoles = Role::whereNotIn('name', $exemptRoles)->get();
+        return $adminableRoles;
     }
 }
