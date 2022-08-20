@@ -2,12 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\Business;
 use App\Models\Permission;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Role as ModelsRole;
 
-class RoleSeeder extends Seeder
+class RolesUpdatesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,8 +19,10 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        //
-
+        //Remove and reset roles;
+        Permission::query()->delete();
+        Role::query()->delete();
+        // return ;
         $permissions = collect([
             [
                 "name" => "switch_business_environment",
@@ -129,75 +134,6 @@ class RoleSeeder extends Seeder
                 "guard_name" => "web",
                 "readable_name" => "Show Business Statistics"
             ],
-
-            // ADMIN
-
-            [
-                "name" => "view_admin_dashboard",
-                "guard_name" => "web",
-                "readable_name" => "View Dashboard data as Admin",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "list_businesses",
-                "guard_name" => "web",
-                "readable_name" => "View List of Businesses",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "view_business",
-                "guard_name" => "web",
-                "readable_name" => "Veiw a Business details",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "toggle_golive",
-                "guard_name" => "web",
-                "readable_name" => "Enable/Disable Business going live",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "toggle_business_status",
-                "guard_name" => "web",
-                "readable_name" => "Enable/Disable Business activity",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "configure_terminal",
-                "guard_name" => "web",
-                "readable_name" => "Configure Business terminal details as Admin",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "create_business_user",
-                "guard_name" => "web",
-                "readable_name" => "Create a Business User as Admin",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "invite_business_user",
-                "guard_name" => "web",
-                "readable_name" => "Send Business Invites as Admin",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "list_document_requests",
-                "guard_name" => "web",
-                "readable_name" => "List Business Documents requests as Admin",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "view_transactions",
-                "guard_name" => "web",
-                "readable_name" => "View Transactions data as Admin",
-                "is_admin" => true,
-            ],
-            [
-                "name" => "requery_transactions",
-                "guard_name" => "web",
-                "readable_name" => "Requery Transaction as Admin",
-                "is_admin" => true,
-            ],
         ]);
 
         $permissions->map(function ($p) {
@@ -251,17 +187,24 @@ class RoleSeeder extends Seeder
             );
         });
 
-
+        
         $finance_permissions = [
             "list_business_transactions", "search_business_transactions", "show_business_stats",
         ];
-
+        
         $developer_permissions = [
             "get_whitelist_ips", "set_whitelist_ips", "get_low_balance_threshold", "set_low_balance_threshold", "get_webhook_url", "set_webhook_url", "show_business_stats"
         ];
-        Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first()->syncPermissions($permissions->pluck('name'));
-        Role::whereName(sc('BUSINESS_DEVELOPER_ROLE'))->first()->syncPermissions($developer_permissions);
-        Role::whereName(sc('BUSINESS_FINANCE_ROLE'))->first()->syncPermissions($finance_permissions);
-        Role::whereName(sc('SUPER_ADMIN_ROLE'))->first()->syncPermissions($permissions->where('is_admin', true)->pluck('name'));
+        ModelsRole::whereName(sc('BUSINESS_ADMIN_ROLE'))->first()->syncPermissions($permissions->pluck('name'));
+        ModelsRole::whereName(sc('BUSINESS_DEVELOPER_ROLE'))->first()->syncPermissions($developer_permissions);
+        ModelsRole::whereName(sc('BUSINESS_FINANCE_ROLE'))->first()->syncPermissions($finance_permissions);
+
+
+
+        $adminBusiness = Business::whereEmail(sc('ADMIN_BUSINESS_EMAIL'))->first();
+        $adminUser = User::whereEmail(sc('ADMIN_BUSINESS_EMAIL'))->first();
+        $adminBusiness->is_admin = true;
+        $adminBusiness->save();
+        $adminUser->syncRoles([sc('SUPER_ADMIN_ROLE')]);
     }
 }

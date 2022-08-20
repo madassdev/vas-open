@@ -90,8 +90,12 @@ class BankController extends Controller
         ]);
     }
 
-    public function checkAuthorization($user, $business, $permitted_role = "business_super_admin")
+    public function checkAuthorization($user, $business, $permitted_role = false)
     {
+        if(!$permitted_role)
+        {
+            $permitted_role = sc('BUSINESS_ADMIN_ROLE');
+        }
         $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
         // Does this user actually still have this business under them?
         if (!$businessUser) {

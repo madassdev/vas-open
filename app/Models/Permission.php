@@ -205,7 +205,7 @@ class Permission extends Model
     {
         return collect([
             [
-                "role" => "business_super_admin",
+                "role" => sc('BUSINESS_ADMIN_ROLE'),
                 "permissions" => [
                     "business_get_transactions",
                     "business_search_transactions",
@@ -235,7 +235,7 @@ class Permission extends Model
                 ],
             ],
             [
-                "role" => "business_finance",
+                "role" => sc("BUSINESS_FINANCE_ROLE"),
                 "permissions" => [
                     "business_get_stats",
                     "business_search_transactions",
@@ -244,7 +244,7 @@ class Permission extends Model
                 ],
             ],
             [
-                "role" => "business_developer",
+                "role" => sc("BUSINESS_DEVELOPER_ROLE"),
                 "permissions" => [
                     "business_get_stats",
                     "business_get_whitelist_ips",
@@ -257,7 +257,7 @@ class Permission extends Model
                 ],
             ],
             [
-                "role" => "owner_super_admin",
+                "role" => sc("SUPER_ADMIN_ROLE"),
                 "permissions" => [
                     "admin_get_stats",
                     "admin_get_products_commissions",

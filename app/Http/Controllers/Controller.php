@@ -32,10 +32,10 @@ class Controller extends BaseController
     public function authorizeAdmin($permission)
     {
         $user = auth()->user();
-        if(!$user->can($permission)){
-            if(!$user->hasRole(sc('SUPER_ADMIN_ROLE')))
-            sr("User does not have the permission: [" . strtoupper($permission) . "]", [], 403);
-        }
+        // if(!$user->can($permission)){
+        //     if(!$user->hasRole(sc('SUPER_ADMIN_ROLE')))
+        //     sr("User does not have the permission: [" . strtoupper($permission) . "]", [], 403);
+        // }
 
     }
 }

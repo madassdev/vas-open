@@ -185,13 +185,6 @@ class BusinessController extends Controller
         if (!$businessUser->is_active) {
             return $this->sendError('This is not the current active business of this user. Please update active business first.', [], 403);
         }
-        // Can this user perform this action on this active business?
-        $businessUserRole = Role::find($businessUser->role_id);
-
-        if (!($businessUserRole && $businessUserRole->name == "business_super_admin")) {
-            return $this->sendError('User does not have the roles to perform this action on this business', [], 403);
-        }
-
         switch ($request->key_type) {
             case 'test_api_key':
                 $business->test_api_key = strtoupper("pk_test_" . str()->uuid());

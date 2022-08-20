@@ -23,7 +23,7 @@ class InviteeController extends Controller
 
     public function getProtectedRoles()
     {
-        $protectedRoleNames = ['owner_super_admin'];
+        $protectedRoleNames = [sc("SUPER_ADMIN_ROLE")];
         $protectedRoles = DB::table('roles')->whereIn('name', $protectedRoleNames)->get();
         return $protectedRoles;
     }
@@ -335,8 +335,12 @@ class InviteeController extends Controller
         // }
     }
 
-    public function checkAuthorization($user, $business, $permitted_role = "business_super_admin")
+    public function checkAuthorization($user, $business, $permitted_role = false)
     {
+        if(!$permitted_role)
+        {
+            $permitted_role = sc('BUSINESS_ADMIN_ROLE');
+        }
         $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
         // Does this user actually still have this business under them?
         if (!$businessUser) {

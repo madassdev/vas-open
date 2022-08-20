@@ -89,12 +89,21 @@ function softCode($string)
         case 'BUSINESS_ADMIN_ROLE':
             return Business::$BUSINESS_ADMIN_ROLE;
             break;
+        case 'BUSINESS_DEVELOPER_ROLE':
+            return Business::$BUSINESS_DEVELOPER_ROLE;
+            break;
+        case 'BUSINESS_FINANCE_ROLE':
+            return Business::$BUSINESS_FINANCE_ROLE;
+            break;
+        case 'BUSINESS_INVITEE_ROLE':
+            return Business::$BUSINESS_INVITEE_ROLE;
+            break;
         case 'ADMIN_BUSINESS_EMAIL':
             return Business::$ADMIN_BUSINESS_EMAIL;
             break;
         case 'SUPER_ADMIN_ROLE':
-                return "owner_super_admin";
-                break;
+            return "super_admin";
+            break;
 
         default:
             return $string;
@@ -106,4 +115,3 @@ function sc($string)
 {
     return softCode($string);
 }
-

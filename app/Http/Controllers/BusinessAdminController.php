@@ -231,13 +231,12 @@ class BusinessAdminController extends Controller
         ]);
 
         // Attach business to user
-        $role = Role::whereName('business_super_admin')->first();
+        $role = Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first();
         $user->businesses()->attach($business->id, ["is_active" => true, 'role_id' => $role->id]);
 
         // Assign role to user 
         $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
-        $user->assignRole('business_super_admin');
-        $businessUser->assignRole('business_super_admin');
+        $businessUser->assignRole($role->name);
 
         // Create user and business on test env
         DBSwap::setConnection('mysqltest');
@@ -269,14 +268,13 @@ class BusinessAdminController extends Controller
             "verified" => false,
         ]);
 
-        $test_role = Role::whereName('business_super_admin')->first();
+        $test_role = Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first();
         // Attach business to user
         $test_user->businesses()->attach($test_business->id, ["is_active" => true, "role_id" => $test_role->id]);
 
         // Assign role to user 
         $testBusinessUser = BusinessUser::whereBusinessId($test_business->id)->whereUserId($test_user->id)->first();
-        $test_user->assignRole('business_super_admin');
-        $testBusinessUser->assignRole('business_super_admin');
+        $testBusinessUser->assignRole($role->name);
 
 
         DBSwap::setConnection('mysqllive');

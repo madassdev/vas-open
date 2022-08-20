@@ -16,7 +16,7 @@ return new class extends Migration
     public function up()
     {
         //
-        $role = Role::whereName('business_super_admin')->first();
+        $role = Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first();
         Business::all()->map(function ($business) use ($role) {
             $users = $business->users->pluck('id');
             $business_user = $business->businessUsers()

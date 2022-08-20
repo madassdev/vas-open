@@ -18,16 +18,16 @@ class Role extends Model
     public function getTitleAttribute()
     {
         switch ($this->name) {
-            case 'business_developer':
+            case sc('BUSINESS_DEVELOPER_ROLE'):
                 return $this->readable_name ?? "Business Developer";
                 break;
-            case 'business_finance':
+            case sc('BUSINESS_FINANCE_ROLE'):
                 return $this->readable_name ?? "Business Finance";
                 break;
-            case 'business_super_admin':
+            case sc('BUSINESS_ADMIN_ROLE'):
                 return $this->readable_name ?? "Business Administrator";
                 break;
-            case 'owner_super_admin':
+            case sc('SUPER_ADMIN_ROLE'):
                 return $this->readable_name ?? "Super Administrator";
                 break;
 
@@ -44,7 +44,7 @@ class Role extends Model
 
     public static function adminRoles()
     {
-        $exemptRoles = ["business_invitee", "business_super_admin", "business_developer", "business_finance"];
+        $exemptRoles = [sc("BUSINESS_INVITEE_ROLE"), sc("BUSINESS_ADMIN_ROLE"), sc("BUSINESS_DEVELOPER_ROLE"), sc("BUSINESS_FINANCE_ROLE")];
     
         $adminableRoles = Role::whereNotIn('name', $exemptRoles)->get();
         return $adminableRoles;

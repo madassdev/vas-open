@@ -27,7 +27,10 @@ class Business extends Model
         "enabled" => "boolean",
     ];
     public static $ADMIN_BUSINESS_EMAIL = "admin@up-ng.com";
-    public static $BUSINESS_ADMIN_ROLE = "business_super_admin";
+    public static $BUSINESS_ADMIN_ROLE = "business_admin";
+    public static $BUSINESS_DEVELOPER_ROLE = "business_developer";
+    public static $BUSINESS_FINANCE_ROLE = "business_finance";
+    public static $BUSINESS_INVITEE_ROLE = "business_invitee";
 
 
     public function documents()
@@ -173,50 +176,6 @@ class Business extends Model
     {
         return $this->hasOne(Wallet::class);
     }
-
-    public function moveToTestDb()
-    {
-        $user = $this->user;
-        $business = $this;
-        DBSwap::setConnection('mysqltest');
-        $test_business = Business::updateOrCreate([
-            "email" => $business->business_email,
-        ], [
-            "name" => $business->business_name,
-            "email" => $business->business_email . 'nnn',
-            "phone" => $business->business_phone_number,
-            "address" => $business->business_address,
-            "current_env" => "test",
-            "test_api_key" => $business->test_api_key,
-            "live_enabled" => true,
-            "business_category_id" => $business->business_category_id,
-        ]);
-
-        return $test_business;
-        $test_business->createDummyAccount();
-        $test_business->createWallet();
-        // Create User
-        $test_user = User::updateOrCreate([
-            "email" => $user->email,
-        ], [
-            "first_name" => $user->first_name,
-            "last_name" => $user->last_name,
-            "email" => $user->email,
-            "phone" => $user->phone_number,
-            "business_id" => $test_business->id,
-            "password" => $user->password,
-            "verification_code" => $user->password,
-            "verified" => false,
-        ]);
-
-        $test_role = Role::whereName('business_super_admin')->first();
-        // Attach business to user
-        $test_user->businesses()->attach($test_business->id, ["is_active" => true, "role_id" => $test_role->id]);
-
-        // Assign role to user 
-        $test_user->assignRole('business_super_admin');
-    }
-    
 
     public function businessDocumentRequests()
     {

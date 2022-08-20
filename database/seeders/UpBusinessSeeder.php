@@ -29,8 +29,7 @@ class UpBusinessSeeder extends Seeder
         ];
         $admin = (object) $details;
         $business_category_id = BusinessCategory::first()->id;
-        $role = Role::whereName('business_super_admin')->first();
-        $adminRole = Role::whereName('owner_super_admin')->first();
+        $role = Role::whereName(sc('SUPER_ADMIN_ROLE'))->first();
 
         $key = md5($admin->email);
 
@@ -44,6 +43,7 @@ class UpBusinessSeeder extends Seeder
             "current_env" => "test",
             "live_enabled" => true,
             "business_category_id" => $business_category_id,
+            "is_admin" => true
         ]);
 
         $business->createDummyAccount();
@@ -70,8 +70,7 @@ class UpBusinessSeeder extends Seeder
         $user->businesses()->attach($business->id, ["is_active" => true, 'role_id' => $role->id]);
 
         // Assign role to user 
-        $user->assignRole('business_super_admin');
-        $user->assignRole('owner_super_admin');
+        $user->assignRole(sc('SUPER_ADMIN_ROLE'));
 
         $business->createDemoTransaction(30);
     }

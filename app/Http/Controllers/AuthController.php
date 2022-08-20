@@ -77,13 +77,12 @@ class AuthController extends Controller
         ]);
 
         // Attach business to user
-        $role = ModelsRole::whereName('business_super_admin')->first();
+        $role = ModelsRole::whereName(sc('BUSINESS_ADMIN_ROLE'))->first();
         $user->businesses()->attach($business->id, ["is_active" => true, 'role_id' => $role->id]);
 
         // Assign role to user 
         $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
-        $user->assignRole('business_super_admin');
-        $businessUser->assignRole('business_super_admin');
+        $businessUser->assignRole($role->name);
 
         // Create user and business on test env
         DBSwap::setConnection('mysqltest');
@@ -115,14 +114,13 @@ class AuthController extends Controller
             "verified" => false,
         ]);
 
-        $test_role = ModelsRole::whereName('business_super_admin')->first();
+        $test_role = ModelsRole::whereName(sc('BUSINESS_ADMIN_ROLE'))->first();
         // Attach business to user
         $test_user->businesses()->attach($test_business->id, ["is_active" => true, "role_id" => $test_role->id]);
 
         // Assign role to user 
         $testBusinessUser = BusinessUser::whereBusinessId($test_business->id)->whereUserId($test_user->id)->first();
-        $test_user->assignRole('business_super_admin');
-        $testBusinessUser->assignRole('business_super_admin');
+        $testBusinessUser->assignRole($test_role->name);
 
 
         DBSwap::setConnection('mysqllive');
@@ -153,24 +151,25 @@ class AuthController extends Controller
         }
 
         $user->load('businesses', 'business.businessBank', 'businessUser');
-        $balanceService = new BalanceService($user);
+        // $balanceService = new BalanceService($user);
         // $balance = $balanceService->getBalance($user);
 
         // Fetch User Roles and Permissions
-        $roles = $user->roles->pluck('name')->toArray();
-        $permissions = $user->getAllPermissions()->pluck('name')->toArray();
-
+        
         // Create API Token for user
-        // $token =  "pp";
         $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
         $message = $user->password_changed ? "Login Successful" : "Login successful. | WARNING: Please update your password to continue.";
-        $user->active_business_role = $user->businessUser->role;
+        if($user->business->is_admin)
+        {
+            $role = $user->roles->first();
+        }else{
+            $role = Role::find($user->active_business->role_id);
+        }
         $data = [
-            "user" => $user,
-            // "balance" => $balance,
             "access_token" => $token,
-            "user_roles" => $roles,
-            "user_permissions" => $permissions,
+            "user" => $user->unsetRelation('roles'),
+            "role" => $role->load('permissions'),
+            "is_admin" => (bool)$user->business->is_admin
         ];
         return $this->sendSuccess($message, $data);
     }
@@ -315,47 +314,26 @@ class AuthController extends Controller
     public function me()
     {
         $user = auth()->user();
-        $user->load('business.businessBank', 'businesses', 'roles', 'businessUser');
-        $roles = $user->roles->pluck('name')->toArray();
-        $permissions = $user->getAllPermissions()->pluck('name')->toArray();
-        $user->active_business_role = $user->businessUser->role;
+        $user->load('business.businessBank', 'businesses', 'businessUser');
+        if($user->business->is_admin)
+        {
+            $role = $user->roles->first();
+        }else{
+            $role = Role::find($user->active_business->role_id);
+        }
         return $this->sendSuccess('User details fethched successfully', [
             "user" => $user,
-            "user_roles" => $roles,
-            "user_permissions" => $permissions,
+            "role" => $role,
+            "is_admin" => (bool)$user->business->is_admin
         ]);
     }
 
     public function roles()
     {
-        $protectedRoleNames = ["owner_super_admin", "business_invitee"];
-        // $validroles = DB::table('roles')->whereNotIn('name', $protectedRoleNames)->get();
-        // $roles = $validroles->map(function ($r) {
-        //     $r->title = $this->readableRoleName($r->name);
-        //     return $r;
-        // });
+        $protectedRoleNames = [sc("SUPER_ADMIN_ROLE"), sc("INVITEE_ROLE")];
         $roles = ModelsRole::whereNotIn('name', $protectedRoleNames)->get();
         return $this->sendSuccess("Roles fetched successfully", [
             "roles" => $roles
         ]);
-    }
-
-    public function readableRoleName($name)
-    {
-        switch ($name) {
-            case 'business_developer':
-                return "Developer";
-                break;
-            case 'business_finance':
-                return "Finance";
-                break;
-            case 'business_super_admin':
-                return "Administrator";
-                break;
-
-            default:
-                # code...
-                break;
-        }
     }
 }

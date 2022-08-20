@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Business;
 use App\Models\BusinessCategory;
+use App\Models\BusinessUser;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -56,7 +57,7 @@ class DevUsersSeeder extends Seeder
     {
         $dev = (object) $details;
         $business_category_id = BusinessCategory::first()->id;
-        $role = Role::whereName('business_super_admin')->first();
+        $role = Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first();
         $key = md5($dev->email);
 
         $business = Business::updateOrCreate([
@@ -95,8 +96,8 @@ class DevUsersSeeder extends Seeder
         $user->businesses()->attach($business->id, ["is_active" => true, 'role_id' => $role->id]);
 
         // Assign role to user 
-        $user->assignRole('business_super_admin');
-
+        $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
+        $businessUser->assignRole($role->name);
         $business->createDemoTransaction(30);
     }
 }
