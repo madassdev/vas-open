@@ -210,35 +210,35 @@ class RoleSeeder extends Seeder
             [
                 "name" => "super_admin",
                 "guard_name" => "web",
-                "readable_name" => "Super Admin Role",
+                "readable_name" => "Super Admin",
                 "description" => null,
                 "is_admin" => true
             ],
             [
                 "name" => "business_admin",
                 "guard_name" => "web",
-                "readable_name" => "Business Admin Role",
+                "readable_name" => "Business Admin",
                 "description" => null,
                 "is_admin" => false
             ],
             [
                 "name" => "business_developer",
                 "guard_name" => "web",
-                "readable_name" => "Business Developer Role",
+                "readable_name" => "Business Developer",
                 "description" => null,
                 "is_admin" => false
             ],
             [
                 "name" => "business_finance",
                 "guard_name" => "web",
-                "readable_name" => "Business Finance Role",
+                "readable_name" => "Business Finance",
                 "description" => null,
                 "is_admin" => false
             ],
             [
                 "name" => "business_invitee",
                 "guard_name" => "web",
-                "readable_name" => "Business Invitee Role",
+                "readable_name" => "Business Invitee",
                 "description" => null,
                 "is_admin" => false
             ],

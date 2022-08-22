@@ -165,6 +165,7 @@ class AuthController extends Controller
             $role = Role::find($user->active_business->role_id);
         }
         $user->unsetRelation('roles');
+        $role->title = str_replace(" Role", '', $role->readable_name);
         $user->role = $role->load('permissions');
         $user->is_admin = (bool)$user->business->is_admin;
         $data = [
