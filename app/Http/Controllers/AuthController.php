@@ -155,20 +155,22 @@ class AuthController extends Controller
         // $balance = $balanceService->getBalance($user);
 
         // Fetch User Roles and Permissions
-        
+
         // Create API Token for user
         $token =  $user->createToken(config('auth.auth_token_name'))->plainTextToken;
         $message = $user->password_changed ? "Login Successful" : "Login successful. | WARNING: Please update your password to continue.";
-        if($user->business->is_admin)
-        {
+        if ($user->business->is_admin) {
             $role = $user->roles->first();
-        }else{
+        } else {
             $role = Role::find($user->active_business->role_id);
         }
+        $user->unsetRelation('roles');
+        $user->role = $role->load('permissions');
+        $user->is_admin = (bool)$user->business->is_admin;
         $data = [
             "access_token" => $token,
-            "user" => $user->unsetRelation('roles'),
-            "role" => $role->load('permissions'),
+            "user" => $user,
+            "role" => $role,
             "is_admin" => (bool)$user->business->is_admin
         ];
         return $this->sendSuccess($message, $data);
@@ -315,10 +317,9 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $user->load('business.businessBank', 'businesses', 'businessUser');
-        if($user->business->is_admin)
-        {
+        if ($user->business->is_admin) {
             $role = $user->roles->first();
-        }else{
+        } else {
             $role = Role::find($user->active_business->role_id);
         }
         return $this->sendSuccess('User details fethched successfully', [

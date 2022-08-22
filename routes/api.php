@@ -113,7 +113,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
             Route::get('/whitelist-ips', [BusinessController::class, 'getWhitelistIps'])->middleware('businessUserPermission:get_whitelist_ips');
             Route::post('/whitelist-ips', [BusinessController::class, 'setWhitelistIps'])->middleware('businessUserPermission:set_whitelist_ips');
 
-
+            
             Route::post('/user/toggle-notification', [BusinessController::class, 'toggleBusinessNotification'])->middleware('businessUserPermission:toggle_notifications');
             Route::post('/reset-keys', [BusinessController::class, 'resetKeys'])->middleware('businessUserPermission:reset_business_keys');
 
