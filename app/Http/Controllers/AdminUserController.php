@@ -30,9 +30,9 @@ class AdminUserController extends Controller
             "role_name" => "required|exists:roles,name",
             "admin_business_email" => "email"
         ]);
-        $adminBusiness = Business::whereEmail(sc('ADMIN_BUSINsESS_EMAIL'))->orWhere('email', $request->admin_business_email)->first();
+        $adminBusiness = Business::whereEmail(sc('ADMIN_BUSINESS_EMAIL'))->orWhere('email', $request->admin_business_email)->first();
         if (!$adminBusiness) {
-            sr("Admin business not found, please set valid admin_business_email");
+            sr("Admin business not found, please set valid admin_business_email",[],404);
         }
 
         $generated_password = generateRandomCharacters() . generateRandomCharacters();
