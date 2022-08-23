@@ -16,11 +16,13 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->float('unit_cost')->nullable();
+            $table->string('service_type');
             $table->string('shortname')->nullable();
             $table->bigInteger('biller_id')->unsigned();
             $table->string('description')->nullable();
-            $table->string('product_code')->nullable();
+            $table->string('vendor_code')->nullable();
+            $table->string('up_product_key')->nullable();
+            $table->float('up_price')->nullable();
             $table->string('logo')->nullable();
             $table->bigInteger('product_category_id')->unsigned();
             $table->tinyInteger('has_validation')->nullable();
@@ -44,6 +46,9 @@ class CreateProductsTable extends Migration
             $table->string('implementation_code')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
+
+            // indexes
+            $table->unique('service_type');
         });
 
         Schema::table('products', function (Blueprint $table) {

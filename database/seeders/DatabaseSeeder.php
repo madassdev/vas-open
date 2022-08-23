@@ -8,24 +8,28 @@ use App\Models\Wallet;
 use App\Models\Invitee;
 use App\Models\Product;
 use App\Models\Business;
-use App\Models\BusinessBank;
 use App\Models\WalletLog;
 use App\Models\Transaction;
 use App\Models\WalletSplit;
+use Illuminate\Support\Str;
+use App\Models\BusinessBank;
 use App\Models\BusinessProduct;
 use App\Models\ProductCategory;
 use Illuminate\Database\Seeder;
 use App\Models\BusinessCategory;
 use App\Models\BusinessDirector;
 use App\Models\BusinessDocument;
+use App\Models\SubProduct;
 use App\Models\TransactionExtra;
 use Database\Seeders\RoleSeeder;
 use App\Models\WalletTransaction;
-use Database\Factories\RoleFactory;
 use Database\Seeders\BillerSeeder;
+use Database\Factories\RoleFactory;
+use Database\Seeders\DevUsersSeeder;
+use Database\Seeders\UpBusinessSeeder;
+use Illuminate\Support\Facades\Artisan;
 use Database\Seeders\ProductCategoriesSeeder;
 use Database\Seeders\BusinessCategoriesSeeder;
-use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -356,12 +360,15 @@ class DatabaseSeeder extends Seeder
 
         ];
         foreach ($products as $product) {
-            Product::factory()->make([
+            Product::factory()
+            ->has(SubProduct::factory(2),'subProducts')
+            ->create([
                 'name' => $product['name'],
                 'shortname' => $product['shortname'],
                 'product_category_id' => $product['product_category_id'],
-                'product_code' => $product['product_code']??null,
-            ])->save();
+                'vendor_code' => $product['product_code'] ?? null,
+                'service_type' => Str::slug($product['name'],'_'),
+            ]);
         }
         $business_categories = BusinessCategory::take(2)->get();
         foreach ($business_categories as $business_category) {

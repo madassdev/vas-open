@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Biller;
+use App\Models\Business;
+use App\Models\SubProduct;
+use App\Models\Transaction;
+use App\Models\ProductCategory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -61,6 +66,11 @@ class Product extends Model
         ];
 
         return $p;
+    }
+
+    public function subProducts()
+    {
+        return $this->hasMany(SubProduct::class);
     }
 
 
