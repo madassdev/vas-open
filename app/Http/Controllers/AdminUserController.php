@@ -50,6 +50,7 @@ class AdminUserController extends Controller
             "password_changed" => false,
         ]);
         $businessRole = Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first();
+        
         $adminRole = Role::whereName($request->role_name)->first();
         $user->businesses()->attach($adminBusiness->id, ["is_active" => true, 'role_id' => $businessRole->id]);
 
@@ -63,7 +64,7 @@ class AdminUserController extends Controller
 
         $mailContent = new GenericMail('email.admin-user-created', [
             "user" => $user,
-            "role" => $adminRole,
+            "role" => $adminRole->title,
             "password" => $generated_password,
         ], 'payload', 'Admin User mail');
 
@@ -75,10 +76,10 @@ class AdminUserController extends Controller
             $mailError = $e->getMessage();
         };
 
-        // Create response for test environments where mail may not be setup yet.
-        $data =  [];
-
-        return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
+        return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', [
+            "user" => $user,
+            "role" => $adminRole,
+        ]);
     }
 
     public function getAdmins()
