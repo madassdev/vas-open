@@ -18,7 +18,7 @@ class Role extends Model
     public function getTitleAttribute()
     {
 
-        return str_replace(" Role", '', $this->role->readable_name);
+        return str_replace(" Role", '', $this->readable_name);
         switch ($this->name) {
             case sc('BUSINESS_DEVELOPER_ROLE'):
                 return $this->readable_name ?? "Business Developer";

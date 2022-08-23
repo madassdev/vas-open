@@ -332,7 +332,7 @@ class AuthController extends Controller
 
     public function roles()
     {
-        $protectedRoleNames = [sc("SUPER_ADMIN_ROLE"), sc("INVITEE_ROLE")];
+        $protectedRoleNames = [sc("SUPER_ADMIN_ROLE"), sc("BUSINESS_INVITEE_ROLE")];
         $roles = ModelsRole::whereNotIn('name', $protectedRoleNames)->get();
         return $this->sendSuccess("Roles fetched successfully", [
             "roles" => $roles
