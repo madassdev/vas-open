@@ -28,8 +28,10 @@ class ProductFactory extends Factory
             'shortname' => $this->faker->word,
             'biller_id' => Biller::all()->random()->id,
             'description' => $this->faker->randomElement(['fixed', 'percentage']),
-            'product_code' => $this->faker->randomElement(['fixed', 'percentage']),
-            'unit_cost' => $this->faker->randomFloat(2, 0, 100),
+            'vendor_code' => $this->faker->slug,
+            'up_price' => $this->faker->randomFloat(2, 0, 100),
+            'up_product_key' => $this->faker->slug,
+            'service_type' => $this->faker->randomElement(['mtn_airtime', 'mtn_data', 'mtn_tv', 'mtn_internet']),
             'logo' => $this->faker->imageUrl(),
             'product_category_id' => ProductCategory::all()->random()->id,
             'has_validation' => $this->faker->numberBetween(0, 1),
@@ -46,7 +48,7 @@ class ProductFactory extends Factory
             'integrator_commission_cap' => $this->faker->randomFloat(2, 0, 100),
             'integrator_commission_amount_cap' => $this->faker->randomFloat(2, 0, 100),
             'has_fee' =>  $has_fee,
-            'fee_configuration' =>  $has_fee ? json_encode(
+            'fee_configuration' =>  $has_fee ?
                 [
                     'type' => $this->faker->randomElement(['fixed', 'percentage']),
                     'has_range' => $has_range,
@@ -58,7 +60,7 @@ class ProductFactory extends Factory
                     'cap' => $this->faker->randomFloat(2, 0, 100),
                     'value' => $this->faker->randomFloat(2, 0, 100),
                 ]
-            ) : null,
+                : null,
             'type' => $this->faker->randomElement(['fixed', 'percentage']),
             'implementation_code' => $this->faker->randomElement(['fixed', 'percentage']),
         ];
