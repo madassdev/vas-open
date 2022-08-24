@@ -19,8 +19,8 @@ class BusinessProductFactory extends Factory
     public function definition()
     {
         return [
-            'business_id' => Business::all()->random()->id,
-            'product_id' => Product::all()->random()->id,
+            'business_id' => Business::factory(),
+            'product_id' => Product::factory(),
             'commission_value' => $this->faker->randomFloat(2, 0, 100),
             'enabled' => $this->faker->boolean,
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),

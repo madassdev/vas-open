@@ -3,9 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\Biller;
+use Mockery\Undefined;
+use Illuminate\Support\Str;
 use App\Models\ProductCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Mockery\Undefined;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
@@ -31,13 +32,13 @@ class ProductFactory extends Factory
             'vendor_code' => $this->faker->slug,
             'up_price' => $this->faker->randomFloat(2, 0, 100),
             'up_product_key' => $this->faker->slug,
-            'service_type' => $this->faker->randomElement(['mtn_airtime', 'mtn_data', 'mtn_tv', 'mtn_internet']),
+            'service_type' => fn($attributes) => Str::slug($attributes['name'], '-'),
             'logo' => $this->faker->imageUrl(),
             'product_category_id' => ProductCategory::all()->random()->id,
             'has_validation' => $this->faker->numberBetween(0, 1),
-            'enabled' => $this->faker->numberBetween(0, 1),
-            'service_status' => $this->faker->numberBetween(0, 1),
-            'deployed' => $this->faker->numberBetween(0, 1),
+            'enabled' => 1,
+            'service_status' => 1,
+            'deployed' => 1,
             'min_amount' => $this->faker->randomFloat(2, 0, 100),
             'max_amount' => $this->faker->randomFloat(2, 0, 100),
             'commission_type' => $this->faker->randomElement(['fixed', 'percentage']),

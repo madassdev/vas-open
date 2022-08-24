@@ -66,6 +66,7 @@ class DatabaseSeeder extends Seeder
                 'shortname' => '9mobile',
                 'product_category_id' => 1,
                 'product_code' => '12700',
+                'service_type' => '9mobile_airtime',
             ],
             [
                 'name' => 'Abuja Electricty Distribution Company Postpaid',
@@ -89,6 +90,7 @@ class DatabaseSeeder extends Seeder
                 'shortname' => 'Airtel',
                 'product_category_id' => 1,
                 'product_code' => '2347087214896',
+                'service_type' => 'airtel_airtime',
             ],
             [
                 'name' => 'Akwa Ibom Internal Revenue Services',
@@ -146,6 +148,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'DSTV',
                 'shortname' => 'DSTV',
                 'product_category_id' => 4,
+                'service_type' => 'dstv',
             ],
             [
                 'name' => 'EKEDC Postpaid',
@@ -174,6 +177,7 @@ class DatabaseSeeder extends Seeder
                 'shortname' => 'GLO',
                 'product_category_id' => 1,
                 'product_code' => '12699',
+                'service_type' => 'glo_airtime',
             ],
             [
                 'name' => 'GOTV',
@@ -254,6 +258,7 @@ class DatabaseSeeder extends Seeder
                 'shortname' => 'MTN',
                 'product_category_id' => 1,
                 'product_code' => '12682',
+                'service_type' => 'mtn_airtime',
             ],
             [
                 'name' => 'Sultan Muhammadu Maccido Institute for Qur\'an and General Studies',
@@ -367,7 +372,7 @@ class DatabaseSeeder extends Seeder
                 'shortname' => $product['shortname'],
                 'product_category_id' => $product['product_category_id'],
                 'vendor_code' => $product['product_code'] ?? null,
-                'service_type' => Str::slug($product['name'],'_'),
+                'service_type' => $product['service_type'] ??  Str::slug($product['name'],'_'),
             ]);
         }
         $business_categories = BusinessCategory::take(2)->get();
