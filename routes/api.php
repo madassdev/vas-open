@@ -201,6 +201,7 @@ Route::group(["middleware" => [
         });
         Route::apiResource('banks', BankController::class);
         Route::apiResource('billers', BillerController::class);
+        Route::apiResource('business-categories', BusinessCategoryController::class);
     });
 });
 
