@@ -21,6 +21,58 @@ class BankController extends Controller
         ]);
     }
 
+    public function index()
+    {
+        $banks = Bank::all();
+        return $this->sendSuccess("Banks fetched successfully", [
+            "banks" => $banks
+        ]);
+    }
+
+    public function show(Bank $bank)
+    {
+        return $this->sendSuccess("Bank fetched successfully", ["bank" => $bank]);
+    }
+
+    public function update(Request $request, Bank $bank)
+    {
+        $request->validate([
+            "name" => "required|sometimes|string|unique:banks,name," . $bank->id,
+            "code" => "required|sometimes|string|unique:banks,code," . $bank->id,
+            "is_enabled" => "required|sometimes|boolean"
+        ]);
+
+        $bank->update($request->all());
+
+        return $this->sendSuccess("Bank updated successfully", [
+            "bank" => $bank
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            "name" => "required|string|unique:banks,name",
+            "code" => "required|string|unique:banks,code",
+            "is_enabled" => "required|sometimes|boolean"
+        ]);
+
+        $bank = Bank::create([
+            "name" => $request->name,
+            "code" => $request->code,
+        ]);
+
+        return $this->sendSuccess("Bank created successfully", [
+            "bank" => $bank
+        ]);
+    }
+
+    public function destroy(Bank $bank)
+    {
+        $bank->delete();
+        return $this->sendSuccess("Bank deleted successfully", []);
+    }
+
     public function validateAccount(Request $request)
     {
         $user = auth()->user();
@@ -92,8 +144,7 @@ class BankController extends Controller
 
     public function checkAuthorization($user, $business, $permitted_role = false)
     {
-        if(!$permitted_role)
-        {
+        if (!$permitted_role) {
             $permitted_role = sc('BUSINESS_ADMIN_ROLE');
         }
         $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();

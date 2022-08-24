@@ -102,7 +102,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
             // Banks
             Route::post('/banks/validate-account', [BankController::class, 'validateAccount'])->middleware('businessUserPermission:validate_business_bank_details');
             Route::post('/banks/validate-otp', [BankController::class, 'validateOtp'])->middleware('businessUserPermission:validate_business_bank_details');
-           
+
             // Invitations
             Route::post('/invitees', [InviteeController::class, 'sendInvites'])->middleware('businessUserPermission:send_invitations');
             Route::post('/invitees/resend-invite', [InviteeController::class, 'resendInvite'])->middleware('businessUserPermission:resend_invitation');
@@ -199,6 +199,8 @@ Route::group(["middleware" => [
             Route::post('/roles', [AdminUserController::class, 'createRole']);
             Route::post('/roles/set-permissions', [AdminUserController::class, 'setPermissions']);
         });
+        Route::apiResource('banks', BankController::class);
+        Route::apiResource('billers', BillerController::class);
     });
 });
 
