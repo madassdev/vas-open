@@ -28,7 +28,7 @@ class BillerController extends Controller
             "name" => "required|sometimes|string",
             "shortname" => "required|sometimes|string|unique:billers,shortname," . $biller->id,
             "vendor_code" => "required|sometimes|unique:billers,vendor_code," . $biller->id,
-            "is_enabled" => "required|sometimes|boolean"
+            "enabled" => "required|sometimes|boolean"
         ]);
 
         $biller->update($request->all());
@@ -44,13 +44,13 @@ class BillerController extends Controller
             "name" => "required|string",
             "shortname" => "required|string|unique:billers,shortname",
             "vendor_code" => "required|unique:billers,vendor_code",
-            "is_enabled" => "required|sometimes|boolean"
         ]);
 
         $biller = Biller::create([
             "name" => $request->name,
             "shortname" => $request->shortname,
             "vendor_code" => $request->vendor_code,
+            "enabled" => true
         ]);
 
         return $this->sendSuccess("Biller created successfully", [

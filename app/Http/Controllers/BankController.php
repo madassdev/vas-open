@@ -54,12 +54,12 @@ class BankController extends Controller
         $request->validate([
             "name" => "required|string|unique:banks,name",
             "code" => "required|string|unique:banks,code",
-            "is_enabled" => "required|sometimes|boolean"
         ]);
 
         $bank = Bank::create([
             "name" => $request->name,
             "code" => $request->code,
+            "is_enabled" => true
         ]);
 
         return $this->sendSuccess("Bank created successfully", [
