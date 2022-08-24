@@ -18,10 +18,9 @@ class CreateBusinessProductsTable extends Migration
             $table->bigInteger('business_id')->unsigned();
             $table->bigInteger('product_id')->unsigned();
             $table->float('commission_value')->nullable();
-            $table->tinyInteger('enabled')->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->tinyInteger('enabled')->default(1);
             $table->unique(['business_id', 'product_id']);
+            $table->timestamps();
         });
 
         Schema::table('business_products', function (Blueprint $table) {

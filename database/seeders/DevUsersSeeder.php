@@ -2,13 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Business;
-use App\Models\BusinessCategory;
-use App\Models\BusinessUser;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Product;
+use App\Models\Business;
+use App\Models\BusinessUser;
 use Illuminate\Database\Seeder;
+use App\Models\BusinessCategory;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DevUsersSeeder extends Seeder
 {
@@ -70,6 +71,9 @@ class DevUsersSeeder extends Seeder
             "current_env" => "test",
             "live_enabled" => true,
             "business_category_id" => $business_category_id,
+            "merchant_id" => "Nameofmerchant",
+            "terminal_id" => "1234",
+            "client_id" => "1234",
         ]);
 
         $business->createDummyAccount();
@@ -79,6 +83,13 @@ class DevUsersSeeder extends Seeder
         $business->test_secret_key = strtoupper("sk_test_seeded_" . $key);
         $business->live_secret_key = strtoupper("sk_live_seeded_" . $key);
         $business->save();
+        $business->products()->saveMany(
+            [
+                Product::where('service_type', 'mtn_airtime')->first(),
+                Product::where('service_type', '9mobile_airtime')->first(),
+                Product::where('service_type', 'airtel_airtime')->first(),
+            ]
+        );
 
         $user = User::updateOrCreate([
             "email" => $dev->email,
