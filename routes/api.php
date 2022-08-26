@@ -11,6 +11,7 @@ use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
 use App\Http\Controllers\InviteeController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TransactionController;
@@ -156,6 +157,7 @@ Route::group(["middleware" => [
         Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
         Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData']);
         Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled']);
+        Route::post("/businesses/{business_id}/send-invitations", [BusinessAdminController::class, 'sendBusinessInvites']);
 
         /**  Product Configuration
             - Add Product Configurations
@@ -165,6 +167,11 @@ Route::group(["middleware" => [
             - Commission configuration per product for individual business
             - Product Limits
          */
+        Route::group(['prefix' => 'sub-products'], function () {
+            Route::get("/", [ProductController::class, 'addSubProduct']);
+            Route::get("/{subProduct}", [ProductController::class, 'addSubProduct']);
+            Route::post("/", [ProductController::class, 'addSubProduct']);
+        });
         Route::group(['prefix' => 'products'], function () {
             Route::get("/", [ProductController::class, 'getAllProducts']);
             Route::post("/", [ProductController::class, 'addProduct']);
@@ -202,6 +209,7 @@ Route::group(["middleware" => [
         Route::apiResource('banks', BankController::class);
         Route::apiResource('billers', BillerController::class);
         Route::apiResource('business-categories', BusinessCategoryController::class);
+        Route::apiResource('product-categories', ProductCategoryController::class);
     });
 });
 

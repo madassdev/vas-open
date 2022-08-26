@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Helpers\DBSwap;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\AdminBusinessDetails;
+use App\Mail\GenericMail;
 use App\Mail\UserCreatedPasswordMail;
 use App\Models\Business;
 use App\Models\BusinessDocumentRequest;
 use App\Models\BusinessUser;
+use App\Models\Invitee;
 use App\Models\Role;
 use App\Models\Transaction;
 use App\Models\User;
@@ -22,7 +24,7 @@ class BusinessAdminController extends Controller
     public function getBusinesses(Request $request)
     {
         $per_page = $request->per_page ?? 10;
-        $businesses = Business::paginate($per_page)->appends(request()->query());
+        $businesses = Business::with('businessDocument.businessDocumentRequests')->paginate($per_page)->appends(request()->query());
         return $this->sendSuccess("Businesses fetched successful", [
             "businesses" => $businesses
         ]);
@@ -330,6 +332,93 @@ class BusinessAdminController extends Controller
         return $this->sendSuccess("Business live enable status set successfully", [
             "business" => $business
         ]);
+    }
+
+
+
+    public function sendBusinessInvites(Request $request, $business_id)
+    {
+        $this->authorizeAdmin('send_business_invitations');
+        $business = Business::find($business_id);
+        if (!$business) {
+            return $this->sendError("Business not found with that id", [], 404);
+        }
+
+        $request->validate([
+            "window_location" => "required|string|url",
+            "invitations" => "required|array",
+            "invitations.*.email" => "required|email",
+            "invitations.*.role_id" => "required|exists:roles,id"
+        ]);
+        $user = auth()->user();
+        $window_location = $request->window_location;
+        collect($request->invitations)->map(function ($invitation) {
+            $r = Role::where('id', $invitation["role_id"])->where('is_admin', false)->first();
+            if (!$r) {
+                response()->json(["status" => false, "message" => "Cannot assign admin role id: " . $invitation['role_id'], "data" => []], 403)->throwResponse();
+            }
+        });
+
+        $invitees = collect($request->invitations)->map(function ($invitation) use ($business, $user, $window_location) {
+            $code = rand(10, 99) . rand(10, 99) . rand(10, 99);
+
+            // Don't send to invitor
+            if ($invitation["email"] == $user->email) {
+                return;
+            }
+            $alreadyInvited = Invitee::whereEmail($invitation["email"])
+                ->whereBusinessId($business->id)
+                ->first();
+
+            // Don't send to already created invitee 
+            if ($alreadyInvited
+                // && $alreadyInvited->status == 1
+            ) {
+                return;
+            }
+            $role = Role::where('id', $invitation["role_id"])->where('is_admin', false)->first();
+            $invitee = Invitee::updateOrCreate([
+                "business_id" => $business->id,
+                "email" => $invitation["email"]
+            ], [
+                "business_id" => $business->id,
+                "email" => $invitation["email"],
+                "code" => $code,
+                "host_user_id" => $user->id,
+                "role_id" => $invitation["role_id"],
+                "status" => 0,
+            ]);
+
+            $mailing = $this->notifyInvitee($invitee, $business, $user, $role, $window_location);
+
+            return $invitee;
+        });
+        return $this->sendSuccess('Invitations sent successfully');
+    }
+
+    public function notifyInvitee($invitee, $business, $inviter, $role, $url = null)
+    {
+        $mailContent = new GenericMail('email.invitee-notification', [
+            "invitee" => $invitee,
+            "business" => $business,
+            "inviter" => $inviter,
+            "role" => $role,
+            "url" => $url,
+        ], 'payload', 'Invitation mail');
+        // if (!env("LOCAL_MAIL_SERVER")) {
+
+        $mail = new MailApiService($invitee->email, "[Vas Reseller] You have been invited to collaborate", $mailContent->render());
+        try {
+            $mailError = null;
+            $mail->send();
+        } catch (Exception $e) {
+            // $mailError = $e->getMessage();
+            // throw $e;
+        };
+        return $mailError;
+        // } else {
+        //     Mail::to($invitee)->send($mailContent);
+        // }
     }
 
     public function setMerchantData(Request $request, $business_id)

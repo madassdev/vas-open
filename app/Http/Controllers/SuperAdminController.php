@@ -84,10 +84,16 @@ class SuperAdminController extends Controller
                 WHERE current_env = 'test'
             "
             );
+
+            $thirtyDaysAgo = Date::parse(now()->subDays(30))->format('Y-m-d');
+            $transacting_businesses  = Business::whereHas('transactions', function ($q) use($thirtyDaysAgo) {
+                $q->where('created_at', '>=', $thirtyDaysAgo);
+            })->count();
             return [
                 "all_businesses" => $res[0]->all_businesses,
                 "live_businesses" => $res[1]->live_businesses,
                 "test_businesses" => $res[2]->test_businesses,
+                "transacting_businesses" => $transacting_businesses,
             ];
         });
 
