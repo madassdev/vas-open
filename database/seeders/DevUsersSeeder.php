@@ -73,7 +73,7 @@ class DevUsersSeeder extends Seeder
             "business_category_id" => $business_category_id,
             "merchant_id" => "Nameofmerchant",
             "terminal_id" => "1234",
-            "client_id" => "1234",
+            "client_id" => "380278fb-e23b-4d3d-8461-7b1ff73ad51f",
         ]);
 
         $business->createDummyAccount();
