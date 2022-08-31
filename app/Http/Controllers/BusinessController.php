@@ -6,6 +6,7 @@ use App\Helpers\DBSwap;
 use App\Models\Business;
 use App\Models\BusinessUser;
 use App\Models\Transaction;
+use App\Services\BalanceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,13 +22,54 @@ class BusinessController extends Controller
             "env" => "required|string|in:test,live"
         ]);
         // Perform series of checks...
-        $business = auth()->user()->business;
-        if (!$business->live_enabled) {
-            return $this->sendError("[BUSINESS ENV ERROR]: Business is not enabled to toggle to live.");
+        $user = auth()->user();
+        $business = $user->business;
+        if (strtolower($request->env) == "live") {
+            $businessBank = $business->businessBank;
+            if (!($businessBank && $business->bank_verified)) {
+                return $this->sendError("Business Bank details must be verified before you can be enabled to go live", [], 403);
+            }
+
+            if (!$business->live_enabled) {
+                return $this->sendError("[BUSINESS ENV ERROR]: Business is not enabled to toggle to live.");
+            }
+
+            if ($business->is_bank) {
+                return $this->sendError("Business is a bank customer, please contact technical support", [], 403);
+            }
+
+            if (!$business->document_verified) {
+                return $this->sendError("Business documents must be verified before you can be enabled to go live", [], 403);
+            }
+
+            if (!$business->merchant_id) {
+                return $this->sendError("Business Merchant ID must be set before you can be enabled to go live", [], 403);
+            }
+            if (!$business->terminal_id) {
+                return $this->sendError("Business Terminal ID must be set before you can be enabled to go live", [], 403);
+            }
+
+            if (!$business->client_id) {
+                $service = new BalanceService();
+                $res = $service->registerVasCustomer($business);
+                if (!$res['success']) {
+                    return $this->sendError($res['message'], [], 400);
+                }
+                $data = @$res['data'];
+                $client_id = @$data['clientId'];
+
+                if ($client_id) {
+                    $business->client_id = $client_id;
+                    $business->save();
+                } else {
+                    return $this->sendError("Unable to generate Client ID", [], 400);
+                }
+            }
         }
+
         $business->current_env = $request->env;
         $business->save();
-        return $this->sendSuccess("Bussiness environment switched to " . $request->env);
+        return $this->sendSuccess("Bussiness environment successfully switched to " . $request->env);
     }
 
     public function switchActiveBusiness(Request $request)
@@ -289,7 +331,7 @@ class BusinessController extends Controller
 
         $stats = $env == "live" ? $live_stats : $test_stats;
         $recent_transactions = Transaction::with('product.productCategory', 'product.biller')->whereBusinessId($business->id)->latest()->take(5)->get();
-        if(auth()->user()->email != "oluwaseunoffice@gmail.com"){
+        if (auth()->user()->email != "oluwaseunoffice@gmail.com") {
             $stats = $live_stats;
         }
 

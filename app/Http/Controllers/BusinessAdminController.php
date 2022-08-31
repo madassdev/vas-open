@@ -316,9 +316,9 @@ class BusinessAdminController extends Controller
             if (!$business->merchant_id) {
                 return $this->sendError("Business Merchant ID must be set before they can be enabled to go live", [], 403);
             }
-            if (!$business->client_id) {
-                return $this->sendError("Business Client ID must be set before they can be enabled to go live", [], 403);
-            }
+            // if (!$business->client_id) {
+            //     return $this->sendError("Business Client ID must be set before they can be enabled to go live", [], 403);
+            // }
             if (!$business->terminal_id) {
                 return $this->sendError("Business Terminal ID must be set before they can be enabled to go live", [], 403);
             }

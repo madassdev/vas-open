@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ApiCallException;
+use App\Models\Business;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +15,7 @@ class BalanceService
     private $user;
     private $url;
 
-    public function __construct($user)
+    public function __construct($user = null)
     {
         $this->user = $user;
     }
@@ -79,6 +80,34 @@ class BalanceService
             return $response;
         } catch (Exception $e) {
             throw new ApiCallException($e->getMessage, 400);
+        }
+    }
+
+    public function registerVasCustomer(Business $business)
+    {
+        $account = "1020000589";
+        $hash = config('api.vasCustomerRegistration.hash');
+        $url = config('api.vasCustomerRegistration.url');
+        // return $url;
+        $payload = [
+            "Name" => $business->name,
+            "Email" => $business->email,
+            "PhoneNumber" => $business->phone,
+            "IsBank" => (bool)@$business->is_bank,
+            "Address" => $business->address,
+            "AccountNumber" => $business->account_number,
+            "AccountName" => $business->account_name,
+        ];
+        try {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'hash' => hash('sha256',$hash),
+            ])->post($url, $payload)->json();
+
+            return $response;
+        } catch (Exception $e) {
+            throw new ApiCallException($e->getMessage, 400, $e->getTrace());
         }
     }
 }

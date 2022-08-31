@@ -11,5 +11,10 @@ return [
 
     'bankOtpVerification' => [
         'url' => env('BANK_OTP_VERIFICATION_URL', 'http://196.46.20.20:8002/api/hopebank/validateotp')
+    ],
+
+    'vasCustomerRegistration' => [
+        'url' => env('VAS_CUSTOMER_REGISTRATION_URL', 'http://196.46.20.20:8002/api/vasreseller/register'),
+        'hash' => env('VAS_CUSTOMER_REGISTRATION_HASH', 'D7CE5CA3-2FE9-4FF1-86DF-1B406F66F6C9')
     ]
 ];
