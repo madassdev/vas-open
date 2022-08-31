@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\DBSwap;
+use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
@@ -194,7 +195,7 @@ Route::group(["middleware" => [
             - View transaction details paginated with query params
          */
         Route::group(['prefix' => 'transactions'], function () {
-            Route::get("/", [TransactionController::class, 'getAllTransactions']);
+            Route::get("/", [AdminTransactionController::class, 'index']);
             Route::get("/{transaction}", [TransactionController::class, 'getTransactionDetails']);
         });
 
@@ -225,3 +226,4 @@ Route::get('billers', [BillerController::class, 'index']);
 Route::get('banks', [BankController::class, 'getBanks']);
 Route::get('product-categories', [ProductController::class, 'listCategories']);
 Route::get('/transactions/download', [TransactionController::class, 'download'])->middleware('downloadRoute');
+Route::get('/super/transactions/download', [AdminTransactionController::class, 'download'])->middleware('downloadRoute');
