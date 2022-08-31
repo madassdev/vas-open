@@ -24,7 +24,7 @@ class UpdateBusinessProduct extends FormRequest
     public function rules()
     {
         return [
-            'commiss4ion_value' => 'numeric|between:0,9999999999.99',
+            'commission_value' => 'numeric|between:0,9999999999.99',
             'enabled' => 'boolean',
         ];
     }
