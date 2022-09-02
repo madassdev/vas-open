@@ -31,6 +31,8 @@ use Illuminate\Support\Facades\Artisan;
 use Database\Seeders\ProductCategoriesSeeder;
 use Database\Seeders\BusinessCategoriesSeeder;
 
+use function Symfony\Component\String\b;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -45,21 +47,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BillerSeeder::class);
         $this->call(ProductCategoriesSeeder::class);
         $this->call(BusinessCategoriesSeeder::class);
-        // "Telco Top Up Services", 1
-        // "Databundle Services", 2
-        // "Electricity Services", 3
-        // "Cable Tv Services", 4
-        // "Insurance Services", 5
-        // "Pin Services", 6
-        // "Collection Services", 7
-        // "Validation Services", 8
-        // "Education Services", 9
-        // "Internet Services", 10
-
-        // $billers = Biller::factory()->count(5)->create();
-        // foreach ($product_categories as $product_category) {
-        //     $product_category->products()->saveMany(Product::factory()->count(2)->make());
-        // }
         $products =  [
             [
                 'name' => '9mobile',
@@ -67,18 +54,21 @@ class DatabaseSeeder extends Seeder
                 'product_category_id' => 1,
                 'product_code' => '12700',
                 'service_type' => '9mobile_airtime',
+                'biller_id' => 4,
             ],
             [
                 'name' => 'Abuja Electricty Distribution Company Postpaid',
                 'shortname' => 'AEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '3300',
+                'biller_id' => 10,
             ],
             [
                 'name' => 'Abuja Electricty Distribution Company Prepaid',
                 'shortname' => 'AEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '3322',
+                'biller_id' => 10,
             ],
             [
                 'name' => 'Aiico Motor Insurance',
@@ -91,6 +81,7 @@ class DatabaseSeeder extends Seeder
                 'product_category_id' => 1,
                 'product_code' => '2347087214896',
                 'service_type' => 'airtel_airtime',
+                'biller_id' => 3,
             ],
             [
                 'name' => 'Akwa Ibom Internal Revenue Services',
@@ -107,12 +98,14 @@ class DatabaseSeeder extends Seeder
                 'shortname' => 'BEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '20018',
+                'biller_id' => 12
             ],
             [
                 'name' => 'Benin Electricty Distribution Company Prepaid',
                 'shortname' => 'BEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '20017',
+                'biller_id' => 12
             ],
             [
                 'name' => 'College of Agriculture Wurno',
@@ -155,12 +148,14 @@ class DatabaseSeeder extends Seeder
                 'shortname' => 'EKEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '717',
+                'biller_id' => 5
             ],
             [
                 'name' => 'EKEDC Prepaid',
                 'shortname' => 'EKEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '716',
+                'biller_id' => 5
             ],
             [
                 'name' => 'FCMB Pension Fund Administrator',
@@ -178,6 +173,7 @@ class DatabaseSeeder extends Seeder
                 'product_category_id' => 1,
                 'product_code' => '12699',
                 'service_type' => 'glo_airtime',
+                'biller_id' => 2,
             ],
             [
                 'name' => 'GOTV',
@@ -189,24 +185,28 @@ class DatabaseSeeder extends Seeder
                 'shortname' => 'IEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '12685',
+                'biller_id' => 8
             ],
             [
                 'name' => 'Ibadan Electricity Distribution Company Prepaid',
                 'shortname' => 'IEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '12684',
+                'biller_id' => 8
             ],
             [
                 'name' => 'IKEDC Postpaid',
                 'shortname' => 'IKEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '12696',
+                'biller_id' => 9
             ],
             [
                 'name' => 'IKEDC Prepaid',
                 'shortname' => 'IKEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '12697',
+                'biller_id' => 9
             ],
             [
                 'name' => 'JambEpin',
@@ -223,24 +223,28 @@ class DatabaseSeeder extends Seeder
                 'shortname' => 'JEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '3662',
+                'biller_id' => 11
             ],
             [
                 'name' => 'Jos Electricty Distribution Company Prepaid',
                 'shortname' => 'JEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '3663',
+                'biller_id' => 11
             ],
             [
                 'name' => 'Kaduna Electricty Distribution Company Prepaid',
                 'shortname' => 'KEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '3264',
+                'biller_id' => 7
             ],
             [
                 'name' => 'Kaduna Electricty Distribution Company Postpaid',
                 'shortname' => 'KEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '3265',
+                'biller_id' => 7
             ],
             [
                 'name' => 'LCC',
@@ -259,6 +263,7 @@ class DatabaseSeeder extends Seeder
                 'product_category_id' => 1,
                 'product_code' => '12682',
                 'service_type' => 'mtn_airtime',
+                'biller_id' => 1
             ],
             [
                 'name' => 'Sultan Muhammadu Maccido Institute for Qur\'an and General Studies',
@@ -275,12 +280,14 @@ class DatabaseSeeder extends Seeder
                 'shortname' => 'PEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '959',
+                'biller_id' => 6
             ],
             [
                 'name' => 'Portharcourt Electricty Distribution Company Prepaid',
                 'shortname' => 'PEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '817',
+                'biller_id' => 6
             ],
             [
                 'name' => 'RoyalExchange Insurance',
@@ -365,15 +372,21 @@ class DatabaseSeeder extends Seeder
 
         ];
         foreach ($products as $product) {
-            Product::factory()
-            ->has(SubProduct::factory(2),'subProducts')
-            ->create([
+            $arr = [
                 'name' => $product['name'],
                 'shortname' => $product['shortname'],
                 'product_category_id' => $product['product_category_id'],
-                'vendor_code' => $product['product_code'] ?? null,
-                'service_type' => $product['service_type'] ??  Str::slug($product['name'],'_'),
-            ]);
+            ];
+            if (isset($product['product_code'])) {
+                $arr['vendor_code'] = $product['product_code'];
+            }
+            $arr['service_type'] = $product['service_type'] ??  Str::slug($product['name'], '_');
+            if (isset($product['biller_id'])) {
+                $arr['biller_id'] = $product['biller_id'];
+            }
+            Product::factory()
+                ->has(SubProduct::factory(2), 'subProducts')
+                ->create($arr);
         }
         $business_categories = BusinessCategory::take(2)->get();
         foreach ($business_categories as $business_category) {

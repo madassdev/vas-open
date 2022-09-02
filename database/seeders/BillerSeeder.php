@@ -23,6 +23,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "12682",
+                "id" => 1,
             ],
             [
                 "name" => "Glo",
@@ -30,6 +31,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "12699",
+                "id" => 2,
             ],
             [
                 "name" => "Airtel",
@@ -37,6 +39,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "2347087214896",
+                "id" => 3,
             ],
             [
                 "name" => "9 Mobile",
@@ -44,6 +47,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "12700",
+                "id" => 4,
             ],
             [
                 "name" => "EKO ELECTRICITY",
@@ -51,6 +55,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "716",
+                "id" => 5,
             ],
             [
                 "name" => "PORT HARCOURT ELECTRICITY",
@@ -58,6 +63,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "817",
+                "id" => 6,
             ],
             [
                 "name" => "KADUNA ELECTRICITY",
@@ -65,6 +71,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "3264",
+                "id" => 7,
             ],
             [
                 "name" => "IBADAN ELECTRICITY",
@@ -72,6 +79,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "12684",
+                "id" => 8,
             ],
             [
                 "name" => "IKEJA ELECTRICITY",
@@ -79,6 +87,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "12697",
+                "id" => 9,
             ],
             [
                 "name" => "ABUJA ELECTRICITY",
@@ -86,6 +95,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "3322",
+                "id" => 10,
             ],
             [
                 "name" => "JOS ELECTRICITY",
@@ -93,6 +103,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "3663",
+                "id" => 11,
             ],
             [
                 "name" => "BENIN ELECTRICITY",
@@ -100,6 +111,7 @@ class BillerSeeder extends Seeder
                 "logo" => "https://img/logo_url",
                 "enabled" => true,
                 "vendor_code" => "200017",
+                "id" => 12,
             ]
         ]);
         $billers->map(function ($biller) {

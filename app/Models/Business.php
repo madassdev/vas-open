@@ -119,7 +119,7 @@ class Business extends Model
 
     public function createDemoTransaction($count = 1)
     {
-        $payment_status = ["successful", "successful", "succesfuls", "pending", "failed"];
+        $payment_status = ["successful", "successful", "succesful", "pending", "failed"];
         $tx = [];
         $bp = $this->products()->count();
         if ($bp < 3) {

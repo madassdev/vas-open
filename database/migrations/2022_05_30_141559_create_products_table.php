@@ -29,6 +29,7 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('enabled')->default(1);
             $table->tinyInteger('service_status')->nullable();
             $table->tinyInteger('deployed')->nullable();
+            $table->tinyInteger('has_sub_product')->default(0);
             $table->float('min_amount')->nullable();
             $table->float('max_amount')->nullable();
             $table->float('max_quantity')->nullable();

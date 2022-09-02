@@ -39,6 +39,12 @@ class AddProductRequest extends FormRequest
             'min_amount' => 'required|numeric|between:0,9999999999.99|lte:max_amount',
             'max_amount' => 'required|numeric|between:0,9999999999.99|gte:min_amount',
             'max_quantity' => 'required|numeric|between:0,9999999999.99',
+
+            'up_product_key' => 'required|string|max:191',
+            'up_price' => 'required|numeric|between:0,9999999999.99',
+            'vendor_code' => 'required|string|max:191',
+            'has_sub_product' => 'required|boolean',
+
             'commission_type' => [
                 'required',
                 'string',
