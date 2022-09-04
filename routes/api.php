@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\DBSwap;
+use App\Http\Controllers\ActionRequestController;
 use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AppController;
@@ -211,6 +212,13 @@ Route::group(["middleware" => [
         Route::apiResource('billers', BillerController::class);
         Route::apiResource('business-categories', BusinessCategoryController::class);
         Route::apiResource('product-categories', ProductCategoryController::class);
+
+        Route::group(['prefix' => 'actions'], function () {
+            Route::get('/', [ActionRequestController::class, 'getActionRequests']);
+            Route::post('make/create-user', [ActionRequestController::class, 'createUser']);
+            Route::post('make/update-biller', [ActionRequestController::class, 'makeUpdateBiller']);
+            Route::post('check/{actionRequest}', [ActionRequestController::class, 'makeAction']);
+        });
     });
 });
 

@@ -27,7 +27,7 @@ class RoleSeeder extends Seeder
             [
                 "name" => "switch_active_business",
                 "guard_name" => "web",
-                "readable_name" => "Switch Activr Business"
+                "readable_name" => "Switch Active Business"
             ],
             [
                 "name" => "upload_business_documents",
