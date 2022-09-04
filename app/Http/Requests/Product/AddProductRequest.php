@@ -25,7 +25,6 @@ class AddProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:191',
-            'unit_cost' => 'required|numeric|between:0,9999999999.99',
             'shortname' => 'required|string|max:191',
             'biller_id' => 'required|integer|exists:billers,id',
             'description' => 'string|max:400',
