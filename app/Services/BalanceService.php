@@ -85,7 +85,6 @@ class BalanceService
 
     public function registerVasCustomer(Business $business)
     {
-        $account = "1020000589";
         $hash = config('api.vasCustomerRegistration.hash');
         $url = config('api.vasCustomerRegistration.url');
         // return $url;
