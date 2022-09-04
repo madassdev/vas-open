@@ -28,7 +28,7 @@ class AddProductRequest extends FormRequest
             'shortname' => 'required|string|max:191',
             'biller_id' => 'required|integer|exists:billers,id',
             'description' => 'string|max:400',
-            'product_code' => 'required|string|max:191',
+            'service_type' => 'required|string|max:191',
             'logo' => 'string',
             'product_category_id' => 'required|integer|exists:product_categories,id',
             'has_validation' => 'required|boolean',

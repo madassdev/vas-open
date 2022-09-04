@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('service_type');
+            $table->string('service_type')->unique();
             $table->string('shortname')->nullable();
             $table->bigInteger('biller_id')->unsigned();
             $table->string('description')->nullable();

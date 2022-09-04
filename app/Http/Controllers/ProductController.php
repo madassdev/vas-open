@@ -99,7 +99,7 @@ class ProductController extends Controller
     {
         // if logo is present, save it to cloudinary
         $logo = $request->logo;
-        $all = $request->all();
+        $all = $request->validated();
         if ($logo) {
             try {
                 $upload = cloudinary()->upload($logo);
@@ -123,28 +123,24 @@ class ProductController extends Controller
         $product = Product::find($request->product_id);
         $product->subProducts()->create([
             "up_product_key" => $request->up_product_key,
-            
+
         ]);
     }
 
     public function showSubProduct(SubProduct $subProduct)
     {
-        
     }
 
     public function listSubProducts()
     {
-
     }
 
-    public function updateSubProduct(){
-
-
+    public function updateSubProduct()
+    {
     }
 
     public function deleteSubproduct()
     {
-
     }
 
     public function deleteProduct(Product $product)
