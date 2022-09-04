@@ -215,9 +215,13 @@ Route::group(["middleware" => [
 
         Route::group(['prefix' => 'actions'], function () {
             Route::get('/', [ActionRequestController::class, 'getActionRequests']);
-            Route::post('make/create-user', [ActionRequestController::class, 'createUser']);
-            Route::post('make/update-biller', [ActionRequestController::class, 'makeUpdateBiller']);
-            Route::post('check/{actionRequest}', [ActionRequestController::class, 'makeAction']);
+            Route::group(['prefix' => 'make', 'middleware' => 'role:' . sc("ACTION_MAKER_ROLE")], function(){
+                Route::post('create-user', [ActionRequestController::class, 'createUser']);
+                Route::post('update-biller', [ActionRequestController::class, 'makeUpdateBiller']);
+            });
+            Route::group(['prefix' => 'check', 'middleware' => 'role:' . sc("ACTION_CHECKER_ROLE")], function(){
+                Route::post('/{actionRequest}', [ActionRequestController::class, 'makeAction']);
+            });
         });
     });
 });

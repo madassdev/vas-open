@@ -104,6 +104,12 @@ function softCode($string)
         case 'SUPER_ADMIN_ROLE':
             return "super_admin";
             break;
+        case 'ACTION_MAKER_ROLE':
+            return "action_maker";
+            break;
+        case 'ACTION_CHECKER_ROLE':
+            return "action_checker";
+            break;
         case 'controllerMethod':
             return 'controllerMethod';
 
