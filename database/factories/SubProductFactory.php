@@ -19,7 +19,8 @@ class SubProductFactory extends Factory
     {
         return [
             'product_id' => Product::factory(),
-            'up_product_key' => $this->faker->slug,
+            'up_product_key' => $this->faker->numberBetween(1, 100),
+            'name' => $this->faker->company(),
             'description' => $this->faker->sentence,
             'price' => $this->faker->randomFloat(2, 0, 100),
         ];

@@ -117,7 +117,7 @@ class ProductController extends Controller
     public function addSubProduct(Request $request)
     {
         $request->validate([
-            "product_id" => "required"
+            "product_id" => "required|exists:products,id",
         ]);
 
         $product = Product::find($request->product_id);
@@ -153,7 +153,7 @@ class ProductController extends Controller
     {
         // if logo is present, save it to cloudinary
         $logo = $request->logo;
-        $all = $request->all();
+        $all = $request->validated();
         if ($logo) {
             try {
                 $upload = cloudinary()->upload($logo);
@@ -178,7 +178,7 @@ class ProductController extends Controller
             'name',
             'shortname',
             'category_name',
-            'unit_cost',
+            'up_price',
             'description',
             'logo',
             'enabled',
@@ -207,6 +207,10 @@ class ProductController extends Controller
         if (!$businessProduct) {
             return $this->sendError("Business does not have this product", [], 404);
         }
+        // confirm that Product provider_commision is greater than or equal to the business commission
+        if ($product->provider_commission_value < $request->commission_value) {
+            return $this->sendError("Business commission cannot be greater than product provider commission", [], 400);
+        }
         $businessProduct->update($request->all());
         return $this->sendSuccess("Product configuration updated successfully", [
             "configuration" => $businessProduct,
@@ -228,6 +232,10 @@ class ProductController extends Controller
         $businessProduct = BusinessProduct::where('business_id', $business->id)->where('product_id', $product->id)->first();
         if ($businessProduct) {
             return $this->sendError("Business already has this product", [], 400);
+        }
+        // confirm that Product provider_commision is greater than or equal to the business commission
+        if ($product->provider_commission_value < $request->commission_value) {
+            return $this->sendError("Business commission cannot be greater than product provider commission", [], 400);
         }
         $businessProduct = BusinessProduct::create([
             'business_id' => $business->id,

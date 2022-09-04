@@ -49,7 +49,7 @@ class AddProductRequest extends FormRequest
                 'string',
                 'in:percentage,fixed',
             ],
-            'provider_commission_value' => 'required|numeric|between:0,9999999999.99|lte:integrator_commission_value',
+            'provider_commission_value' => 'required|numeric|between:0,9999999999.99|gt:integrator_commission_value',
             'provider_commission_cap' => 'required|numeric|between:0,9999999999.99',
             'provider_commission_amount_cap' => 'required|numeric|between:0,9999999999.99',
             'integrator_commission_value' => 'required|numeric|between:0,9999999999.99',

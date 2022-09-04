@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('sub_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->string('up_product_key');
+            $table->string('name');
             $table->string('description')->nullable();
-            $table->float('price');
+            $table->float('price')->default(0);
             $table->timestamps();
+            $table->index(['product_id', 'up_product_key']);
         });
+
     }
 
     /**

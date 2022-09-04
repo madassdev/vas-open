@@ -38,7 +38,8 @@ class ProductCategoriesSeeder extends Seeder
         foreach ($productCategories as $index=>$category) {
             ProductCategory::create([
                 "name" => $category,
-                "id" => $index+1
+                "id" => $index+1,
+                "implementation_class" => explode(" ", $category)[0]
             ]);
         }
         //
