@@ -73,7 +73,7 @@ class DevUsersSeeder extends Seeder
             "business_category_id" => $business_category_id,
             "merchant_id" => "Nameofmerchant",
             "terminal_id" => "1234",
-            "client_id" => "1234",
+            "client_id" => "380278fb-e23b-4d3d-8461-7b1ff73ad51f",
         ]);
 
         $business->createDummyAccount();
@@ -83,13 +83,7 @@ class DevUsersSeeder extends Seeder
         $business->test_secret_key = strtoupper("sk_test_seeded_" . $key);
         $business->live_secret_key = strtoupper("sk_live_seeded_" . $key);
         $business->save();
-        $business->products()->saveMany(
-            [
-                Product::where('service_type', 'mtn_airtime')->first(),
-                Product::where('service_type', '9mobile_airtime')->first(),
-                Product::where('service_type', 'airtel_airtime')->first(),
-            ]
-        );
+        $business->products()->saveMany( Product::all() );
 
         $user = User::updateOrCreate([
             "email" => $dev->email,

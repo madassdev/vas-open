@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('service_type');
+            $table->string('service_type')->unique();
             $table->string('shortname')->nullable();
             $table->bigInteger('biller_id')->unsigned();
             $table->string('description')->nullable();
@@ -29,17 +29,18 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('enabled')->default(1);
             $table->tinyInteger('service_status')->nullable();
             $table->tinyInteger('deployed')->nullable();
-            $table->float('min_amount')->nullable();
-            $table->float('max_amount')->nullable();
-            $table->float('max_quantity')->nullable();
-            $table->string('commission_type')->nullable();
-            $table->float('provider_commission_value')->nullable();
+            $table->tinyInteger('has_sub_product')->default(0);
+            $table->float('min_amount')->default(0);
+            $table->float('max_amount')->default(0);
+            $table->float('max_quantity')->default(0);
+            $table->string('commission_type')->default('fixed');
+            $table->float('provider_commission_value')->default(0);
             $table->float('provider_commission_cap')->nullable();
             $table->float('provider_commission_amount_cap')->nullable();
             $table->float('integrator_commission_value')->nullable();
             $table->float('integrator_commission_cap')->nullable();
             $table->float('integrator_commission_amount_cap')->nullable();
-            $table->tinyInteger('has_fee')->nullable();
+            $table->tinyInteger('has_fee')->default(0);
             $table->text('fee_configuration')->nullable();
             // $table->string('source')->nullable();
             $table->string('type')->nullable();

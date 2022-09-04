@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products');
             $table->string('up_product_key');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->float('price');
             $table->timestamps();
         });
