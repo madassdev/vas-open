@@ -16,7 +16,12 @@ class Product extends Model
     protected $guarded = [];
 
     protected $casts = [
-        "fee_configuration" => "array"
+        "fee_configuration" => "array",
+        "has_validation" => "boolean",
+        "enabled" => "boolean",
+        "service_status" => "boolean",
+        "deployed" => "boolean",
+        "has_fee" => "boolean",
     ];
 
     public function businesses()
