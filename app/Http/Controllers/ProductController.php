@@ -114,34 +114,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function addSubProduct(Request $request)
-    {
-        $request->validate([
-            "product_id" => "required|exists:products,id",
-        ]);
-
-        $product = Product::find($request->product_id);
-        $product->subProducts()->create([
-            "up_product_key" => $request->up_product_key,
-
-        ]);
-    }
-
-    public function showSubProduct(SubProduct $subProduct)
-    {
-    }
-
-    public function listSubProducts()
-    {
-    }
-
-    public function updateSubProduct()
-    {
-    }
-
-    public function deleteSubproduct()
-    {
-    }
+    
 
     public function deleteProduct(Product $product)
     {

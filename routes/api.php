@@ -15,6 +15,7 @@ use App\Http\Controllers\BusinessDocumentController;
 use App\Http\Controllers\InviteeController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SubProductController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TransactionController;
 use App\Models\User;
@@ -169,11 +170,11 @@ Route::group(["middleware" => [
             - Commission configuration per product for individual business
             - Product Limits
          */
-        Route::group(['prefix' => 'sub-products'], function () {
-            Route::get("/", [ProductController::class, 'addSubProduct']);
-            Route::get("/{subProduct}", [ProductController::class, 'addSubProduct']);
-            Route::post("/", [ProductController::class, 'addSubProduct']);
-        });
+        // Route::group(['prefix' => 'sub-products'], function () {
+        //     Route::get("/", [ProductController::class, 'addSubProduct']);
+        //     Route::get("/{subProduct}", [ProductController::class, 'addSubProduct']);
+        //     Route::post("/", [ProductController::class, 'addSubProduct']);
+        // });
         Route::group(['prefix' => 'products'], function () {
             Route::get("/", [ProductController::class, 'getAllProducts']);
             Route::post("/", [ProductController::class, 'addProduct']);
@@ -212,6 +213,7 @@ Route::group(["middleware" => [
         Route::apiResource('billers', BillerController::class);
         Route::apiResource('business-categories', BusinessCategoryController::class);
         Route::apiResource('product-categories', ProductCategoryController::class);
+        Route::apiResource('sub-products', SubProductController::class);
 
         Route::group(['prefix' => 'actions'], function () {
             Route::get('/', [ActionRequestController::class, 'getActionRequests']);
