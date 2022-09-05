@@ -30,6 +30,10 @@ jobs:
         touch database/database.sqlite
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+        DB_CONNECTION=mysqltest
+        TEST_DB_HOST=us-cdbr-east-05.cleardb.net
+        TEST_DB_PORT=3306
+        TEST_DB_DATABASE=heroku_f1dcaedb9855fd1
+        TEST_DB_USERNAME=bfba7d5b1b7716
+        TEST_DB_PASSWORD=aed48157
+      run: php artisan migrate:fresh --seed
