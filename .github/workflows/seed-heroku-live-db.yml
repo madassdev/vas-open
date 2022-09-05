@@ -1,4 +1,4 @@
-name: Seed Databases
+name: Seed Live Database
 
 on:
   push:
