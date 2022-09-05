@@ -1,4 +1,4 @@
-name: Laravel
+name: Seed Databases
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
+    - name: Migrate Heroku Test DB
       env:
         DB_CONNECTION: mysqltest
         TEST_DB_HOST: us-cdbr-east-05.cleardb.net
