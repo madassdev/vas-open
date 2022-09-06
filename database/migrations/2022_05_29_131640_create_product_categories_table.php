@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('implementation_class')->unique();
+            $table->string('shortname')->unique();
             $table->timestamps();
         });
     }

@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Str;
 use App\Models\ProductCategory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ProductCategoriesSeeder extends Seeder
 {
@@ -39,7 +40,8 @@ class ProductCategoriesSeeder extends Seeder
             ProductCategory::create([
                 "name" => $category,
                 "id" => $index+1,
-                "implementation_class" => explode(" ", $category)[0]
+                "implementation_class" => explode(" ", $category)[0],
+                "shortname" => Str::lower(explode(" ", $category)[0]),
             ]);
         }
         //
