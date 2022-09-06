@@ -39,8 +39,13 @@ class SubProductController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $per_page = $request->per_page ?? 20;
+        $sub_products = SubProduct::with('product')->latest()->paginate($per_page);
+        return $this->sendSuccess("Subproducts fetched successfully", [
+            "sub_products" => $sub_products
+        ]);
     }
 
     public function update(Request $request, SubProduct $sub_product)
