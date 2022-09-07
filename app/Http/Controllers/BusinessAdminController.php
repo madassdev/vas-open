@@ -396,6 +396,13 @@ class BusinessAdminController extends Controller
         return $this->sendSuccess('Invitations sent successfully');
     }
 
+    public function getBusinessBalance(Business $business)
+    {
+        $balance = rand(7000, 45000);
+        return $this->sendSuccess("Business balance fetched successfully", [
+            "wallet_balance" => $balance
+        ]);
+    }
     public function notifyInvitee($invitee, $business, $inviter, $role, $url = null)
     {
         $mailContent = new GenericMail('email.invitee-notification', [

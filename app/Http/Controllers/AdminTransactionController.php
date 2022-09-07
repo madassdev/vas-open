@@ -12,7 +12,6 @@ class AdminTransactionController extends Controller
     {
         $per_page = $request->per_page ?? 20;
         $user = auth()->user();
-        $business = $user->business;
         // $business->createDemoTransaction(rand(30,80));
         $query = Transaction::query();
         if ($request->product_category_id) {
@@ -136,6 +135,22 @@ class AdminTransactionController extends Controller
             "transactions" => $transactions
         ]);
         // $business->createDemoTransaction(20);
+    }
+
+    
+
+    public function show($transaction_id)
+    {
+        $user = auth()->user();
+        $business = $user->business;
+        $transaction = Transaction::whereId($transaction_id)->whereBusinessId($business->id)->first();
+        if (!$transaction) {
+            return $this->sendError("Transaction not found for this business", [], 404);
+        }
+        $transaction->load('product.productCategory', 'product.biller');
+        return $this->sendSuccess("Transaction details retrieved successfully", [
+            "transaction" => $transaction
+        ]);
     }
 
 }

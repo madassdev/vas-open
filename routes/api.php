@@ -154,6 +154,7 @@ Route::group(["middleware" => [
         Route::post("/businesses", [BusinessAdminController::class, 'createBusiness']);
         Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails']);
         Route::get("/businesses/{business_id}/documents", [BusinessAdminController::class, 'getBusinessDocuments']);
+        Route::get("/businesses/{business_id}/get-balance", [BusinessAdminController::class, 'getBusinessBalance']);
         Route::post("/businesses/{business_document_request_id}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
         Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers']);
         Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts']);
@@ -198,7 +199,7 @@ Route::group(["middleware" => [
          */
         Route::group(['prefix' => 'transactions'], function () {
             Route::get("/", [AdminTransactionController::class, 'index']);
-            Route::get("/{transaction}", [TransactionController::class, 'getTransactionDetails']);
+            Route::get("/{transaction_id}/details", [AdminTransactionController::class, 'show']);
         });
 
         Route::group(['prefix' => 'admin'], function () {
@@ -217,11 +218,11 @@ Route::group(["middleware" => [
 
         Route::group(['prefix' => 'actions'], function () {
             Route::get('/', [ActionRequestController::class, 'getActionRequests']);
-            Route::group(['prefix' => 'make', 'middleware' => 'role:' . sc("ACTION_MAKER_ROLE")], function(){
+            Route::group(['prefix' => 'make', 'middleware' => 'role:' . sc("ACTION_MAKER_ROLE")], function () {
                 Route::post('create-user', [ActionRequestController::class, 'createUser']);
                 Route::post('update-biller', [ActionRequestController::class, 'makeUpdateBiller']);
             });
-            Route::group(['prefix' => 'check', 'middleware' => 'role:' . sc("ACTION_CHECKER_ROLE")], function(){
+            Route::group(['prefix' => 'check', 'middleware' => 'role:' . sc("ACTION_CHECKER_ROLE")], function () {
                 Route::post('/{actionRequest}', [ActionRequestController::class, 'makeAction']);
             });
         });
@@ -240,4 +241,6 @@ Route::get('billers', [BillerController::class, 'index']);
 Route::get('banks', [BankController::class, 'getBanks']);
 Route::get('product-categories', [ProductController::class, 'listCategories']);
 Route::get('/transactions/download', [TransactionController::class, 'download'])->middleware('downloadRoute');
+Route::get("/test-transactions", [AdminTransactionController::class, 'index']);
+Route::get("/test-transactions/{transaction_id}", [AdminTransactionController::class, 'getTransactionDetails']);
 Route::get('/super/transactions/download', [AdminTransactionController::class, 'download'])->middleware('downloadRoute');
