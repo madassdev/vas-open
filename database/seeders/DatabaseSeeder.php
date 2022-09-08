@@ -793,9 +793,9 @@ class DatabaseSeeder extends Seeder
         }
 
         $transactions =  Transaction::factory()->count(3)->create();
-        foreach ($transactions as $transaction) {
-            $transaction->extra()->save(TransactionExtra::factory()->make());
-        }
+        // foreach ($transactions as $transaction) {
+        //     $transaction->extra()->save(TransactionExtra::factory()->make());
+        // }
         $wallets = Wallet::all();
         foreach ($wallets as $wallet) {
             // foreach wallet create transactions
