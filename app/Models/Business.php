@@ -136,7 +136,7 @@ class Business extends Model
             $t->product_id = $product->id;
             $t->business_id = $this->id;
             $t->idempotency_hash = md5(str()->random(12));
-            $t->amount = $product->max_amount;
+            $t->amount = $product->max_amount + 40;
             // $t->amount = rand(0,50)*100 + rand(0,50)*10 + rand(0,50);
             $t->business_reference = strtoupper(str()->random(12));
             $t->transaction_reference = strtoupper(str()->random(12));
