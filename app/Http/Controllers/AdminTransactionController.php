@@ -142,7 +142,6 @@ class AdminTransactionController extends Controller
     public function show($transaction_id)
     {
         $user = auth()->user();
-        $business = $user->business;
         $transaction = Transaction::whereId($transaction_id)->first();
         if (!$transaction) {
             return $this->sendError("Transaction not found", [], 404);
