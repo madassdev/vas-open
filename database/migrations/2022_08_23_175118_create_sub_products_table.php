@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->float('price')->default(0);
             $table->timestamps();
-            $table->index(['product_id', 'up_product_key']);
+            // $table->index(['product_id', 'up_product_key']);
         });
 
     }

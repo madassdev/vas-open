@@ -31,7 +31,6 @@ use Illuminate\Support\Facades\Artisan;
 use Database\Seeders\ProductCategoriesSeeder;
 use Database\Seeders\BusinessCategoriesSeeder;
 
-use function Symfony\Component\String\b;
 
 class DatabaseSeeder extends Seeder
 {
@@ -773,7 +772,7 @@ class DatabaseSeeder extends Seeder
                 $arr['biller_id'] = $product['biller_id'];
             }
             Product::factory()
-                ->has(SubProduct::factory(2), 'subProducts')
+                // ->has(SubProduct::factory(2), 'subProducts')
                 ->create($arr);
         }
         $business_categories = BusinessCategory::take(2)->get();
@@ -807,6 +806,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(DevUsersSeeder::class);
         $this->call(UpBusinessSeeder::class);
+        $this->call(MTNSubProductSeeder::class);
+        $this->call(TransactionExtraSeeder::class);
         // create 20 accounts
         // create 50 billers
         // create 50 transactions
