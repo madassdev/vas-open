@@ -242,5 +242,5 @@ Route::get('banks', [BankController::class, 'getBanks']);
 Route::get('product-categories', [ProductController::class, 'listCategories']);
 Route::get('/transactions/download', [TransactionController::class, 'download'])->middleware('downloadRoute');
 Route::get("/test-transactions", [AdminTransactionController::class, 'index']);
-Route::get("/test-transactions/{transaction_id}", [AdminTransactionController::class, 'getTransactionDetails']);
+Route::get("/test-transactions/{transaction_id}", [AdminTransactionController::class, 'show']);
 Route::get('/super/transactions/download', [AdminTransactionController::class, 'download'])->middleware('downloadRoute');
