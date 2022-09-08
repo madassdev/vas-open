@@ -130,7 +130,7 @@ class Business extends Model
             # code...
             $status = $payment_status[array_rand($payment_status)];
             $carbon = Carbon::now();
-            $created_at = rand(0, 1) ? $carbon : (rand(0, 1) ? $carbon->subDays(rand(0, 10)) : $carbon->addDays(rand(0, 8)));
+            $created_at = rand(0, 1) ? $carbon : $carbon->subDays(rand(0, 10));
             $product = $this->products()->inRandomOrder()->first();
             $t = new Transaction();
             $t->product_id = $product->id;

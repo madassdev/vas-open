@@ -89,6 +89,7 @@ class ProductController extends Controller
         foreach ($businesses as $business) {
             $business->commission_value = isset($business->commission_value) ? $business->commission_value : $product->provider_commission_value;
         }
+        $product->load('subProducts');
         return $this->sendSuccess("Product fetched successfully", [
             "product" => $product,
             "businesses" => $businesses
