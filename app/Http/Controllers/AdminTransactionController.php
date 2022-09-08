@@ -145,7 +145,7 @@ class AdminTransactionController extends Controller
         $business = $user->business;
         $transaction = Transaction::whereId($transaction_id)->first();
         if (!$transaction) {
-            return $this->sendError("Transaction not found for this business", [], 404);
+            return $this->sendError("Transaction not found", [], 404);
         }
         $transaction->load('product.productCategory', 'product.biller', 'business', 'extra', 'walletTransactions');
         return $this->sendSuccess("Transaction details retrieved successfully", [
