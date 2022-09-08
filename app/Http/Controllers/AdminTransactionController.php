@@ -147,7 +147,7 @@ class AdminTransactionController extends Controller
         if (!$transaction) {
             return $this->sendError("Transaction not found for this business", [], 404);
         }
-        $transaction->load('product.productCategory', 'product.biller');
+        $transaction->load('product.productCategory', 'product.biller', 'business', 'extra', 'walletTransactions');
         return $this->sendSuccess("Transaction details retrieved successfully", [
             "transaction" => $transaction
         ]);

@@ -199,7 +199,7 @@ Route::group(["middleware" => [
          */
         Route::group(['prefix' => 'transactions'], function () {
             Route::get("/", [AdminTransactionController::class, 'index']);
-            Route::get("/{transaction_id}/details", [AdminTransactionController::class, 'show']);
+            Route::get("/{transaction_id}", [AdminTransactionController::class, 'show']);
         });
 
         Route::group(['prefix' => 'admin'], function () {
