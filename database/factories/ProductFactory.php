@@ -29,7 +29,7 @@ class ProductFactory extends Factory
             'shortname' => $this->faker->word,
             'biller_id' => Biller::all()->random()->id,
             'description' => $this->faker->sentence(),
-            'vendor_code' => $this->faker->slug,
+            'vendor_code' => $this->faker->numberBetween(234, 234234),
             'up_price' => 0,
             'up_product_key' => $this->faker->slug,
             'service_type' => fn($attributes) => Str::slug($attributes['name'], '-'),
