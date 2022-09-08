@@ -143,7 +143,7 @@ class AdminTransactionController extends Controller
     {
         $user = auth()->user();
         $business = $user->business;
-        $transaction = Transaction::whereId($transaction_id)->whereBusinessId($business->id)->first();
+        $transaction = Transaction::whereId($transaction_id)->first();
         if (!$transaction) {
             return $this->sendError("Transaction not found for this business", [], 404);
         }
