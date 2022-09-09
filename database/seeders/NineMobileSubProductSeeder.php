@@ -14,22 +14,128 @@ class NineMobileSubProductSeeder extends Seeder
      */
     public function run()
     {
-//         1	Logical PIN	1	FALSE	FALSE
-// 2	7GB Weekly	991	FALSE	FALSE
-// 3	75GB Quaterly Plan	991	FALSE	FALSE
-// 4	75GB Monthly Plan	991	FALSE	FALSE
-// 5	650MB Daily	991	FALSE	FALSE
-// 6	500MB Monthly Plan	991	FALSE	FALSE
-// 7	40GB Monthly Plan	991	FALSE	FALSE
-// 8	4.5GB Monthly Plan	991	FALSE	FALSE
-// 9	365GB Yearly Plan	991	FALSE	FALSE
-// 10	2GB Monthly Plan	991	FALSE	FALSE
-// 11	25MB Daily	991	FALSE	FALSE
-// 12	165GB 6months Plan	991	FALSE	FALSE
-// 13	15GB Monthly Plan	991	FALSE	FALSE
-// 14	11GB Monthly Plan	991	FALSE	FALSE
-// 15	100MB Daily	991	FALSE	FALSE
-// 16	100GB 100 days Plan	991	FALSE	FALSE
-// 17	1.5GB Monthly Plan	991	FALSE	FALSE
+        /**
+         * @var \App\Models\Product $nineMobile
+         */
+        $nineMobile = \App\Models\Product::where('name', '9mobile')->first();
+
+        $nineMobile->subProducts()->create([
+            'name' => 'Logical PIN',
+            'price' => 0,
+            'description' => 'Logical PIN',
+            'up_product_key' => '1',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '7GB Weekly',
+            'price' => 0,
+            'description' => '7GB Weekly',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '75GB Quaterly Plan',
+            'price' => 0,
+            'description' => '75GB Quaterly Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '75GB Monthly Plan',
+            'price' => 0,
+            'description' => '75GB Monthly Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '650MB Daily',
+            'price' => 0,
+            'description' => '650MB Daily',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '500MB Monthly Plan',
+            'price' => 0,
+            'description' => '500MB Monthly Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '40GB Monthly Plan',
+            'price' => 0,
+            'description' => '40GB Monthly Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '4.5GB Monthly Plan',
+            'price' => 0,
+            'description' => '4.5GB Monthly Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '365GB Yearly Plan',
+            'price' => 0,
+            'description' => '365GB Yearly Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '2GB Monthly Plan',
+            'price' => 0,
+            'description' => '2GB Monthly Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '25MB Daily',
+            'price' => 0,
+            'description' => '25MB Daily',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '165GB 6months Plan',
+            'price' => 0,
+            'description' => '165GB 6months Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '15GB Monthly Plan',
+            'price' => 0,
+            'description' => '15GB Monthly Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '11GB Monthly Plan',
+            'price' => 0,
+            'description' => '11GB Monthly Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '100MB Daily',
+            'price' => 0,
+            'description' => '100MB Daily',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '100GB 100 days Plan',
+            'price' => 0,
+            'description' => '100GB 100 days Plan',
+            'up_product_key' => '991',
+        ]);
+
+        $nineMobile->subProducts()->create([
+            'name' => '1.5GB Monthly Plan',
+            'price' => 0,
+            'description' => '1.5GB Monthly Plan',
+            'up_product_key' => '991',
+        ]);
     }
 }

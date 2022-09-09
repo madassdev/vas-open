@@ -841,6 +841,9 @@ class DatabaseSeeder extends Seeder
         $this->call(DevUsersSeeder::class);
         $this->call(UpBusinessSeeder::class);
         $this->call(MTNSubProductSeeder::class);
+        $this->call(GloSubProductSeeder::class);
+        $this->call(AirtelSubProductSeeder::class);
+        $this->call(NineMobileSubProductSeeder::class);
         $this->call(TransactionExtraSeeder::class);
         // create 20 accounts
         // create 50 billers
