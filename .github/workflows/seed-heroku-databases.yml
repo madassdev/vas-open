@@ -10,6 +10,7 @@ jobs:
   seed-live-database:
 
     runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'seed-live-database')"
 
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -37,6 +38,7 @@ jobs:
   seed-test-database:
 
     runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'seed-test-database')"
 
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
