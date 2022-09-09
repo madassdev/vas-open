@@ -319,7 +319,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'MTN',
                 'shortname' => 'MTN',
                 'product_category_id' => 1,
-                'product_code' => '2347037819054',
+                'product_code' => '12682',
                 'service_type' => 'mtn_airtime',
                 'biller_id' => 1
             ],
@@ -468,8 +468,9 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'Akwa Ibom Internal Revenue Services',
-                'shortname' => 'AIIRS',
+                'shortname' => 'AKIRS',
                 'product_category_id' => 7,
+                'product_code' => '300051',
             ],
             [
                 'name' => 'Bayelsa Internal Revenue Service',
@@ -481,75 +482,90 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Benin Electricty Distribution Company Postpaid',
                 'shortname' => 'BEDC-Postpaid',
                 'product_category_id' => 3,
-                'product_code' => '20018',
+                'product_code' => '3355',
                 'biller_id' => 12
             ],
             [
                 'name' => 'Benin Electricty Distribution Company Prepaid',
                 'shortname' => 'BEDC-Prepaid',
                 'product_category_id' => 3,
-                'product_code' => '20017',
+                'product_code' => '3344',
                 'biller_id' => 12
             ],
             [
                 'name' => 'College of Agriculture Wurno',
                 'shortname' => 'CAGW',
                 'product_category_id' => 9,
+                'product_code' => '301024',
             ],
             [
                 'name' => 'CollegeBasicRemedialStudies',
                 'shortname' => 'CBR',
                 'product_category_id' => 9,
+                'product_code' => '301012',
             ],
             [
                 'name' => 'College of Legal Islamic Studies',
                 'shortname' => 'COLIS',
                 'product_category_id' => 9,
+                'product_code' => '301014',
             ],
             [
                 'name' => 'College of Nursing Science Sokoto',
                 'shortname' => 'CNCS',
                 'product_category_id' => 9,
+                'product_code' => '301013',
             ],
             [
                 'name' => 'Consolidated',
                 'shortname' => 'Consolidated',
                 'product_category_id' => 9,
+                'product_code' => '301021',
             ],
             [
                 'name' => 'CyberSpace',
                 'shortname' => 'CyberSpace',
                 'product_category_id' => 9,
+                'product_code' => '200139',
+            ],
+            [
+                'name' => 'DSTV',
+                'shortname' => 'DSTV',
+                'product_category_id' => 4,
+                'service_type' => 'dstv',
+                'product_code' => '999',
             ],
             [
                 'name' => 'EKEDC Postpaid',
                 'shortname' => 'EKEDC-Postpaid',
                 'product_category_id' => 3,
-                'product_code' => '717',
+                'product_code' => '1262',
                 'biller_id' => 5
             ],
             [
                 'name' => 'EKEDC Prepaid',
                 'shortname' => 'EKEDC-Prepaid',
                 'product_category_id' => 3,
-                'product_code' => '716',
+                'product_code' => '1263',
                 'biller_id' => 5
             ],
             [
                 'name' => 'FCMB Pension Fund Administrator',
-                'shortname' => 'FCMB-PFA',
+                'shortname' => 'FCMBPFA',
                 'product_category_id' => 7,
+                'product_code' => '301087',
             ],
             [
                 'name' => 'FRSC',
                 'shortname' => 'FRSC',
                 'product_category_id' => 7,
+                'product_code' => '300052',
             ],
             [
                 'name' => 'GLO',
                 'shortname' => 'GLO',
                 'product_category_id' => 1,
-                'product_code' => '12699',
+                'product_code' => '300033',
                 'service_type' => 'glo_airtime',
                 'biller_id' => 2,
             ],
@@ -557,33 +573,34 @@ class DatabaseSeeder extends Seeder
                 'name' => 'GOTV',
                 'shortname' => 'GOTV',
                 'product_category_id' => 4,
+                'product_code' => '9991',
             ],
             [
                 'name' => 'Ibadan Electricity Distribution Company Postpaid',
                 'shortname' => 'IEDC-Postpaid',
                 'product_category_id' => 3,
-                'product_code' => '12685',
+                'product_code' => '200018',
                 'biller_id' => 8
             ],
             [
                 'name' => 'Ibadan Electricity Distribution Company Prepaid',
                 'shortname' => 'IEDC-Prepaid',
                 'product_category_id' => 3,
-                'product_code' => '12684',
+                'product_code' => '200017',
                 'biller_id' => 8
             ],
             [
                 'name' => 'IKEDC Postpaid',
                 'shortname' => 'IKEDC-Postpaid',
                 'product_category_id' => 3,
-                'product_code' => '12696',
+                'product_code' => '200031',
                 'biller_id' => 9
             ],
             [
                 'name' => 'IKEDC Prepaid',
                 'shortname' => 'IKEDC-Prepaid',
                 'product_category_id' => 3,
-                'product_code' => '12697',
+                'product_code' => '200032',
                 'biller_id' => 9
             ],
             [
@@ -602,21 +619,21 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Jos Electricty Distribution Company Postpaid',
                 'shortname' => 'JEDC-Postpaid',
                 'product_category_id' => 3,
-                'product_code' => '3662',
+                'product_code' => '301068',
                 'biller_id' => 11
             ],
             [
                 'name' => 'Jos Electricty Distribution Company Prepaid',
                 'shortname' => 'JEDC-Prepaid',
                 'product_category_id' => 3,
-                'product_code' => '3663',
+                'product_code' => '301067',
                 'biller_id' => 11
             ],
             [
                 'name' => 'Kaduna Electricty Distribution Company Prepaid',
                 'shortname' => 'KEDC-Prepaid',
                 'product_category_id' => 3,
-                'product_code' => '3264',
+                'product_code' => '301069',
                 'biller_id' => 7
             ],
             [
@@ -630,6 +647,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'LCC',
                 'shortname' => 'LCC',
                 'product_category_id' => 9,
+                'product_code' => '520135',
 
             ],
             [
@@ -641,7 +659,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'MTN',
                 'shortname' => 'MTN',
                 'product_category_id' => 1,
-                'product_code' => '12682',
+                'product_code' => '2347037819054',
                 'service_type' => 'mtn_airtime',
                 'biller_id' => 1
             ],
@@ -649,51 +667,63 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Sultan Muhammadu Maccido Institute for Qur\'an and General Studies',
                 'shortname' => 'SMMCIS',
                 'product_category_id' => 9,
+                'product_code' => '301023',
             ],
             [
                 'name'  => 'Nigeria Immigration Service',
                 'shortname' => 'NIS',
                 'product_category_id'  => 7,
+                'product_code' => '300053'
             ],
             [
                 'name' => 'Portharcourt Electricty Distribution Company Postpaid',
                 'shortname' => 'PEDC-Postpaid',
                 'product_category_id' => 3,
-                'product_code' => '959',
+                'product_code' => '1000',
                 'biller_id' => 6
             ],
             [
                 'name' => 'Portharcourt Electricty Distribution Company Prepaid',
                 'shortname' => 'PEDC-Prepaid',
                 'product_category_id' => 3,
-                'product_code' => '817',
+                'product_code' => '100012',
                 'biller_id' => 6
             ],
             [
                 'name' => 'RoyalExchange Insurance',
                 'shortname' => 'RoyalExchangeInsurance',
                 'product_category_id' => 7,
+                'product_code' => '301691',
             ],
             [
                 'name' => 'Sultan Abdulrahaman College of Health Technology',
                 'shortname' => 'SACHT',
                 'product_category_id' => 9,
+                'product_code' => '301015',
             ],
             [
                 'name' => 'Shehu Shagari College of Education',
                 'shortname' => 'SSCE',
                 'product_category_id' => 9,
+                'product_code' => '300162',
             ],
             [
                 'name' => 'Smile Bundle',
                 'shortname' => 'SmileBundle',
-                'product_category_id' => 1,
+                'product_category_id' => 2,
                 'product_code' => '5154',
+            ],
+            [
+                'name' => 'Smile Airtime',
+                'shortname' => 'SmileAirtime',
+                'product_category_id' => 1,
+                'product_code' => '5153',
             ],
             [
                 'name' => 'Sokoto College of Nursing Science',
                 'shortname' => 'SNCS',
                 'product_category_id' => 9,
+                'product_code' => '301025',
             ],
             [
                 'name' => 'Sokoto E-tax',
@@ -705,6 +735,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Sokoto State University',
                 'shortname' => 'SSU',
                 'product_category_id' => 9,
+                'product_code' => '301011',
             ],
             [
                 'name' => 'Spectranet',
@@ -714,18 +745,21 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'name' => 'STARTIMES',
-                'shortname' => 'STARTIMES',
+                'shortname' => 'STARTIMES2',
                 'product_category_id' => 4,
+                'product_code' => '5247',
             ],
             [
                 'name' => 'Swift',
                 'shortname' => 'Swift',
                 'product_category_id' => 1,
+                'product_code' => '1001',
             ],
             [
                 'name' => 'Umaru Shinkafi College of Education',
                 'shortname' => 'USCE',
                 'product_category_id' => 9,
+                'product_code' => '300135',
             ],
             [
                 'name' => 'Veritas Pension Fund Administrator',
