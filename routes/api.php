@@ -208,6 +208,8 @@ Route::group(["middleware" => [
             Route::post('/assign-role', [AdminUserController::class, 'assignAdminRole']);
             Route::get('/roles', [AdminUserController::class, 'getRoles']);
             Route::post('/roles', [AdminUserController::class, 'createRole']);
+            Route::put('/roles/{role}', [AdminUserController::class, 'updateRole']);
+            Route::delete('/roles/{role}', [AdminUserController::class, 'deleteRole']);
             Route::post('/roles/set-permissions', [AdminUserController::class, 'setPermissions']);
         });
         Route::apiResource('banks', BankController::class);

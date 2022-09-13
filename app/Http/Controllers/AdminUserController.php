@@ -32,7 +32,7 @@ class AdminUserController extends Controller
         ]);
         $adminBusiness = Business::whereEmail(sc('ADMIN_BUSINESS_EMAIL'))->orWhere('email', $request->admin_business_email)->first();
         if (!$adminBusiness) {
-            sr("Admin business not found, please set valid admin_business_email",[],404);
+            sr("Admin business not found, please set valid admin_business_email", [], 404);
         }
 
         $generated_password = generateRandomCharacters() . generateRandomCharacters();
@@ -50,7 +50,7 @@ class AdminUserController extends Controller
             "password_changed" => false,
         ]);
         $businessRole = Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first();
-        
+
         $adminRole = Role::whereName($request->role_name)->first();
         $user->businesses()->attach($adminBusiness->id, ["is_active" => true, 'role_id' => $businessRole->id]);
 
@@ -183,6 +183,52 @@ class AdminUserController extends Controller
         ]);
     }
 
+    public function updateRole(Request $request, SpatieRole $role)
+    {
+        $this->authorizeAdmin('admin_create_admin');
+        $request->validate([
+            "name" => "required|string",
+            "description" => "string|max:500",
+            "permissions" => "required|array",
+            "permissions.*" => "required|exists:permissions,name"
+        ]);
+
+        $role_name = str()->snake($request->name);
+        $role = SpatieRole::whereName($request->name)
+            ->orWhere('readable_name', $request->name)
+            ->orWhere('name', $role_name)
+            ->orWhere('readable_name', $role_name)
+            ->first();
+
+        if (!$role) {
+            return $this->sendError(
+                "The role does not exist: [" . $role_name . "]",
+                [],
+                404
+            );
+        }
+
+        $role->update([
+            "name" => $role_name,
+            "readable_name" => ucfirst($request->name),
+            "description" => $request->description,
+            "guard_name" => "web"
+        ]);
+
+        $role->syncPermissions($request->permissions);
+
+        return $this->sendSuccess("Role updated successfully", [
+            "role" => $role->load('permissions')
+        ]);
+    }
+
+    public function deleteRole(Request $request, SpatieRole $role)
+    {
+        $this->authorizeAdmin('admin_create_admin');
+        $role->delete();
+        return $this->sendSuccess("Role deleted successfully", []);
+    }
+
     public function setPermissions(Request $request)
     {
         $this->authorizeAdmin('admin_create_admin');
@@ -198,7 +244,7 @@ class AdminUserController extends Controller
             ->orWhere('name', $role_name)
             ->orWhere('readable_name', $role_name)
             ->first();
-        
+
 
         if (!$role) {
             return $this->sendError("The role does not exist: [" . $role_name . "]", [], 404);
@@ -210,8 +256,4 @@ class AdminUserController extends Controller
             "role" => $role->load('permissions')
         ]);
     }
-
-    
-
-
 }
