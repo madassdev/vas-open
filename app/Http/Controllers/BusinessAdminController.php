@@ -153,9 +153,6 @@ class BusinessAdminController extends Controller
         }
         if ($request->action === "reject") {
             // Notify
-            $request->validate([
-                "comment" => "requried|max:500"
-            ]);
             $document_request->status = "failed";
             $document_request->comment = $request->comment;
             $business->enabled = false;
