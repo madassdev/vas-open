@@ -155,7 +155,8 @@ class AdminUserController extends Controller
             "name" => "required|string",
             "description" => "string|max:500",
             "permissions" => "required|array",
-            "permissions.*" => "required|exists:permissions,name"
+            "permissions.*" => "required|exists:permissions,name",
+            "is_admin" => "required|boolean",
         ]);
 
         $role_name = str()->snake($request->name);
@@ -173,7 +174,8 @@ class AdminUserController extends Controller
             "name" => $role_name,
             "readable_name" => ucfirst($request->name),
             "description" => $request->description,
-            "guard_name" => "web"
+            "guard_name" => "web",
+            "is_admin" => $request->is_admin,
         ]);
 
         $role->syncPermissions($request->permissions);
@@ -190,7 +192,8 @@ class AdminUserController extends Controller
             "name" => "required|string",
             "description" => "string|max:500",
             "permissions" => "required|array",
-            "permissions.*" => "required|exists:permissions,name"
+            "permissions.*" => "required|exists:permissions,name",
+            "is_admin" => "required|boolean",
         ]);
 
         $role_name = str()->snake($request->name);
@@ -212,7 +215,8 @@ class AdminUserController extends Controller
             "name" => $role_name,
             "readable_name" => ucfirst($request->name),
             "description" => $request->description,
-            "guard_name" => "web"
+            "guard_name" => "web",
+            "is_admin" => $request->is_admin,
         ]);
 
         $role->syncPermissions($request->permissions);
