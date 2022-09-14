@@ -124,17 +124,13 @@ class BusinessAdminController extends Controller
         ]);
     }
 
-    public function approveBusinessDocuments($business_document_request_id, Request $request)
+    public function approveBusinessDocuments(BusinessDocumentRequest $document_request, Request $request)
     {
         $user = auth()->user();
         $request->validate([
-            "action" => "required|in:approve,reject,pending"
+            "action" => "required|in:approve,reject,pending",
+            "comment" => "required_if:action,reject,pending",
         ]);
-        $document_request = BusinessDocumentRequest::find($business_document_request_id);
-
-        if (!$document_request) {
-            return $this->sendError("Business Document Request not found with that id", [], 404);
-        }
         $business = $document_request->business;
         $document_request->user_id = $user->id;
 
@@ -145,6 +141,7 @@ class BusinessAdminController extends Controller
         if ($request->action === "approve") {
             // Notify
             $document_request->status = "successful";
+            $document_request->comment = $request->comment;
             $business->enabled = true;
             $business->live_enabled = true;
             $business->document_verified = true;
@@ -172,6 +169,7 @@ class BusinessAdminController extends Controller
         }
         if ($request->action === "pending") {
             $document_request->status = "pending";
+            $document_request->comment = $request->comment;
             $business->enabled = false;
             $business->live_enabled = false;
             $business->document_verified = false;
