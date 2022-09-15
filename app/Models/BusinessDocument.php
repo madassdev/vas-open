@@ -35,11 +35,10 @@ class BusinessDocument extends Model
             "director_2",
             "director_3",
         ];
-       
-        foreach($fields as $field)
-        {
-            if($this->$field){
-                $count ++;
+
+        foreach ($fields as $field) {
+            if ($this->$field) {
+                $count++;
             }
         }
         return $count;
@@ -49,9 +48,14 @@ class BusinessDocument extends Model
     {
         return $this->hasMany(BusinessDocumentRequest::class);
     }
+    
+    public function pendingDocumentRequests()
+    {
+        return $this->hasMany(BusinessDocumentRequest::class)->where('status', 'pending');
+    }
 
     public function hasPendingRequest()
     {
-        return $this->businessDocumentRequests()->where('status','pending')->count();
+        return $this->businessDocumentRequests()->where('status', 'pending')->count();
     }
 }

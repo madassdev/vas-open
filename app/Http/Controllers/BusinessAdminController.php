@@ -24,7 +24,7 @@ class BusinessAdminController extends Controller
     public function getBusinesses(Request $request)
     {
         $per_page = $request->per_page ?? 10;
-        $businesses = Business::with('businessDocument.businessDocumentRequests')->paginate($per_page)->appends(request()->query());
+        $businesses = Business::with('businessDocument.businessDocumentRequests', 'businessDocument.pendingDocumentRequests')->paginate($per_page)->appends(request()->query());
         return $this->sendSuccess("Businesses fetched successful", [
             "businesses" => $businesses
         ]);
@@ -68,7 +68,7 @@ class BusinessAdminController extends Controller
 
         return $this->sendSuccess("Business documents fetched successfully", [
             // "business" => $business,
-            "business_document" => $business->businessDocument->load("businessDocumentRequests"),
+            "business_document" => $business->businessDocument ? $business->businessDocument->load("businessDocumentRequests"):$business->businessDocument,
             "document_status" => $business->document_verified ? true : false,
         ]);
     }
