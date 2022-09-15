@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\UserWelcomeMail;
+use App\Models\Business;
 use App\Models\BusinessDocumentRequest;
 use App\Services\MailApiService;
 use Illuminate\Http\Request;
@@ -87,12 +88,14 @@ class BusinessDocumentController extends Controller
         $user = auth()->user();
         $business = $user->business;
         $documents = $business->businessDocument;
+        $latest_document_request = BusinessDocumentRequest::whereBusinessId($business->id)->latest()->first();
+        $comment = $latest_document_request ? $latest_document_request->comment : null;
         if (!$documents) {
             $documents = $business->businessDocument()->create([])->refresh();
         }
 
         if ($business->document_verified) {
-            $status = "verified";
+            $status = "successful";
             $message = "Verified";
         } else {
             if (!$documents->businessDocumentRequests->count()) {
@@ -104,8 +107,9 @@ class BusinessDocumentController extends Controller
                     $status = "pending";
                     $message = "Awaiting Approval";
                 } else {
-                    $status = "rejected";
-                    $message = "Rejected. Kindly Re-upload";
+                    $status = "failed";
+                    $message = "Failed. Kindly Re-upload";
+                    $comment = $business->latest_document_comment;
                 }
             }
         }
@@ -116,6 +120,7 @@ class BusinessDocumentController extends Controller
             "documents_count" => $documents->documents_count,
             "status" => $status,
             "message" => $message,
+            "comment" => $comment,
         ]);
     }
 }

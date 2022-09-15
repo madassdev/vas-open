@@ -116,6 +116,10 @@ class Business extends Model
         ]);
     }
 
+    public function getLatestDocumentCommentAttribute()
+    {
+        
+    }
 
     public function createDemoTransaction($count = 1)
     {
