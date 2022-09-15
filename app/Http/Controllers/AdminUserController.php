@@ -28,7 +28,7 @@ class AdminUserController extends Controller
             "email" => "required|string|email|max:100|unique:users,email",
             "phone_number" => "required|string|max:50",
             "role_name" => "required|exists:roles,name",
-            "admin_business_email" => "email"
+            // "admin_business_email" => "email"
         ]);
         $adminBusiness = Business::whereEmail(sc('ADMIN_BUSINESS_EMAIL'))->orWhere('email', $request->admin_business_email)->first();
         if (!$adminBusiness) {
