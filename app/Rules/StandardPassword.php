@@ -18,7 +18,7 @@ class StandardPassword implements InvokableRule
     {
         //
         if (preg_match("/(?=.*\d{4,})(?!.*border\d{4,};)/", $value)) {
-            $fail('The :attribute must be not contain sequences of more than 4 digits in a row. eg: (1234),(5678)');
+            $fail('The :attribute must not contain sequences of more than 4 digits in a row. eg: (1234),(5678)');
         }
     }
 }
