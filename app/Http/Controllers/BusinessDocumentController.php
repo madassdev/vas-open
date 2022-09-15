@@ -95,7 +95,7 @@ class BusinessDocumentController extends Controller
             $status = "verified";
             $message = "Verified";
         } else {
-            if (!$documents->businessDocumentRequests->count) {
+            if (!$documents->businessDocumentRequests->count()) {
                 $status = 0;
                 $message = "Kindly upload document and request for approval";
             } else {
