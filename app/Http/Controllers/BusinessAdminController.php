@@ -193,7 +193,7 @@ class BusinessAdminController extends Controller
     {
         $this->authorizeAdmin('list_document_requests');
         $per_page = $request->per_page ?? 20;
-        $document_requests = BusinessDocumentRequest::latest()->paginate($per_page);
+        $document_requests = BusinessDocumentRequest::with('business', 'businessDocument')->latest()->paginate($per_page);
 
         return $this->sendSuccess("Business Documents Requests fetched successfully", [
             "document_requests" => $document_requests
