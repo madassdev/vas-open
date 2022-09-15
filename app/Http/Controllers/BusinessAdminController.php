@@ -135,25 +135,35 @@ class BusinessAdminController extends Controller
         $document_request->user_id = $user->id;
 
         if ($document_request->status !== "pending") {
-            return $this->sendError("Business Document Request has been treated and is not pending", [], 403);
+            // return $this->sendError("Business Document Request has been treated and is not pending", [], 403);
         }
 
         if ($request->action === "approve") {
-            // Notify
             $document_request->status = "successful";
             $document_request->comment = $request->comment;
             $document_request->approved_at = now();
+            $document_request->comment = null;
             $business->enabled = true;
             $business->live_enabled = true;
             $business->document_verified = true;
             $business->save();
             $document_request->save();
+            // Notify
+            $mailContent = new GenericMail('email.document-request-approved-notification', ['business' => $business], 'payload');
+            $mail = new MailApiService($user->email, "[Vas Reseller] Business Document Approved!", $mailContent->render());
+
+            try {
+                $mailError = null;
+                $mail->send();
+            } catch (Exception $e) {
+                $mailError = $e->getMessage();
+            };
+
             return $this->sendSuccess("Business document approved successfully", [
                 "business" => $business->load('businessDocument.businessDocumentRequests'),
             ]);
         }
         if ($request->action === "reject") {
-            // Notify
             $document_request->status = "failed";
             $document_request->comment = $request->comment;
             $business->enabled = false;
@@ -161,6 +171,19 @@ class BusinessAdminController extends Controller
             $business->document_verified = false;
             $business->save();
             $document_request->save();
+            // Notify
+            $mailContent = new GenericMail('email.document-request-declined-notification', [
+                "business" => $business,
+                "document_request" => $document_request
+            ], 'payload');
+            $mail = new MailApiService($user->email, "[Vas Reseller] Business Document Declined!", $mailContent->render());
+
+            try {
+                $mailError = null;
+                $mail->send();
+            } catch (Exception $e) {
+                $mailError = $e->getMessage();
+            };
             return $this->sendSuccess("Business document rejected successfully", [
                 "business" => $business->load('businessDocument.businessDocumentRequests'),
             ]);

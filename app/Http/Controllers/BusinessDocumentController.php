@@ -109,7 +109,6 @@ class BusinessDocumentController extends Controller
                 } else {
                     $status = "failed";
                     $message = "Failed. Kindly Re-upload";
-                    $comment = $business->latest_document_comment;
                 }
             }
         }
