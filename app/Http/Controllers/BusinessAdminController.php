@@ -68,7 +68,7 @@ class BusinessAdminController extends Controller
 
         return $this->sendSuccess("Business documents fetched successfully", [
             // "business" => $business,
-            "business_document" => $business->businessDocument ? $business->businessDocument->load("businessDocumentRequests"):$business->businessDocument,
+            "business_document" => $business->businessDocument ? $business->businessDocument->load("businessDocumentRequests") : $business->businessDocument,
             "document_status" => $business->document_verified ? true : false,
         ]);
     }
@@ -187,6 +187,17 @@ class BusinessAdminController extends Controller
         $rand = '';
         foreach (array_rand($seed, $length) as $k) $rand .= $seed[$k];
         return $rand;
+    }
+
+    public function getDocumentRequests(Request $request)
+    {
+        $this->authorizeAdmin('list_document_requests');
+        $per_page = $request->per_page ?? 20;
+        $document_requests = BusinessDocumentRequest::latest()->paginate($per_page);
+
+        return $this->sendSuccess("Business Documents Requests fetched successfully", [
+            "document_requests" => $document_requests
+        ]);
     }
 
     public function createBusiness(RegistrationRequest $request)

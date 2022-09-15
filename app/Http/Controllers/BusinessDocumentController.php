@@ -68,8 +68,8 @@ class BusinessDocumentController extends Controller
         $business = $user->business;
         $business_document = $business->businessDocument;
 
-        if($business_document->hasPendingRequest()){
-            return $this->sendError("There's a pending request on your business documents.",[],403);
+        if ($business_document->hasPendingRequest()) {
+            return $this->sendError("There's a pending request on your business documents.", [], 403);
         }
         BusinessDocumentRequest::create([
             "business_id" => $business->id,
@@ -85,16 +85,37 @@ class BusinessDocumentController extends Controller
     public function showDocuments()
     {
         $user = auth()->user();
-        $documents = $user->business->businessDocument;
+        $business = $user->business;
+        $documents = $business->businessDocument;
         if (!$documents) {
-            $documents = $user->business->businessDocument()->create([])->refresh();
+            $documents = $business->businessDocument()->create([])->refresh();
         }
 
+        if ($business->document_verified) {
+            $status = "verified";
+            $message = "Verified";
+        } else {
+            if (!$documents->businessDocumentRequests->count) {
+                $status = 0;
+                $message = "Kindly upload document and request for approval";
+            } else {
+
+                if ($documents->hasPendingRequest()) {
+                    $status = "pending";
+                    $message = "Awaiting Approval";
+                } else {
+                    $status = "rejected";
+                    $message = "Rejected. Kindly Re-upload";
+                }
+            }
+        }
 
         return $this->sendSuccess("User Business Documents fetched successfully.", [
             "business_documents" => $documents,
-            "document_status" => $user->business->document_verified,
+            "document_status" => $business->document_verified,
             "documents_count" => $documents->documents_count,
+            "status" => $status,
+            "nessage" => $message,
         ]);
     }
 }

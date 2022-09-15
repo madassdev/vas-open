@@ -159,6 +159,7 @@ Route::group(["middleware" => [
         Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers']);
         Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts']);
         Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
+        Route::get("/document-requests", [BusinessAdminController::class, 'getDocumentRequests']);
         Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData']);
         Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled']);
         Route::post("/businesses/{business_id}/send-invitations", [BusinessAdminController::class, 'sendBusinessInvites']);
