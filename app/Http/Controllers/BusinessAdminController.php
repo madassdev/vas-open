@@ -134,14 +134,15 @@ class BusinessAdminController extends Controller
         $business = $document_request->business;
         $document_request->user_id = $user->id;
 
-        // if ($document_request->status !== "pending") {
-        //     return $this->sendError("Business Document Request has been treated and is not pending", [], 403);
-        // }
+        if ($document_request->status !== "pending") {
+            return $this->sendError("Business Document Request has been treated and is not pending", [], 403);
+        }
 
         if ($request->action === "approve") {
             // Notify
             $document_request->status = "successful";
             $document_request->comment = $request->comment;
+            $document_request->approved_at = now();
             $business->enabled = true;
             $business->live_enabled = true;
             $business->document_verified = true;
