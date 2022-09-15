@@ -10,6 +10,7 @@ jobs:
   seed-live-database:
 
     runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'seed-live-database')"
 
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -32,11 +33,12 @@ jobs:
       env:
         DB_CONNECTION: mysql
         LIVE_DATABASE_URL: mysql://bcf193949c325a:d464800f@us-cdbr-east-06.cleardb.net/heroku_29915877dbcdf31?reconnect=true
-      run: php artisan migrate
+      run: php artisan migrate:fresh --seed --force
       
   seed-test-database:
 
     runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'seed-test-database')"
 
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
@@ -63,4 +65,4 @@ jobs:
         TEST_DB_DATABASE: heroku_f1dcaedb9855fd1
         TEST_DB_USERNAME: bfba7d5b1b7716
         TEST_DB_PASSWORD: aed48157
-      run: php artisan migrate
+      run: php artisan migrate:fresh --seed --force

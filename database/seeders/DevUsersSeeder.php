@@ -73,7 +73,7 @@ class DevUsersSeeder extends Seeder
             "business_category_id" => $business_category_id,
             "merchant_id" => "Nameofmerchant",
             "terminal_id" => "1234",
-            "client_id" => "380278fb-e23b-4d3d-8461-7b1ff73ad51f",
+            "client_id" => config('database.default') == 'mysqltest' ? "380278fb-e23b-4d3d-8461-7b1ff73ad51f" : "282a9511-b41d-41d8-b526-ec24af5cac89"
         ]);
 
         $business->createDummyAccount();
@@ -83,7 +83,7 @@ class DevUsersSeeder extends Seeder
         $business->test_secret_key = strtoupper("sk_test_seeded_" . $key);
         $business->live_secret_key = strtoupper("sk_live_seeded_" . $key);
         $business->save();
-        $business->products()->saveMany( Product::all() );
+        $business->products()->saveMany(Product::all());
 
         $user = User::updateOrCreate([
             "email" => $dev->email,
