@@ -115,7 +115,7 @@ class BusinessDocumentController extends Controller
             "document_status" => $business->document_verified,
             "documents_count" => $documents->documents_count,
             "status" => $status,
-            "nessage" => $message,
+            "message" => $message,
         ]);
     }
 }
