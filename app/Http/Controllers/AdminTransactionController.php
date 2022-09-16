@@ -61,7 +61,7 @@ class AdminTransactionController extends Controller
             $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
 
-        $transactions = $query->with('business','product.productCategory', 'product.biller')->paginate($per_page)->appends(request()->query());
+        $transactions = $query->with('business', 'product.productCategory','product.subProducts', 'product.biller')->paginate($per_page)->appends(request()->query());
 
         return $this->sendSuccess("Transactions fetched successful", [
             "transactions" => $transactions
@@ -124,7 +124,7 @@ class AdminTransactionController extends Controller
             $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
 
-        $transactions = $query->with('business', 'product.productCategory', 'product.biller');
+        $transactions = $query->with('business', 'product.productCategory', 'product.subProducts', 'product.biller');
         $downloader = new TransactionExport($transactions);
         $date = date('d-m-Y');
 
@@ -137,7 +137,7 @@ class AdminTransactionController extends Controller
         // $business->createDemoTransaction(20);
     }
 
-    
+
 
     public function show($transaction_id)
     {
@@ -146,10 +146,9 @@ class AdminTransactionController extends Controller
         if (!$transaction) {
             return $this->sendError("Transaction not found", [], 404);
         }
-        $transaction->load('product.productCategory', 'product.biller', 'business', 'extra', 'walletTransactions');
+        $transaction->load('product.productCategory', 'product.subProducts', 'product.biller', 'business', 'extra', 'walletTransactions');
         return $this->sendSuccess("Transaction details retrieved successfully", [
             "transaction" => $transaction
         ]);
     }
-
 }

@@ -108,7 +108,7 @@ class BusinessDocumentController extends Controller
                     $message = "Awaiting Approval";
                 } else {
                     $status = "failed";
-                    $message = "Failed. Kindly Re-upload";
+                    $message = null;
                 }
             }
         }
@@ -119,7 +119,7 @@ class BusinessDocumentController extends Controller
             "documents_count" => $documents->documents_count,
             "status" => $status,
             "message" => $message,
-            "comment" => $comment,
+            "comment" => $comment." Kindly Re-upload",
         ]);
     }
 }

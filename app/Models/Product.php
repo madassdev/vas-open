@@ -22,6 +22,7 @@ class Product extends Model
         "service_status" => "boolean",
         "deployed" => "boolean",
         "has_fee" => "boolean",
+        "has_sub_product" => "boolean",
     ];
 
     public function businesses()
