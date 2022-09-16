@@ -17,7 +17,7 @@ class AirtelSubProductSeeder extends Seeder
         /**
          * @var \App\Models\Product $airtel
          */
-        $airtel = \App\Models\Product::where('name', 'Airtel')->first();
+        $airtel = \App\Models\Product::where('name', 'Airtel Databundle')->first();
 
         $airtel->subProducts()->create([
             'name' => 'Virtual Top-up',

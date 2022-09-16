@@ -17,7 +17,7 @@ class NineMobileSubProductSeeder extends Seeder
         /**
          * @var \App\Models\Product $nineMobile
          */
-        $nineMobile = \App\Models\Product::where('name', '9mobile')->first();
+        $nineMobile = \App\Models\Product::where('name', '9mobile Databundle')->first();
 
         $nineMobile->subProducts()->create([
             'name' => 'Logical PIN',

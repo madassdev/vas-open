@@ -18,13 +18,13 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('service_type');
             $table->string('shortname')->nullable();
+            $table->bigInteger('product_category_id')->unsigned();
             $table->bigInteger('biller_id')->unsigned();
             $table->string('description')->nullable();
             $table->string('vendor_code')->nullable();
             $table->string('up_product_key')->nullable();
             $table->float('up_price')->nullable();
             $table->string('logo')->nullable();
-            $table->bigInteger('product_category_id')->unsigned();
             $table->tinyInteger('has_validation')->nullable();
             $table->tinyInteger('enabled')->default(1);
             $table->tinyInteger('service_status')->nullable();

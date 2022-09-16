@@ -110,6 +110,14 @@ class DatabaseSeeder extends Seeder
                 'biller_id' => 4,
             ],
             [
+                'name' => '9mobile Databundle',
+                'shortname' => '9mobile',
+                'product_category_id' => 2,
+                'product_code' => '12700',
+                'service_type' => '9mobile_databundle',
+                'biller_id' => 4,
+            ],
+            [
                 'name' => 'Abuja Electricty Distribution Company Postpaid',
                 'shortname' => 'AEDC-Postpaid',
                 'product_category_id' => 3,
@@ -134,6 +142,14 @@ class DatabaseSeeder extends Seeder
                 'product_category_id' => 1,
                 'product_code' => '2347087214896',
                 'service_type' => 'airtel_airtime',
+                'biller_id' => 3,
+            ],
+            [
+                'name' => 'Airtel Databundle',
+                'shortname' => 'Airtel',
+                'product_category_id' => 2,
+                'product_code' => '2347087214896',
+                'service_type' => 'airtel_databundle',
                 'biller_id' => 3,
             ],
             [
@@ -234,6 +250,14 @@ class DatabaseSeeder extends Seeder
                 'biller_id' => 2,
             ],
             [
+                'name' => 'GLO Databundle',
+                'shortname' => 'GLO_Databundle',
+                'product_category_id' => 2,
+                'product_code' => '300033',
+                'service_type' => 'glo_databundle',
+                'biller_id' => 2,
+            ],
+            [
                 'name' => 'GOTV',
                 'shortname' => 'GOTV',
                 'product_category_id' => 4,
@@ -324,6 +348,14 @@ class DatabaseSeeder extends Seeder
                 'biller_id' => 1
             ],
             [
+                'name' => 'MTN Databundle',
+                'shortname' => 'MTN_Databundle',
+                'product_category_id' => 2,
+                'product_code' => '12682',
+                'service_type' => 'MTN_Databundle',
+                'biller_id' => 1
+            ],
+            [
                 'name' => 'Sultan Muhammadu Maccido Institute for Qur\'an and General Studies',
                 'shortname' => 'SMMCIS',
                 'product_category_id' => 9,
@@ -365,7 +397,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Smile Bundle',
                 'shortname' => 'SmileBundle',
-                'product_category_id' => 1,
+                'product_category_id' => 2,
             ],
             [
                 'name' => 'Sokoto College of Nursing Science',
@@ -385,7 +417,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Spectranet',
                 'shortname' => 'Spectranet',
-                'product_category_id' => 1,
+                'product_category_id' => 2,
             ],
             [
                 'name' => 'STARTIMES',
@@ -395,7 +427,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Swift',
                 'shortname' => 'Swift',
-                'product_category_id' => 1,
+                'product_category_id' => 2,
                 'product_code' => '1001',
             ],
             [
@@ -426,7 +458,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Zamtel',
                 'shortname' => 'Zamtel',
-                'product_category_id' => 1,
+                'product_category_id' => 2,
             ],
 
         ] : [
@@ -436,6 +468,14 @@ class DatabaseSeeder extends Seeder
                 'product_category_id' => 1,
                 'product_code' => '2348094190022',
                 'service_type' => '9mobile_airtime',
+                'biller_id' => 4,
+            ],
+            [
+                'name' => '9mobile Databundle',
+                'shortname' => '9mobile',
+                'product_category_id' => 2,
+                'product_code' => '12700',
+                'service_type' => '9mobile_databundle',
                 'biller_id' => 4,
             ],
             [
@@ -464,6 +504,14 @@ class DatabaseSeeder extends Seeder
                 'product_category_id' => 1,
                 'product_code' => '2347087214896',
                 'service_type' => 'airtel_airtime',
+                'biller_id' => 3,
+            ],
+            [
+                'name' => 'Airtel Databundle',
+                'shortname' => 'Airtel',
+                'product_category_id' => 2,
+                'product_code' => '2347087214896',
+                'service_type' => 'airtel_databundle',
                 'biller_id' => 3,
             ],
             [
@@ -570,6 +618,14 @@ class DatabaseSeeder extends Seeder
                 'biller_id' => 2,
             ],
             [
+                'name' => 'GLO Databundle',
+                'shortname' => 'GLO_Databundle',
+                'product_category_id' => 2,
+                'product_code' => '300033',
+                'service_type' => 'glo_databundle',
+                'biller_id' => 2,
+            ],
+            [
                 'name' => 'GOTV',
                 'shortname' => 'GOTV',
                 'product_category_id' => 4,
@@ -664,6 +720,14 @@ class DatabaseSeeder extends Seeder
                 'biller_id' => 1
             ],
             [
+                'name' => 'MTN Databundle',
+                'shortname' => 'MTN_Databundle',
+                'product_category_id' => 2,
+                'product_code' => '2347037819054',
+                'service_type' => 'MTN_Databundle',
+                'biller_id' => 1
+            ],
+            [
                 'name' => 'Sultan Muhammadu Maccido Institute for Qur\'an and General Studies',
                 'shortname' => 'SMMCIS',
                 'product_category_id' => 9,
@@ -740,7 +804,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Spectranet',
                 'shortname' => 'Spectranet',
-                'product_category_id' => 1,
+                'product_category_id' => 2,
                 'product_code' => '300058',
             ],
             [
@@ -752,7 +816,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Swift',
                 'shortname' => 'Swift',
-                'product_category_id' => 1,
+                'product_category_id' => 2,
                 'product_code' => '1001',
             ],
             [
@@ -788,7 +852,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Zamtel',
                 'shortname' => 'Zamtel',
-                'product_category_id' => 1,
+                'product_category_id' => 2,
             ],
 
         ];
