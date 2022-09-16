@@ -24,7 +24,7 @@ class BusinessAdminController extends Controller
     public function getBusinesses(Request $request)
     {
         $per_page = $request->per_page ?? 10;
-        $businesses = Business::with('businessDocument.businessDocumentRequests', 'businessDocument.pendingDocumentRequests')->paginate($per_page)->appends(request()->query());
+        $businesses = Business::with('businessDocument.pendingDocumentRequests', 'businessDocument.pendingDocumentRequests')->paginate($per_page)->appends(request()->query());
         return $this->sendSuccess("Businesses fetched successful", [
             "businesses" => $businesses
         ]);
@@ -51,7 +51,7 @@ class BusinessAdminController extends Controller
         $business->recent_transactions = $recent_transactions;
         $business = new AdminBusinessDetails(
 
-            $business->load('users', 'products', 'businessDocument.businessDocumentRequests', 'businessBank', 'invitees')
+            $business->load('users', 'products', 'businessDocument.pendingDocumentRequests', 'businessBank', 'invitees')
         );
 
         return $this->sendSuccess("Business details fetched successfully", [
@@ -160,7 +160,7 @@ class BusinessAdminController extends Controller
             };
 
             return $this->sendSuccess("Business document approved successfully", [
-                "business" => $business->load('businessDocument.businessDocumentRequests'),
+                "business" => $business->load('businessDocument.pendingDocumentRequests'),
             ]);
         }
         if ($request->action === "reject") {
@@ -185,7 +185,7 @@ class BusinessAdminController extends Controller
                 $mailError = $e->getMessage();
             };
             return $this->sendSuccess("Business document rejected successfully", [
-                "business" => $business->load('businessDocument.businessDocumentRequests'),
+                "business" => $business->load('businessDocument.pendingDocumentRequests'),
             ]);
         }
         if ($request->action === "pending") {
@@ -197,7 +197,7 @@ class BusinessAdminController extends Controller
             $business->save();
             $document_request->save();
             return $this->sendSuccess("Business document successfully marked as pending", [
-                "business" => $business->load('businessDocument.businessDocumentRequests'),
+                "business" => $business->load('businessDocument.pendingDocumentRequests'),
             ]);
         }
     }
