@@ -17,7 +17,7 @@ class MTNSubProductSeeder extends Seeder
         /**
          * @var \App\Models\Product $mtn
          */
-        $mtn = \App\Models\Product::where('name', 'MTN')->first();
+        $mtn = \App\Models\Product::where('name', 'MTN Databundle')->first();
 
         $mtn->subProducts()->create([
             'name' => 'Virtual Top Up',
