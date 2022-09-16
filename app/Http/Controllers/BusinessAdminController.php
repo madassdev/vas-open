@@ -139,7 +139,7 @@ class BusinessAdminController extends Controller
         }
 
         if ($request->action === "approve") {
-            $document_request->status = "successful";
+            $document_request->status = "approved";
             $document_request->comment = $request->comment;
             $document_request->approved_at = now();
             $document_request->comment = null;
@@ -164,7 +164,7 @@ class BusinessAdminController extends Controller
             ]);
         }
         if ($request->action === "reject") {
-            $document_request->status = "failed";
+            $document_request->status = "rejected";
             $document_request->comment = $request->comment;
             $business->enabled = false;
             $business->live_enabled = false;
@@ -217,7 +217,7 @@ class BusinessAdminController extends Controller
     {
         $this->authorizeAdmin('list_document_requests');
         $per_page = $request->per_page ?? 20;
-        $document_requests = BusinessDocumentRequest::with('business', 'businessDocument')->latest()->paginate($per_page);
+        $document_requests = BusinessDocumentRequest::with('business', 'businessDocument')->whereStatus('pending')->latest()->paginate($per_page);
 
         return $this->sendSuccess("Business Documents Requests fetched successfully", [
             "document_requests" => $document_requests
