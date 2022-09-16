@@ -13,7 +13,7 @@
     Password: <b>{{$payload['password']}}</b>
 </p>
 <p>
-    Role: <b>{{strtoupper($payload['role']}}</b>
+    Role: <b>{{strtoupper($payload['role'])}}</b>
 </p>
 <p style="padding-top: 20px;">You can now login to your dashboard with these details</p>
 @endsection

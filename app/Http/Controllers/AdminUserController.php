@@ -107,7 +107,6 @@ class AdminUserController extends Controller
     public function assignAdminRole(Request $request)
     {
         $this->authorizeAdmin('admin_assign_role');
-        // $this->authorizeAdmin('admin_create_admin');
         $request->validate([
             "user_id" => "required|exists:users,id",
             "role" => "required|string"
