@@ -109,26 +109,27 @@ class AdminUserController extends Controller
         $this->authorizeAdmin('admin_assign_role');
         $request->validate([
             "user_id" => "required|exists:users,id",
-            "role" => "required|string"
+            "roles" => "required|array",
+            'roles.*' => "required|exists:roles,id"
         ]);
 
         // Can role be assigned to admin?
-        $role_name = str()->snake($request->role);
-        $adminableRoles = Role::adminRoles();
+        // $role_name = str()->snake($request->role);
+        // $adminableRoles = Role::adminRoles();
 
-        $role = Role::whereName($request->role)
-            ->orWhere('readable_name', $request->role)
-            ->orWhere('name', $role_name)
-            ->orWhere('readable_name', $role_name)
-            ->first();
+        // $role = Role::whereName($request->role)
+        //     ->orWhere('readable_name', $request->role)
+        //     ->orWhere('name', $role_name)
+        //     ->orWhere('readable_name', $role_name)
+        //     ->first();
 
-        if (!$role) {
-            return $this->sendError("The role does not exist: [" . $role_name . "]", [], 404);
-        }
+        // if (!$role) {
+        //     return $this->sendError("The role does not exist: [" . $role_name . "]", [], 404);
+        // }
 
-        if (!$adminableRoles->where('name', $role->name)->first()) {
-            return $this->sendError("Non admin role cannot be assigned: [" . $role_name . "]", [], 404);
-        }
+        // if (!$adminableRoles->where('name', $role->name)->first()) {
+        //     return $this->sendError("Non admin role cannot be assigned: [" . $role_name . "]", [], 404);
+        // }
 
         // Can user be assigned an admin role?
         $adminBusiness = Business::whereEmail(sc('ADMIN_BUSINESS_EMAIL'))->first();
@@ -141,7 +142,15 @@ class AdminUserController extends Controller
             return $this->sendError("Admin role cannot be assigned to non admin user", [], 404);
         }
 
-        $user->assignRole($role->name);
+        $roles = collect($request->roles)->map(function ($id) {
+            $r = Role::whereIsAdmin(true)->whereId($id)->first();
+            if ($r) {
+                return $r;
+            }
+        })->filter()->flatten()->pluck('id');
+        // return $roles;
+
+        $user->syncRoles($roles);
         return $this->sendSuccess("Role assigned to admin successsfully", [
             "admin" => $user
         ]);
