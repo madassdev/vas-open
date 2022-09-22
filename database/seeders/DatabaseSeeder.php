@@ -469,6 +469,7 @@ class DatabaseSeeder extends Seeder
                 'product_code' => '2348094190022',
                 'service_type' => '9mobile_airtime',
                 'biller_id' => 4,
+                'up_product_key' => '0'
             ],
             [
                 'name' => '9mobile Databundle',
@@ -505,6 +506,7 @@ class DatabaseSeeder extends Seeder
                 'product_code' => '2347087214896',
                 'service_type' => 'airtel_airtime',
                 'biller_id' => 3,
+                'up_product_key' => 'EXRCTRFREQ',
             ],
             [
                 'name' => 'Airtel Databundle',
@@ -616,6 +618,7 @@ class DatabaseSeeder extends Seeder
                 'product_code' => '300033',
                 'service_type' => 'glo_airtime',
                 'biller_id' => 2,
+                'up_product_key' => 'AIRTIME',
             ],
             [
                 'name' => 'GLO Databundle',
@@ -717,7 +720,8 @@ class DatabaseSeeder extends Seeder
                 'product_category_id' => 1,
                 'product_code' => '2347037819054',
                 'service_type' => 'mtn_airtime',
-                'biller_id' => 1
+                'biller_id' => 1,
+                'up_product_key' => '1',
             ],
             [
                 'name' => 'MTN Databundle',
@@ -868,6 +872,9 @@ class DatabaseSeeder extends Seeder
             $arr['service_type'] = $product['service_type'] ??  Str::slug($product['name'], '_');
             if (isset($product['biller_id'])) {
                 $arr['biller_id'] = $product['biller_id'];
+            }
+            if (isset($product['up_product_key'])) {
+                $arr['up_product_key'] = $product['up_product_key'];
             }
             Product::factory()
                 // ->has(SubProduct::factory(2), 'subProducts')
