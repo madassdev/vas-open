@@ -19,12 +19,6 @@ class GloSubProductSeeder extends Seeder
          */
         $glo = \App\Models\Product::where('name', 'Glo Databundle')->first();
 
-        $glo->subProducts()->create([
-            'name' => 'Voucher On Terminal (VOT)',
-            'price' => 0,
-            'description' => 'Voucher On Terminal (VOT)',
-            'up_product_key' => '1',
-        ]);
 
         $glo->subProducts()->create([
             'name' => 'Voucher On SMS (VOS)',

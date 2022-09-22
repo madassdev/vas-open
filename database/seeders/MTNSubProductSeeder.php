@@ -20,13 +20,6 @@ class MTNSubProductSeeder extends Seeder
         $mtn = \App\Models\Product::where('name', 'MTN Databundle')->first();
 
         $mtn->subProducts()->create([
-            'name' => 'Virtual Top Up',
-            'price' => 0,
-            'description' => 'Virtual top up',
-            'up_product_key' => '1',
-        ]);
-
-        $mtn->subProducts()->create([
             'name' => 'Postpaid Bill payment',
             'price' => 0,
             'description' => 'Postpaid Bill payment',

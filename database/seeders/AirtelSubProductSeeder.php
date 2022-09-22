@@ -20,13 +20,6 @@ class AirtelSubProductSeeder extends Seeder
         $airtel = \App\Models\Product::where('name', 'Airtel Databundle')->first();
 
         $airtel->subProducts()->create([
-            'name' => 'Virtual Top-up',
-            'price' => 0,
-            'description' => 'Virtual Top-up',
-            'up_product_key' => 'EXRCTRFREQ',
-        ]);
-
-        $airtel->subProducts()->create([
             'name' => '75GB Monthly Mega Data Plan (30 Days)',
             'price' => 0,
             'description' => '75GB Monthly Mega Data Plan (30 Days)',

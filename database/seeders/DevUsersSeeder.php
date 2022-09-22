@@ -71,9 +71,9 @@ class DevUsersSeeder extends Seeder
             "current_env" => "test",
             "live_enabled" => true,
             "business_category_id" => $business_category_id,
-            "merchant_id" => "Nameofmerchant",
-            "terminal_id" => "1234",
-            "client_id" => config('database.default') == 'mysqltest' ? "380278fb-e23b-4d3d-8461-7b1ff73ad51f" : "282a9511-b41d-41d8-b526-ec24af5cac89"
+            "merchant_id" => "SALPAY",
+            "terminal_id" => "SALPAY",
+            "client_id" => config('database.default') == 'mysqltest' ? "380278fb-e23b-4d3d-8461-7b1ff73ad51f" : "e5618cd6-cc35-4e47-8a36-f59beec50110"
         ]);
 
         $business->createDummyAccount();
