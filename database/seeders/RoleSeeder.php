@@ -235,13 +235,13 @@ class RoleSeeder extends Seeder
                 "description" => null,
                 "is_admin" => false
             ],
-            [
-                "name" => "business_invitee",
-                "guard_name" => "web",
-                "readable_name" => "Business Invitee",
-                "description" => null,
-                "is_admin" => false
-            ],
+            // [
+            //     "name" => "business_invitee",
+            //     "guard_name" => "web",
+            //     "readable_name" => "Business Invitee",
+            //     "description" => null,
+            //     "is_admin" => false
+            // ],
         ]);
 
         $roles->map(function ($r) {
