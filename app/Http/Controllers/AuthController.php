@@ -203,9 +203,11 @@ class AuthController extends Controller
 
             DBSwap::setConnection('mysqltest');
             $test_user = User::whereEmail($user->email)->first();
-            $test_user->password = bcrypt($request->new_password);
-            $test_user->password_changed = true;
-            $test_user->save();
+            if ($test_user) {
+                $test_user->password = bcrypt($request->new_password);
+                $test_user->password_changed = true;
+                $test_user->save();
+            }
         } catch (Exception $e) {
             // Do nothing
         }
