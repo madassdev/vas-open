@@ -7,6 +7,7 @@ use App\Http\Middleware\ApiKeyMiddleware;
 use App\Http\Middleware\BusinessUserPermission;
 use App\Http\Middleware\DownloadRouteMiddleware;
 use App\Http\Middleware\EnsureJsonResponse;
+use App\Http\Middleware\LogAdminAction;
 use App\Http\Middleware\NoTestEndpoints;
 use App\Http\Middleware\PasswordUpdated;
 use App\Http\Middleware\UserPermission;
@@ -81,5 +82,6 @@ class Kernel extends HttpKernel
         'activeBusiness' => ActiveBusinessMiddleware::class,
         'businessUserPermission' => BusinessUserPermission::class,
         'userPermission' => UserPermission::class,
+        'logAdminAction' => LogAdminAction::class,
     ];
 }

@@ -93,15 +93,26 @@ class ActionRequestController extends Controller
         ];
     }
 
-    public function makeAction(ActionRequest $actionRequest)
+    public function checkAction(Request $request, ActionRequest $actionRequest)
     {
         $user = auth()->user();
+        $request->validate([
+            'action' => 'required|in:approve,reject'
+        ]);
         $status = false;
         $message = "";
         $handler = (object) $actionRequest->handler;
         $process = null;
         if ($actionRequest->status !== "pending") {
             return $this->sendError("Action request already processed", [], 400);
+        }
+
+        if ($request->action === "reject") {
+            $actionRequest->checker_id = $user->id;
+            $actionRequest->treated_at = now();
+            $actionRequest->status = 'rejected';
+            $actionRequest->save();
+            return $this->sendSuccess('Action Request Rejected successfully', []);
         }
         if ($handler->type == sc('controllerMethod')) {
             $process = call_user_func([$handler->class, $handler->method], $handler->args);

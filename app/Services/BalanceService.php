@@ -47,7 +47,7 @@ class BalanceService
 
     public function validateAccount($account_number, $bank_code)
     {
-        $account = "1020000589";
+        // $account = "1020000589";
         $hash = config('api.balanceTestApi.hash');
         $url = config('api.bankAccountVerification.url');
         $payload = ["Account" => $account_number, "BankCode" => $bank_code];

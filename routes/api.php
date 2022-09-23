@@ -147,19 +147,19 @@ Route::group(["middleware" => [
     "noTestRoute", $authMiddleware,
     // "role:" . sc("SUPER_ADMIN_ROLE")
 ]], function () {
-    Route::group(['prefix' => 'super'], function () {
+    Route::group(['prefix' => 'super', 'middleware' => ['logAdminAction']], function () {
         Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport']);
         Route::get("/products-commissions", [SuperAdminController::class, 'getProductsCommissions']);
         Route::get("/businesses", [BusinessAdminController::class, 'getBusinesses']);
-        Route::post("/businesses", [BusinessAdminController::class, 'createBusiness']);
         Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails']);
         Route::get("/businesses/{business_id}/documents", [BusinessAdminController::class, 'getBusinessDocuments']);
         Route::get("/businesses/{business_id}/get-balance", [BusinessAdminController::class, 'getBusinessBalance']);
-        Route::post("/businesses/{document_request}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
         Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers']);
         Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts']);
         Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
         Route::get("/document-requests", [BusinessAdminController::class, 'getDocumentRequests']);
+        Route::post("/businesses", [BusinessAdminController::class, 'createBusiness']);
+        Route::post("/businesses/{document_request}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
         Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData']);
         Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled']);
         Route::post("/businesses/{business_id}/send-invitations", [BusinessAdminController::class, 'sendBusinessInvites']);
@@ -226,7 +226,7 @@ Route::group(["middleware" => [
                 Route::post('update-biller', [ActionRequestController::class, 'makeUpdateBiller']);
             });
             Route::group(['prefix' => 'check', 'middleware' => 'role:' . sc("ACTION_CHECKER_ROLE")], function () {
-                Route::post('/{actionRequest}', [ActionRequestController::class, 'makeAction']);
+                Route::post('/{actionRequest}', [ActionRequestController::class, 'checkAction']);
             });
         });
     });
