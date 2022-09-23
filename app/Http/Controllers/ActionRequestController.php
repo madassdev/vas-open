@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActionRequest;
+use App\Models\AdminActionLog;
 use App\Models\Biller;
 use Exception;
 use Illuminate\Http\Request;
@@ -139,5 +140,14 @@ class ActionRequestController extends Controller
     public function approveBiller($data)
     {
         return $data;
+    }
+
+    public function getAdminActionLogs(Request $request)
+    {
+        $per_page = $request->per_page ?? 20;
+        $admin_action_logs = AdminActionLog::latest()->paginate($per_page);
+        return $this->sendSuccess("Admin Action Logs fetched successfuly", [
+            "admin_action_logs" => $admin_action_logs
+        ]);
     }
 }

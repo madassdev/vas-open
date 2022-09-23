@@ -163,7 +163,7 @@ Route::group(["middleware" => [
         Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData']);
         Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled']);
         Route::post("/businesses/{business_id}/send-invitations", [BusinessAdminController::class, 'sendBusinessInvites']);
-
+        Route::get('/action-logs', [ActionRequestController::class, 'getAdminActionLogs']);
         /**  Product Configuration
             - Add Product Configurations
             - View Product Configurations
@@ -225,7 +225,7 @@ Route::group(["middleware" => [
                 Route::post('create-user', [ActionRequestController::class, 'createUser']);
                 Route::post('update-biller', [ActionRequestController::class, 'makeUpdateBiller']);
             });
-            Route::group(['prefix' => 'check', 'middleware' => 'role:' . sc("ACTION_CHECKER_ROLE")], function () {
+            Route::group(['prefix' => 'check', 'middleware' => 'role:' . sc("ACTION_CHECKER_ROLE") . '|' . sc("SUPER_ADMIN_ROLE")], function () {
                 Route::post('/{actionRequest}', [ActionRequestController::class, 'checkAction']);
             });
         });
@@ -244,7 +244,7 @@ Route::get('billers', [BillerController::class, 'index']);
 Route::get('banks', [BankController::class, 'getBanks']);
 Route::get('product-categories', [ProductController::class, 'listCategories']);
 Route::get('/transactions/download', [TransactionController::class, 'download'])->middleware('downloadRoute');
-if($authMiddleware == "apiKey"){
+if ($authMiddleware == "apiKey") {
     Route::get("/test-transactions", [AdminTransactionController::class, 'index']);
     Route::get("/test-transactions/{transaction_id}", [AdminTransactionController::class, 'show']);
 }
