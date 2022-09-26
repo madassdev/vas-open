@@ -145,7 +145,7 @@ class ActionRequestController extends Controller
     public function getAdminActionLogs(Request $request)
     {
         $per_page = $request->per_page ?? 20;
-        $admin_action_logs = AdminActionLog::latest()->paginate($per_page);
+        $admin_action_logs = AdminActionLog::with('user')->latest()->paginate($per_page);
         return $this->sendSuccess("Admin Action Logs fetched successfuly", [
             "admin_action_logs" => $admin_action_logs
         ]);
