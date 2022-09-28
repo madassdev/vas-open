@@ -21,7 +21,12 @@ class SubProduct extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->shortname = $model->shortname ?? Str::slug($model->name);
+            // $model_has_shortname = 
+            if($model->shortname == null) {
+                $parent = $model->product;
+                $model->shortname = Str::slug($parent->name . '-' . $model->name);
+            }
+            return;
         });
     }
 }
