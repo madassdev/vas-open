@@ -12,4 +12,9 @@ class AdminActionLog extends Model
     protected $casts = [
         "request_body" => "array"
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
