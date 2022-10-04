@@ -75,8 +75,9 @@ class DevUsersSeeder extends Seeder
             "terminal_id" => "4723120541",
             "client_id" => config('database.default') == 'mysqltest' ?
                 "380278fb-e23b-4d3d-8461-7b1ff73ad51f" :
-                "e5618cd6-cc35-4e47-8a36-f59beec50110"
-            //omotayo's account         // "0e2edc44-57ed-487f-9eb9-bf6cf7db7fdd"
+                // "e5618cd6-cc35-4e47-8a36-f59beec50110"
+                // omotayo's account   
+                "0e2edc44-57ed-487f-9eb9-bf6cf7db7fdd"
         ]);
 
         $business->createDummyAccount();

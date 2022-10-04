@@ -469,13 +469,13 @@ class DatabaseSeeder extends Seeder
                 'product_code' => '2348094190022',
                 'service_type' => '9mobile_airtime',
                 'biller_id' => 4,
-                'up_product_key' => '0'
+                'up_product_key' => '001'
             ],
             [
                 'name' => '9mobile Databundle',
                 'shortname' => '9mobile',
                 'product_category_id' => 2,
-                'product_code' => '12700',
+                'product_code' => '2348094190022',
                 'service_type' => '9mobile_databundle',
                 'biller_id' => 4,
             ],
