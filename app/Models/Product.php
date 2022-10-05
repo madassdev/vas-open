@@ -7,6 +7,7 @@ use App\Models\Business;
 use App\Models\SubProduct;
 use App\Models\Transaction;
 use App\Models\ProductCategory;
+use App\Events\ProductConfigUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -47,7 +48,7 @@ class Product extends Model
 
     public function createConfigDto()
     {
-        $p = $this; 
+        $p = $this;
         $custom_commission = $p->pivot->commission_value;
         $p->category_name = $this->productCategory->name;
         $p->configurations = [
@@ -79,6 +80,28 @@ class Product extends Model
         return $this->hasMany(SubProduct::class);
     }
 
+
+    static function boot()
+    {
+        parent::boot();
+        static::created(function ($model) {
+            // throw event
+            event(new ProductConfigUpdated());
+            return;
+        });
+
+        static::updated(function ($model) {
+            // throw event
+            event(new ProductConfigUpdated());
+            return;
+        });
+
+        static::deleted(function ($model) {
+            // throw event
+            event(new ProductConfigUpdated());
+            return;
+        });
+    }
 
 
     // $items[array_rand($items)]

@@ -17,300 +17,380 @@ class MTNSubProductSeeder extends Seeder
         /**
          * @var \App\Models\Product $mtn
          */
+
         $mtn = \App\Models\Product::where('name', 'MTN Databundle')->first();
+        $mtn->update(['has_sub_product' => true]);
 
         $mtn->subProducts()->create([
-            'name' => 'Postpaid Bill payment',
-            'price' => 0,
-            'description' => 'Postpaid Bill payment',
-            'up_product_key' => '1',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '2GO 20MB DAILY',
-            'price' => 9,
-            'description' => '2GO 20MB DAILY',
+            'name' => '100MB Daily',
+            'price' => 100,
+            'description' => 'DataPlan Daily',
             'up_product_key' => '9',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '75MB DAILY',
-            'price' => 9,
-            'description' => '75MB DAILY',
+            'name' => '200MB 3-Day Plan',
+            'price' => 220,
+            'description' => 'DataPlan Daily',
             'up_product_key' => '9',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '350MB DAILY',
-            'price' => 0,
-            'description' => '350MB DAILY',
-            'up_product_key' => '18',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '200MB 2-DAY',
-            'price' => 9,
-            'description' => '200MB 2-DAY',
+            'name' => '350MB Weekly',
+            'price' => 300,
+            'description' => 'DataPlan Weekly',
             'up_product_key' => '9',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '750MB 2-DAY',
-            'price' => 0,
-            'description' => '750MB 2-DAY',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '1.5GB Monthly Plan',
-            'price' => 9,
-            'description' => '1.5GB Monthly Plan',
+            'name' => '750MB 2-Week Plan',
+            'price' => 550,
+            'description' => 'DataPlan Weekly',
             'up_product_key' => '9',
         ]);
 
         $mtn->subProducts()->create([
             'name' => '2GB Monthly Plan',
-            'price' => 9,
-            'description' => '2GB Monthly Plan',
+            'price' => 1200,
+            'description' => 'DataPlan Monthly',
             'up_product_key' => '9',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '4.5GB Monthly Plan',
-            'price' => 9,
-            'description' => '4.5GB Monthly Plan',
+            'name' => '1.5GB 1 month mobile plan',
+            'price' => 1100,
+            'description' => 'DataPlan Monthly',
             'up_product_key' => '9',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '6GB Monthly Plan',
-            'price' => 0,
-            'description' => '6GB Monthly Plan',
-            'up_product_key' => '9',
+            'name' => '1GB 300 Daily',
+            'price' => 300,
+            'description' => 'DataPlan Daily',
+            'up_product_key' => '18',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '10GB + 4GB YouTube Night Monthly plan',
-            'price' => 0,
-            'description' => '10GB + 4GB YouTube Night Monthly plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '15GB Monthly Plan',
-            'price' => 0,
-            'description' => '15GB Monthly Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '40GB Monthly Plan',
-            'price' => 0,
-            'description' => '40GB Monthly Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '350MB Weekly Plan',
-            'price' => 0,
-            'description' => '350MB Weekly Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '20GB Weekly Plan',
-            'price' => 0,
-            'description' => '20GB Weekly Plan',
+            'name' => '3GB 1500 Monthly',
+            'price' => 1500,
+            'description' => 'DataPlan Monthly',
             'up_product_key' => '36',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '75GB 2 Months Plan',
-            'price' => 9,
-            'description' => '75GB 2 Months Plan',
+            'name' => '325GB 100000 6-Months',
+            'price' => 100000,
+            'description' => 'Data Bundles',
             'up_product_key' => '9',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '120GB 2 Months Plan',
-            'price' => 9,
-            'description' => '120GB 2 Months Plan',
+            'name' => '1500GB 450000 1-Year',
+            'price' => 450000,
+            'description' => 'Data Bundles',
             'up_product_key' => '9',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '150GB 3 Months Plan',
-            'price' => 9,
-            'description' => '150GB 3 Months Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '250GB 3 Months Plan',
-            'price' => 9,
-            'description' => '250GB 3 Months Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => 'Virtual Top-up (AWUF4U)',
-            'price' => 1,
-            'description' => 'Virtual Top-up (AWUF4U)',
-            'up_product_key' => '1',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '2GO 50MB Weekly',
-            'price' => 9,
-            'description' => '2GO 50MB Weekly',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '6GB Weekly Plan',
-            'price' => 9,
-            'description' => '6GB Weekly Plan',
-            'up_product_key' => '9',
-        ]);
-        $mtn->subProducts()->create([
-            'name' => '1GB Weekly',
-            'price' => 19,
-            'description' => '1GB Weekly',
-            'up_product_key' => '19',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '2GO 160MB Monthly Plan',
-            'price' => 9,
-            'description' => '2GO 160MB Monthly Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '8GB Monthly Plan',
-            'price' => 9,
-            'description' => '8GB Monthly Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '75GB Monthly Plan',
-            'price' => 9,
-            'description' => '75GB Monthly Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '3GB Monthly Plan',
-            'price' => 36,
-            'description' => '3GB Monthly Plan',
-            'up_product_key' => '36',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '25GB Monthly Plan',
-            'price' => 36,
-            'description' => '25GB Monthly Plan',
-            'up_product_key' => '36',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '110GB Monthly Plan',
-            'price' => 36,
-            'description' => '110GB Monthly Plan',
-            'up_product_key' => '36',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '325GB 6 Month Plan',
-            'price' => 9,
-            'description' => '325GB 6 Month Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '1000GB Yearly Plan',
-            'price' => 9,
-            'description' => '1000GB Yearly Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '1500GB Yearly Plan',
-            'price' => 9,
-            'description' => '1500GB Yearly Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '400GB Yearly Plan',
-            'price' => 9,
-            'description' => '400GB Yearly Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '30GB',
-            'price' => 12,
-            'description' => '30GB',
-            'up_product_key' => '12',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '90GB',
-            'price' => 12,
-            'description' => '90GB',
-            'up_product_key' => '12',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '150GB',
-            'price' => 12,
-            'description' => '150GB',
-            'up_product_key' => '12',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => 'SME 150GB for 90Days(SpecialOffer)',
-            'price' => 12,
-            'description' => 'SME 150GB for 90Days(SpecialOffer)',
-            'up_product_key' => '12',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '1GB Daily Plan',
-            'price' => 9,
-            'description' => '1GB Daily Plan',
-            'up_product_key' => '9',
-        ]);
-
-
-        $mtn->subProducts()->create([
-            'name' => '2GB 2-DAY Daily Plan',
-            'price' => 9,
-            'description' => '2GB 2-DAY Daily Plan',
-            'up_product_key' => '9',
-        ]);
-
-        $mtn->subProducts()->create([
-            'name' => '2.5GB 2-Day Daily Plan',
-            'price' => 20,
-            'description' => '2.5GB 2-Day Daily Plan',
+            'name' => '2.5GB 550 2-Day',
+            'price' => 550,
+            'description' => 'DataPlan',
             'up_product_key' => '20',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '1 Month All day Plan',
-            'price' => 9,
-            'description' => '1 Month All day Plan',
+            'name' => '400GB 120000 Yearly',
+            'price' => 120000,
+            'description' => 'DataPlan',
             'up_product_key' => '9',
         ]);
 
         $mtn->subProducts()->create([
-            'name' => '12GB Monthly Plan',
-            'price' => 9,
-            'description' => '12GB Monthly Plan',
+            'name' => '75GB 20000 2-Month',
+            'price' => 20000,
+            'description' => 'DataPlan',
             'up_product_key' => '9',
         ]);
+
+        $mtn->subProducts()->create([
+            'name' => '120GB 30000 2-Month',
+            'price' => 30000,
+            'description' => 'DataPlan',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '150GB 50000 3-Month',
+            'price' => 50000,
+            'description' => 'DataPlan',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '250GB 75000 3-Month',
+            'price' => 75000,
+            'description' => 'DataPlan',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '25GB 6000 Monthly',
+            'price' => 6000,
+            'description' => 'DataPlan',
+            'up_product_key' => '36',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '1GB 550 Weekly',
+            'price' => 550,
+            'description' => 'DataPlan Weekly',
+            'up_product_key' => '19',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '6GB 1500 Weekly',
+            'price' => 1500,
+            'description' => 'DataPlan Weekly',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '6GB 2500 Monthly',
+            'price' => 2500,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '10GB 3300 Monthly',
+            'price' => 3300,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '110GB 20000 Monthly',
+            'price' => 20000,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '36',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '25GB SME 10000 Monthly',
+            'price' => 10000,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '12',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '165GB SME 50000 2-Month',
+            'price' => 50000,
+            'description' => 'DataPlan',
+            'up_product_key' => '12',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '360GB SME 100000 3-Month',
+            'price' => 100000,
+            'description' => 'DataPlan',
+            'up_product_key' => '12',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '1TB SME 250000 3-Month',
+            'price' => 250000,
+            'description' => 'DataPlan',
+            'up_product_key' => '12',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '4.5GB 2200 Monthly',
+            'price' => 2200,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '12GB 3500 Monthly',
+            'price' => 3500,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '20GB 5500 Monthly',
+            'price' => 5500,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '40GB 10000 Monthly',
+            'price' => 10000,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '75GB 15000 Monthly',
+            'price' => 15000,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '9',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtratalk 200 200 3days',
+            'price' => 200,
+            'description' => 'Xtratalk',
+            'up_product_key' => '24',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtratalk 300 300 Weekly',
+            'price' => 300,
+            'description' => 'Xtratalk',
+            'up_product_key' => '24',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtratalk 500 500 Weekly',
+            'price' => 500,
+            'description' => 'Xtratalk',
+            'up_product_key' => '24',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtratalk 1000 1000 Monthly',
+            'price' => 1000,
+            'description' => 'Xtratalk',
+            'up_product_key' => '24',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtratalk 2000 2000 Monthly',
+            'price' => 2000,
+            'description' => 'Xtratalk',
+            'up_product_key' => '24',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtratalk 5000 5000 Monthly',
+            'price' => 5000,
+            'description' => 'Xtratalk',
+            'up_product_key' => '24',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtratalk 10000 10000 Monthly',
+            'price' => 10000,
+            'description' => 'Xtratalk',
+            'up_product_key' => '24',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtratalk 15000 15000 Monthly',
+            'price' => 15000,
+            'description' => 'Xtratalk',
+            'up_product_key' => '24',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtratalk 20000 20000 Monthly',
+            'price' => 20000,
+            'description' => 'Xtratalk',
+            'up_product_key' => '24',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtradata 200 200 3days Bundle',
+            'price' => 200,
+            'description' => 'Xtradata',
+            'up_product_key' => '25',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtradata 300 300 Weekly Bundle',
+            'price' => 300,
+            'description' => 'Xtradata',
+            'up_product_key' => '25',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtradata 500 500 Weekly Bundle',
+            'price' => 500,
+            'description' => 'Xtradata',
+            'up_product_key' => '25',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtradata 1000 1000 Monthly Bundle',
+            'price' => 1000,
+            'description' => 'Xtradata',
+            'up_product_key' => '25',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtradata 2000 2000 Monthly Bundle',
+            'price' => 2000,
+            'description' => 'Xtradata',
+            'up_product_key' => '25',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtradata 5000 5000 Monthly Bundle',
+            'price' => 5000,
+            'description' => 'Xtradata',
+            'up_product_key' => '25',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtradata 10000 10000 Monthly Bundle',
+            'price' => 10000,
+            'description' => 'Xtradata',
+            'up_product_key' => '25',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtradata 15000 15000 Monthly Bundle',
+            'price' => 15000,
+            'description' => 'Xtradata',
+            'up_product_key' => '25',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => 'Xtradata 20000 20000 Monthly Bundle',
+            'price' => 20000,
+            'description' => 'Xtradata',
+            'up_product_key' => '25',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '11GB Monthly Plan',
+            'price' => 3000,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '36',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '13GB Monthly Plan',
+            'price' => 3500,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '36',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '22GB Monthly Plan',
+            'price' => 5000,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '36',
+        ]);
+
+        $mtn->subProducts()->create([
+            'name' => '27GB Monthly Plan',
+            'price' => 6000,
+            'description' => 'DataPlan Monthly',
+            'up_product_key' => '36',
+        ]);
+
     }
 }
