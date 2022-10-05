@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Product;
+use App\Events\ProductConfigUpdated;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductCategory extends Model
 {
@@ -13,5 +15,27 @@ class ProductCategory extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    static function boot()
+    {
+        parent::boot();
+        static::created(function ($model) {
+            // throw event
+            event(new ProductConfigUpdated());
+            return;
+        });
+
+        static::updated(function ($model) {
+            // throw event
+            event(new ProductConfigUpdated());
+            return;
+        });
+
+        static::deleted(function ($model) {
+            // throw event
+            event(new ProductConfigUpdated());
+            return;
+        });
     }
 }
