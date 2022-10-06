@@ -23,7 +23,7 @@ class LogAdminAction
                 'user_id' => auth()->id(),
                 'request_method' => $request->method(),
                 'request_path' => $request->path(),
-                'request_body' => $request->all(),
+                'request_body' => $request->except('logo'),
                 'request_ip' => $request->ip(),
                 'request_origin' => $request->header('host'),
             ];
