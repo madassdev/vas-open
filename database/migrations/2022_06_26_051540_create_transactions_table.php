@@ -24,10 +24,10 @@ class CreateTransactionsTable extends Migration
             
             $table->string('idempotency_hash')->unique()->nullable();
             $table->string('business_reference')->nullable();
-            $table->string('debit_reference')->nullable();
-            $table->string('transaction_reference')->nullable();
+            // $table->string('debit_reference')->nullable();
+            // $table->string('transaction_reference')->nullable();
             $table->string('provider_reference')->nullable();
-            $table->double('debited_amount')->nullable();
+            // $table->double('debited_amount')->nullable();
             
             $table->decimal('product_price')->nullable();
             $table->decimal('fee')->nullable();
@@ -36,15 +36,15 @@ class CreateTransactionsTable extends Migration
             
             $table->string('account_number')->nullable();
             $table->string('phone_number')->nullable();
-            $table->tinyInteger('value_given')->nullable();
+            // $table->tinyInteger('value_given')->nullable();
             
             $table->string('transaction_status')->nullable();
-            $table->string('payment_status')->nullable();
+            // $table->string('payment_status')->nullable();
             $table->string('status_code')->nullable();
-            $table->string('status_message')->nullable();
+            // $table->string('status_message')->nullable();
             $table->text('provider_message')->nullable();
             $table->tinyInteger('retries')->nullable();
-            $table->text('narration')->nullable();
+            // $table->text('narration')->nullable();
             
             // $table->tinyInteger('is_settled')->nullable();
             $table->timestamps();
