@@ -21,6 +21,7 @@ class SandboxProductsSeeder extends Seeder
         $products =[
             [
                 'name' => '9mobile',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055007/722567D5-FEF0-4594-AC39-551AE3CB7772_i3d5tx.png',
                 'shortname' => '9mobile',
                 'product_category_id' => 1,
                 'product_code' => '12700',
@@ -29,6 +30,7 @@ class SandboxProductsSeeder extends Seeder
             ],
             [
                 'name' => '9mobile Databundle',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055007/722567D5-FEF0-4594-AC39-551AE3CB7772_i3d5tx.png',
                 'shortname' => '9mobile',
                 'product_category_id' => 2,
                 'product_code' => '12700',
@@ -57,6 +59,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'Airtel',
                 'shortname' => 'Airtel',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/557D0571-C4FA-4BF2-B331-09B3CEBEC7A4_ichasg.png',
                 'product_category_id' => 1,
                 'product_code' => '2347087214896',
                 'service_type' => 'airtel_airtime',
@@ -65,6 +68,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'Airtel Databundle',
                 'shortname' => 'Airtel',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/557D0571-C4FA-4BF2-B331-09B3CEBEC7A4_ichasg.png',
                 'product_category_id' => 2,
                 'product_code' => '2347087214896',
                 'service_type' => 'airtel_databundle',
@@ -131,6 +135,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'DSTV',
                 'shortname' => 'DSTV',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/ED0FC27F-FDCC-4FBD-8A8E-4C8B2B2B5194_m5bpbd.png',
                 'product_category_id' => 4,
                 'service_type' => 'dstv',
                 'product_code' => '999',
@@ -162,6 +167,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'GLO',
                 'shortname' => 'GLO',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/0C2F50FB-2B96-4E2E-A1DD-D4EB7CEC329E_yflizx.png',
                 'product_category_id' => 1,
                 'product_code' => '300033',
                 'service_type' => 'glo_airtime',
@@ -170,6 +176,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'GLO Databundle',
                 'shortname' => 'GLO_Databundle',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/0C2F50FB-2B96-4E2E-A1DD-D4EB7CEC329E_yflizx.png',
                 'product_category_id' => 2,
                 'product_code' => '300033',
                 'service_type' => 'glo_databundle',
@@ -178,6 +185,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'GOTV',
                 'shortname' => 'GOTV',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/73E9A419-1CEA-4122-8A41-1361BF01DA14_lrxaat.png',
                 'product_category_id' => 4,
             ],
             [
@@ -259,6 +267,7 @@ class SandboxProductsSeeder extends Seeder
             ],
             [
                 'name' => 'MTN',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/F5D9367A-863C-49D9-99E0-3C4277AC040E_k3homd.png',
                 'shortname' => 'MTN',
                 'product_category_id' => 1,
                 'product_code' => '12682',
@@ -267,6 +276,7 @@ class SandboxProductsSeeder extends Seeder
             ],
             [
                 'name' => 'MTN Databundle',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/F5D9367A-863C-49D9-99E0-3C4277AC040E_k3homd.png',
                 'shortname' => 'MTN_Databundle',
                 'product_category_id' => 2,
                 'product_code' => '12682',
@@ -340,6 +350,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'STARTIMES',
                 'shortname' => 'STARTIMES',
+                'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/73C97332-60D4-4BB2-B39B-3879FC43DFD3_w4onmw.png',
                 'product_category_id' => 4,
             ],
             [
@@ -388,6 +399,10 @@ class SandboxProductsSeeder extends Seeder
             ];
             if (isset($product['product_code'])) {
                 $arr['vendor_code'] = $product['product_code'];
+            }
+              // logo
+              if (isset($product['logo'])) {
+                $arr['logo'] = $product['logo'];
             }
             $arr['service_type'] = $product['service_type'] ??  Str::slug($product['name'], '_');
             if (isset($product['biller_id'])) {
