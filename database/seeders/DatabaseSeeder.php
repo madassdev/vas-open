@@ -143,9 +143,8 @@ class DatabaseSeeder extends Seeder
         $this->call(AirtelSubProductSeeder::class);
         $this->call(NineMobileSubProductSeeder::class);
         $this->call(TransactionExtraSeeder::class);
-        // create 20 accounts
-        // create 50 billers
-        // create 50 transactions
+        // all electricity products should have min amount of 900
+        
 
 
     }

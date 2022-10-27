@@ -144,15 +144,19 @@ class SandboxProductsSeeder extends Seeder
                 'name' => 'EKEDC Postpaid',
                 'shortname' => 'EKEDC-Postpaid',
                 'product_category_id' => 3,
-                'product_code' => '1262',
-                'biller_id' => 5
+                'product_code' => '716',
+                'biller_id' => 5,
+                'up_product_key' => 'POSTPAID',
+                'min_amount' => 900
             ],
             [
                 'name' => 'EKEDC Prepaid',
                 'shortname' => 'EKEDC-Prepaid',
                 'product_category_id' => 3,
-                'product_code' => '1263',
-                'biller_id' => 5
+                'product_code' => '717',
+                'biller_id' => 5,
+                'up_product_key' => 'PREPAID',
+                'min_amount' => 900,
             ],
             [
                 'name' => 'FCMB Pension Fund Administrator',
@@ -231,14 +235,16 @@ class SandboxProductsSeeder extends Seeder
                 'shortname' => 'JEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '301068',
-                'biller_id' => 11
+                'biller_id' => 11,
+                'min_amount' => 2000
             ],
             [
                 'name' => 'Jos Electricty Distribution Company Prepaid',
                 'shortname' => 'JEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '301067',
-                'biller_id' => 11
+                'biller_id' => 11,
+                'min_amount' => 2000
             ],
             [
                 'name' => 'Kaduna Electricty Distribution Company Prepaid',
@@ -411,9 +417,19 @@ class SandboxProductsSeeder extends Seeder
             if (isset($product['up_product_key'])) {
                 $arr['up_product_key'] = $product['up_product_key'];
             }
+            if (isset($product['min_amount'])) {
+                $arr['min_amount'] = $product['min_amount'];
+            }
             Product::factory()
                 // ->has(SubProduct::factory(2), 'subProducts')
                 ->create($arr);
         }
     }
 }
+// JosElectric                             CustomerId 54161045569(Prepaid) 54161045569(Postpaid)
+
+// EKEDC                                      CustomerId 45066589461(Prepaid) 033933042401(Postpaid)
+
+
+
+

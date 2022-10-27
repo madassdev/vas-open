@@ -151,14 +151,16 @@ class LiveProductsSeeder extends Seeder
                 'shortname' => 'EKEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '1262',
-                'biller_id' => 5
+                'biller_id' => 5,
+                'min_amount' => 900,
             ],
             [
                 'name' => 'EKEDC Prepaid',
                 'shortname' => 'EKEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '1263',
-                'biller_id' => 5
+                'biller_id' => 5,
+                'min_amount' => 900,
             ],
             [
                 'name' => 'FCMB Pension Fund Administrator',
@@ -243,14 +245,16 @@ class LiveProductsSeeder extends Seeder
                 'shortname' => 'JEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '301068',
-                'biller_id' => 11
+                'biller_id' => 11,
+                'min_amount' => 2000,
             ],
             [
                 'name' => 'Jos Electricty Distribution Company Prepaid',
                 'shortname' => 'JEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '301067',
-                'biller_id' => 11
+                'biller_id' => 11,
+                'min_amount' => 2000,
             ],
             [
                 'name' => 'Kaduna Electricty Distribution Company Prepaid',
@@ -446,6 +450,9 @@ class LiveProductsSeeder extends Seeder
             }
             if (isset($product['up_product_key'])) {
                 $arr['up_product_key'] = $product['up_product_key'];
+            }
+            if (isset($product['min_amount'])) {
+                $arr['min_amount'] = $product['min_amount'];
             }
             Product::factory()
                 // ->has(SubProduct::factory(2), 'subProducts')
