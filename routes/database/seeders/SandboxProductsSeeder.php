@@ -191,7 +191,6 @@ class SandboxProductsSeeder extends Seeder
                 'shortname' => 'GOTV',
                 'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/73E9A419-1CEA-4122-8A41-1361BF01DA14_lrxaat.png',
                 'product_category_id' => 4,
-                'product_code' => '9991',
             ],
             [
                 'name' => 'Ibadan Electricity Distribution Company Postpaid',

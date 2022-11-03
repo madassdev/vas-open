@@ -143,9 +143,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AirtelSubProductSeeder::class);
         $this->call(NineMobileSubProductSeeder::class);
         $this->call(TransactionExtraSeeder::class);
-        $this->call(DSTVSeeder::class);
-        $this->call(GotvSeeder::class);
-        $this->call(StartimesSeeder::class);
         // all electricity products should have min amount of 900
         
 

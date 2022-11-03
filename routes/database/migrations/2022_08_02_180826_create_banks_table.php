@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Bank;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,18 +14,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sub_products', function (Blueprint $table) {
+        Schema::create('banks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->string('up_product_key')->nullable();
             $table->string('name');
-            $table->string('shortname');
-            $table->string('description')->nullable();
-            $table->float('price')->default(0);
+            $table->string('code');
+            $table->boolean('is_enabled')->default(true);
             $table->timestamps();
-            // $table->index(['product_id', 'up_product_key']);
         });
-
+        Bank::updateOrCreate([
+            "code" => "076"
+        ], [
+            "name" => "HOPE BANK",
+            "code" => "076"
+        ]);
     }
 
     /**
@@ -34,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_products');
+        Schema::dropIfExists('banks');
     }
 };
