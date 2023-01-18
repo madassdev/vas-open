@@ -30,6 +30,7 @@ return [
 
     'env' => env('APP_ENV', 'production'),
     'api_url' => env('API_URL', 'https://vasreseller-api-live.herokuapp.com'),
+    'live_app_domain' => env('LIVE_APP_DOMAIN', 'vasreseller-api-live.herokuapp.com'),
 
     /*
     |--------------------------------------------------------------------------

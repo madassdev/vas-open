@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DBSwap;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Resources\AdminBusinessDetails;
+use App\Jobs\SendEmailJob;
 use App\Mail\GenericMail;
 use App\Mail\UserCreatedPasswordMail;
 use App\Models\Business;
@@ -154,7 +155,7 @@ class BusinessAdminController extends Controller
 
             try {
                 $mailError = null;
-                $mail->send();
+                SendEmailJob::dispatch($mail);
             } catch (Exception $e) {
                 $mailError = $e->getMessage();
             };
@@ -180,7 +181,7 @@ class BusinessAdminController extends Controller
 
             try {
                 $mailError = null;
-                $mail->send();
+                SendEmailJob::dispatch($mail);
             } catch (Exception $e) {
                 $mailError = $e->getMessage();
             };
@@ -447,7 +448,7 @@ class BusinessAdminController extends Controller
         $mail = new MailApiService($invitee->email, "[Vas Reseller] You have been invited to collaborate", $mailContent->render());
         try {
             $mailError = null;
-            $mail->send();
+            SendEmailJob::dispatch($mail);
         } catch (Exception $e) {
             // $mailError = $e->getMessage();
             // throw $e;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmailJob;
 use App\Mail\GenericMail;
 use App\Models\Business;
 use App\Models\BusinessUser;
@@ -324,7 +325,7 @@ class InviteeController extends Controller
         $mail = new MailApiService($invitee->email, "[Vas Reseller] You have been invited to collaborate", $mailContent->render());
         try {
             $mailError = null;
-            $mail->send();
+            SendEmailJob::dispatch($mail);
         } catch (Exception $e) {
             // $mailError = $e->getMessage();
             // throw $e;

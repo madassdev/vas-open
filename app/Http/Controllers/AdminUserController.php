@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DBSwap;
+use App\Jobs\SendEmailJob;
 use App\Mail\GenericMail;
 use App\Models\Business;
 use App\Models\BusinessUser;
@@ -71,7 +72,8 @@ class AdminUserController extends Controller
         $mail = new MailApiService($user->email, "[Vas Reseller] Here's your Administrator account details", $mailContent->render());
         try {
             $mailError = null;
-            $mail->send();
+            SendEmailJob::dispatch($mail);
+            // $mail->send();
         } catch (Exception $e) {
             $mailError = $e->getMessage();
         };

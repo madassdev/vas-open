@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DBSwap;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
+use App\Jobs\SendEmailJob;
 use App\Jobs\UserMailJob;
 use App\Mail\GenericMail;
 use App\Mail\PasswordUpdatedMail;
@@ -249,7 +250,7 @@ class AuthController extends Controller
 
         try {
             $mailError = null;
-            $mail->send();
+            SendEmailJob::dispatch($mail);
         } catch (Exception $e) {
             $mailError = $e->getMessage();
         };
