@@ -85,7 +85,7 @@ class AdminUserController extends Controller
         if (!$adminBusiness) {
             $this->sendError('Admin Business not found.', [], 404);
         }
-        return $this->sendSuccess("Admin users fetched successfully", ["admin_users" => $adminBusiness->users]);
+        return $this->sendSuccess("Admin users fetched successfully", ["admin_users" => $adminBusiness->users->load('roles')]);
     }
 
     public function getRoles()

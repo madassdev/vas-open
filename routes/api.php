@@ -160,7 +160,7 @@ Route::group(["middleware" => [
         Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
         Route::get("/document-requests", [BusinessAdminController::class, 'getDocumentRequests']);
         Route::post("/businesses", [BusinessAdminController::class, 'createBusiness']);
-        Route::post("/businesses/{business_id}/resend-mail", [MailController::class, 'resendAdminCreateBusiness']);
+        Route::post("/businesses/{business}/resend-mail", [MailController::class, 'resendAdminCreateBusiness']);
         Route::post("/businesses/{document_request}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
         Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData']);
         Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled']);
