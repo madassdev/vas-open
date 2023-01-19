@@ -50,16 +50,17 @@ use Illuminate\Support\Facades\Route;
 // please set APP_AUTH_MIDDLEWARE as "localSubdomain" in env file.
 
 $auth_middleware_context = config('auth.env_auth_middleware');
+$authMiddleware = config('app.env') == "production" ? "auth:sanctum" : "apiKey";
 
 // check the current env value for authentication
-if ($auth_middleware_context === "localSubdomain") {
-    // Use request subdomain to determine if it's a test context or live context
-    $request_root = request()->root();
-    $live_domain = config('app.live_app_domain'); // It's a request for live domain... use auth:sanctum else use apiKey
-    $authMiddleware = $request_root === $live_domain ? "auth:sanctum" : "apiKey";
-} else {
-    $authMiddleware = $auth_middleware_context === "apiKey" ? "apiKey" : "auth:sanctum";
-}
+// if ($auth_middleware_context === "localSubdomain") {
+//     // Use request subdomain to determine if it's a test context or live context
+//     $request_root = request()->root();
+//     $live_domain = config('app.live_app_domain'); // It's a request for live domain... use auth:sanctum else use apiKey
+//     $authMiddleware = $request_root === $live_domain ? "auth:sanctum" : "apiKey";
+// } else {
+//     $authMiddleware = $auth_middleware_context === "apiKey" ? "apiKey" : "auth:sanctum";
+// }
 
 Route::any('static/test', [AppController::class, 'test']);
 Route::any('static/test/save', [AppController::class, 'save']);

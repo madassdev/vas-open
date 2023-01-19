@@ -16,13 +16,13 @@ class NoTestEndpoints
      */
     public function handle(Request $request, Closure $next)
     {
+        $app_env = config('app.env');
         $request_root = $request->root();
-        $live_domain = config('app.live_app_domain');
-        if ($request_root !== $live_domain) {
+        if ( $app_env !== "production") {
             return response()->json([
                 "success" => false,
                 "message" => "[ENVIRONMENT ERROR]: Attempting to access LIVE only endpoint.",
-                "data" => ["root" => $request_root, "live_domain" => $live_domain]
+                "data" => ["root" => $request_root, "app_env" => $app_env]
             ], 400);
             // abort(403, "[ENVIRONMENT ERROR]: Attempting to access LIVE only endpoint.");
         }
