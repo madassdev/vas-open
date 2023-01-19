@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DBSwap;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
+use App\Jobs\SendEmailJob;
 use App\Jobs\UserMailJob;
 use App\Mail\GenericMail;
 use App\Mail\PasswordUpdatedMail;
@@ -127,15 +128,9 @@ class AuthController extends Controller
         // TODO: Create user on test env
 
         // Notify user
-        $mailError = null;
+        $business->resend_mail  = true;
         $passwordMail = new MailApiService($user->email, "[Vas Reseller] Here's your account details!", (new UserCreatedPasswordMail($user))->render());
-        try {
-            $passwordMail->send();
-        } catch (Exception $e) {
-            $mailError = $e->getMessage();
-        };
-
-        // Create response for test environments where mail may not be setup yet.
+        SendEmailJob::dispatch($passwordMail);
         $data = [];
 
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
@@ -164,6 +159,15 @@ class AuthController extends Controller
         } else {
             $role = Role::find($user->active_business->role_id);
         }
+        if ($user->resend_mail) {
+            $user->resend_mail = false;
+            $user->save();
+        }
+        if ($user->business->resend_mail) {
+            $user->business->resend_mail = false;
+            $user->business->save();
+        }
+
         $user->unsetRelation('roles');
         $role->title = str_replace(" Role", '', $role->readable_name);
         $user->role = $role->load('permissions');
@@ -198,6 +202,7 @@ class AuthController extends Controller
         $context = $user->password_changed ? "updated" : "new";
         $user->password = bcrypt($request->new_password);
         $user->password_changed = true;
+        $user->resend_mail = false;
         $user->save();
         try {
 
@@ -206,6 +211,7 @@ class AuthController extends Controller
             if ($test_user) {
                 $test_user->password = bcrypt($request->new_password);
                 $test_user->password_changed = true;
+                $test_user->resend_mail = false;
                 $test_user->save();
             }
         } catch (Exception $e) {
@@ -213,12 +219,7 @@ class AuthController extends Controller
         }
 
         $passwordUpdatedMail = new MailApiService($user->email, "[Vas Reseller] Password updated successfully!", (new PasswordUpdatedMail($user, $context))->render());
-        $mailError = null;
-        try {
-            $passwordUpdatedMail->send();
-        } catch (Exception $e) {
-            $mailError = $e->getMessage();
-        };
+        SendEmailJob::dispatch($passwordUpdatedMail);
 
 
         return $this->sendSuccess('Password updated successfully', ["context" => $context, "mail_error" => $mailError]);
@@ -247,12 +248,7 @@ class AuthController extends Controller
         // return $mailContent
         $mail = new MailApiService($user->email, "[Vas Reseller] Reset your password", $mailContent->render());
 
-        try {
-            $mailError = null;
-            $mail->send();
-        } catch (Exception $e) {
-            $mailError = $e->getMessage();
-        };
+        SendEmailJob::dispatch($mail);
 
         // Create response for test environments where mail may not be setup yet.
         // $data = config('app.env') !== 'production' ? ["reset_token" => $token, "mail_error" => $mailError] : [];

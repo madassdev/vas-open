@@ -13,6 +13,7 @@ use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\BusinessDocumentController;
 use App\Http\Controllers\InviteeController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubProductController;
@@ -54,7 +55,7 @@ $auth_middleware_context = config('auth.env_auth_middleware');
 if ($auth_middleware_context === "localSubdomain") {
     // Use request subdomain to determine if it's a test context or live context
     $request_root = request()->root();
-    $live_domain = env('LIVE_APP_DOMAIN'); // It's a request for live domain... use auth:sanctum else use apiKey
+    $live_domain = config('app.live_app_domain'); // It's a request for live domain... use auth:sanctum else use apiKey
     $authMiddleware = $request_root === $live_domain ? "auth:sanctum" : "apiKey";
 } else {
     $authMiddleware = $auth_middleware_context === "apiKey" ? "apiKey" : "auth:sanctum";
@@ -159,6 +160,7 @@ Route::group(["middleware" => [
         Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
         Route::get("/document-requests", [BusinessAdminController::class, 'getDocumentRequests']);
         Route::post("/businesses", [BusinessAdminController::class, 'createBusiness']);
+        Route::post("/businesses/{business}/resend-mail", [MailController::class, 'resendAdminCreateBusiness']);
         Route::post("/businesses/{document_request}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments']);
         Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData']);
         Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled']);
@@ -206,7 +208,8 @@ Route::group(["middleware" => [
         Route::group(['prefix' => 'admin'], function () {
             Route::post('/', [AdminUserController::class, 'addAdmin']);
             Route::get('/', [AdminUserController::class, 'getAdmins']);
-            Route::post('/assign-role', [AdminUserController::class, 'assignAdminRole']);
+        Route::post("/users/{user}/resend-mail", [MailController::class, 'resendAdminCreateUser']);
+        Route::post('/assign-role', [AdminUserController::class, 'assignAdminRole']);
             Route::get('/roles', [AdminUserController::class, 'getRoles']);
             Route::post('/roles', [AdminUserController::class, 'createRole']);
             Route::put('/roles/{role}', [AdminUserController::class, 'updateRole']);

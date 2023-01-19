@@ -25,6 +25,7 @@ class Business extends Model
     protected $casts = [
         "live_enabled" => "boolean",
         "enabled" => "boolean",
+        'resend_mail' => 'boolean'
     ];
     public static $ADMIN_BUSINESS_EMAIL = "admin@up-ng.com";
     public static $BUSINESS_ADMIN_ROLE = "business_admin";

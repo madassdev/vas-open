@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DBSwap;
+use App\Jobs\SendEmailJob;
 use App\Mail\GenericMail;
 use App\Models\Business;
 use App\Models\BusinessUser;
@@ -60,22 +61,16 @@ class AdminUserController extends Controller
         $businessUser->assignRole($businessRole->name);
 
         // Notify user
-        $mailError = null;
-
         $mailContent = new GenericMail('email.admin-user-created', [
             "user" => $user,
             "role" => $adminRole->title,
             "password" => $generated_password,
         ], 'payload', 'Admin User mail');
 
+        $user->resend_mail = true;
+        $user->save();
         $mail = new MailApiService($user->email, "[Vas Reseller] Here's your Administrator account details", $mailContent->render());
-        try {
-            $mailError = null;
-            $mail->send();
-        } catch (Exception $e) {
-            $mailError = $e->getMessage();
-        };
-
+        SendEmailJob::dispatch($mail);
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', [
             "user" => $user,
             "role" => $adminRole,
@@ -90,7 +85,7 @@ class AdminUserController extends Controller
         if (!$adminBusiness) {
             $this->sendError('Admin Business not found.', [], 404);
         }
-        return $this->sendSuccess("Admin users fetched successfully", ["admin_users" => $adminBusiness->users]);
+        return $this->sendSuccess("Admin users fetched successfully", ["admin_users" => $adminBusiness->users->load('roles')]);
     }
 
     public function getRoles()
