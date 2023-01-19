@@ -25,9 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        $request_root = request()->root();
-        $live_domain = env('LIVE_APP_DOMAIN');
-        $context = $request_root === $live_domain ? "live" : "test";
+        $context = config('app.env') == "production" ? "live" : "test";
         config()->set(["app.auth_context" => $context]);
         Schema::defaultStringLength(191);
     }
