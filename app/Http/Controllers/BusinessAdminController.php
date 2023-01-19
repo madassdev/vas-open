@@ -152,13 +152,7 @@ class BusinessAdminController extends Controller
             // Notify
             $mailContent = new GenericMail('email.document-request-approved-notification', ['business' => $business], 'payload');
             $mail = new MailApiService($user->email, "[Vas Reseller] Business Document Approved!", $mailContent->render());
-
-            try {
-                $mailError = null;
-                SendEmailJob::dispatch($mail);
-            } catch (Exception $e) {
-                $mailError = $e->getMessage();
-            };
+            SendEmailJob::dispatch($mail);
 
             return $this->sendSuccess("Business document approved successfully", [
                 "business" => $business->load('businessDocument.pendingDocumentRequests'),
@@ -179,12 +173,7 @@ class BusinessAdminController extends Controller
             ], 'payload');
             $mail = new MailApiService($user->email, "[Vas Reseller] Business Document Declined!", $mailContent->render());
 
-            try {
-                $mailError = null;
-                SendEmailJob::dispatch($mail);
-            } catch (Exception $e) {
-                $mailError = $e->getMessage();
-            };
+            SendEmailJob::dispatch($mail);
             return $this->sendSuccess("Business document rejected successfully", [
                 "business" => $business->load('businessDocument.pendingDocumentRequests'),
             ]);
@@ -227,6 +216,7 @@ class BusinessAdminController extends Controller
 
     public function createBusiness(RegistrationRequest $request)
     {
+        $this->authorizeAdmin('admin_create_business');
         // Setup keys and passwords
         $generated_password = $this->generateRandomCharacters() . $this->generateRandomCharacters();
 
@@ -314,15 +304,10 @@ class BusinessAdminController extends Controller
         // TODO: Create user on test env
 
         // Notify user
-        $mailError = null;
         $passwordMail = new MailApiService($user->email, "[Vas Reseller] Here's your account details!", (new UserCreatedPasswordMail($user))->render());
-        try {
-            $passwordMail->send();
-        } catch (Exception $e) {
-            $mailError = $e->getMessage();
-        };
-
-        // Create response for test environments where mail may not be setup yet.
+        $business->resend_mail = true;
+        $business->save();
+        SendEmailJob::dispatch($passwordMail);
         $data =  [];
 
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', $data);
@@ -446,17 +431,7 @@ class BusinessAdminController extends Controller
         // if (!env("LOCAL_MAIL_SERVER")) {
 
         $mail = new MailApiService($invitee->email, "[Vas Reseller] You have been invited to collaborate", $mailContent->render());
-        try {
-            $mailError = null;
-            SendEmailJob::dispatch($mail);
-        } catch (Exception $e) {
-            // $mailError = $e->getMessage();
-            // throw $e;
-        };
-        return $mailError;
-        // } else {
-        //     Mail::to($invitee)->send($mailContent);
-        // }
+        SendEmailJob::dispatch($mail);
     }
 
     public function setMerchantData(Request $request, $business_id)

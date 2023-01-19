@@ -14,8 +14,6 @@ use App\Services\MailApiService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rules\Password;
 
 class InviteeController extends Controller
@@ -323,23 +321,12 @@ class InviteeController extends Controller
         // if (!env("LOCAL_MAIL_SERVER")) {
 
         $mail = new MailApiService($invitee->email, "[Vas Reseller] You have been invited to collaborate", $mailContent->render());
-        try {
-            $mailError = null;
-            SendEmailJob::dispatch($mail);
-        } catch (Exception $e) {
-            // $mailError = $e->getMessage();
-            // throw $e;
-        };
-        return $mailError;
-        // } else {
-        //     Mail::to($invitee)->send($mailContent);
-        // }
+        SendEmailJob::dispatch($mail);
     }
 
     public function checkAuthorization($user, $business, $permitted_role = false)
     {
-        if(!$permitted_role)
-        {
+        if (!$permitted_role) {
             $permitted_role = sc('BUSINESS_ADMIN_ROLE');
         }
         $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();

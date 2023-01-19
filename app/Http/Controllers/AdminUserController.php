@@ -61,23 +61,16 @@ class AdminUserController extends Controller
         $businessUser->assignRole($businessRole->name);
 
         // Notify user
-        $mailError = null;
-
         $mailContent = new GenericMail('email.admin-user-created', [
             "user" => $user,
             "role" => $adminRole->title,
             "password" => $generated_password,
         ], 'payload', 'Admin User mail');
 
+        $user->resend_mail = true;
+        $user->save();
         $mail = new MailApiService($user->email, "[Vas Reseller] Here's your Administrator account details", $mailContent->render());
-        try {
-            $mailError = null;
-            SendEmailJob::dispatch($mail);
-            // $mail->send();
-        } catch (Exception $e) {
-            $mailError = $e->getMessage();
-        };
-
+        SendEmailJob::dispatch($mail);
         return $this->sendSuccess('User created successfully. Please check your mail for password to proceed with requests.', [
             "user" => $user,
             "role" => $adminRole,
