@@ -48,7 +48,6 @@ class MailController extends Controller
         if (!$business->resend_mail) {
             return $this->sendError("Business already received mail and activated account", [], 403);
         }
-        $business = Business::find($request->business_id);
         $user = $business->user;
         $passwordMail = new MailApiService($user->email, "[Vas Reseller] Here's your account details!", (new UserCreatedPasswordMail($user))->render());
         SendEmailJob::dispatch($passwordMail);
