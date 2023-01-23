@@ -209,8 +209,8 @@ Route::group(["middleware" => [
         Route::group(['prefix' => 'admin'], function () {
             Route::post('/', [AdminUserController::class, 'addAdmin']);
             Route::get('/', [AdminUserController::class, 'getAdmins']);
-        Route::post("/users/{user}/resend-mail", [MailController::class, 'resendAdminCreateUser']);
-        Route::post('/assign-role', [AdminUserController::class, 'assignAdminRole']);
+            Route::post("/users/{user}/resend-mail", [MailController::class, 'resendAdminCreateUser']);
+            Route::post('/assign-role', [AdminUserController::class, 'assignAdminRole']);
             Route::get('/roles', [AdminUserController::class, 'getRoles']);
             Route::post('/roles', [AdminUserController::class, 'createRole']);
             Route::put('/roles/{role}', [AdminUserController::class, 'updateRole']);

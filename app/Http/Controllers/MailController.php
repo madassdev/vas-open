@@ -17,14 +17,16 @@ class MailController extends Controller
     public function resendAdminCreateUser(Request $request, User $user)
     {
         $this->authorizeAdmin('admin_create_admin');
-        $request->validate([
-            'role_name' => 'required|exists:roles,name'
-        ]);
+        // $request->validate([
+        //     'role_name' => 'required|exists:roles,name'
+        // ]);
 
+        //  Get the admin Role
+        $role = $user->roles()->first();
         if (!$user->resend_mail) {
             return $this->sendError("User already received mail and activated account", [], 403);
         }
-        $adminRole = Role::whereName($request->role_name)->first();
+        $adminRole = Role::whereName($role->name)->first();
         $generated_password = generateRandomCharacters() . generateRandomCharacters();
         $user->password = bcrypt($generated_password);
         $user->save();
