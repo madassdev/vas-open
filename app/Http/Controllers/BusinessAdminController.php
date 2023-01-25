@@ -151,7 +151,7 @@ class BusinessAdminController extends Controller
             $document_request->save();
             // Notify
             $mailContent = new GenericMail('email.document-request-approved-notification', ['business' => $business], 'payload');
-            $mail = new MailApiService($user->email, "[Vas Reseller] Business Document Approved!", $mailContent->render());
+            $mail = new MailApiService($business->email, "[Vas Reseller] Business Document Approved!", $mailContent->render());
             SendEmailJob::dispatch($mail);
 
             return $this->sendSuccess("Business document approved successfully", [
@@ -171,7 +171,7 @@ class BusinessAdminController extends Controller
                 "business" => $business,
                 "document_request" => $document_request
             ], 'payload');
-            $mail = new MailApiService($user->email, "[Vas Reseller] Business Document Declined!", $mailContent->render());
+            $mail = new MailApiService($business->email, "[Vas Reseller] Business Document Declined!", $mailContent->render());
 
             SendEmailJob::dispatch($mail);
             return $this->sendSuccess("Business document rejected successfully", [
