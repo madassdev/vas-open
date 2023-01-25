@@ -54,7 +54,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'Aiico Motor Insurance',
                 'shortname' => 'AiicoMotorInsurance',
-                'product_category_id' => 5,
+                'product_category_id' => 7,
             ],
             [
                 'name' => 'Airtel',
@@ -76,9 +76,8 @@ class SandboxProductsSeeder extends Seeder
             ],
             [
                 'name' => 'Akwa Ibom Internal Revenue Services',
-                'shortname' => 'AKIRS',
+                'shortname' => 'AIIRS',
                 'product_category_id' => 7,
-                'service_type' => 'AKIRS',
             ],
             [
                 'name' => 'Bayelsa Internal Revenue Service',
@@ -192,12 +191,10 @@ class SandboxProductsSeeder extends Seeder
                 'shortname' => 'GOTV',
                 'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/73E9A419-1CEA-4122-8A41-1361BF01DA14_lrxaat.png',
                 'product_category_id' => 4,
-                'product_code' => '9991',
             ],
             [
                 'name' => 'Ibadan Electricity Distribution Company Postpaid',
                 'shortname' => 'IEDC-Postpaid',
-                'service_type' => 'IEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '12685',
                 'biller_id' => 8
@@ -205,7 +202,6 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'Ibadan Electricity Distribution Company Prepaid',
                 'shortname' => 'IEDC-Prepaid',
-                'service_type' => 'IEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '12684',
                 'biller_id' => 8
@@ -320,7 +316,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'RoyalExchange Insurance',
                 'shortname' => 'RoyalExchangeInsurance',
-                'product_category_id' => 5,
+                'product_category_id' => 7,
             ],
             [
                 'name' => 'Sultan Abdulrahaman College of Health Technology',
@@ -414,7 +410,7 @@ class SandboxProductsSeeder extends Seeder
               if (isset($product['logo'])) {
                 $arr['logo'] = $product['logo'];
             }
-            $arr['service_type'] = $product['service_type'] ??  $product['shortname'];
+            $arr['service_type'] = $product['service_type'] ??  Str::slug($product['name'], '_');
             if (isset($product['biller_id'])) {
                 $arr['biller_id'] = $product['biller_id'];
             }

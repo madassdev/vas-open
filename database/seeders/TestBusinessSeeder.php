@@ -11,7 +11,7 @@ use Illuminate\Database\Seeder;
 use App\Models\BusinessCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class DevUsersSeeder extends Seeder
+class TestBusinessSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,42 +20,15 @@ class DevUsersSeeder extends Seeder
      */
     public function run()
     {
-        //
-        $users = collect([
-            [
-                "first_name" => "Frank",
-                "last_name" => "Dev",
-                "email" => "favescsskr@gmail.com",
-                "phone" => "08136051712",
-                "password" => "Faves123...",
-                "business_name" => "Frank's Business",
-                "business_address" => "Somewhere here",
-            ],
-            [
-                "first_name" => "Seun",
-                "last_name" => "Dev",
-                "email" => "oluwaseunoffice@gmail.com",
-                "phone" => "00000000",
-                "password" => "Password202!",
-                "business_name" => "Seun's Business",
-                "business_address" => "Somewhere here",
-            ],
-            [
-                "first_name" => "Oluwatoyin",
-                "last_name" => "Dev",
-                "email" => "oluwatoyinfolarin3@gmail.com",
-                "phone" => "00000000",
-                "password" => "Oluwatoyin1@",
-                "business_name" => "Oluwatoyin's Business",
-                "business_address" => "Somewhere there",
-            ],
-        ])->map(function ($dev) {
-            $this->createDevAccounts($dev);
-        });
-    }
-
-    public function createDevAccounts($details)
-    {
+        $details =   [
+            "first_name" => "Johnny",
+            "last_name" => "test",
+            "email" => "johnny@test.com",
+            "phone" => "08012345678",
+            "password" => "Password202!",
+            "business_name" => "Johnny Test Business",
+            "business_address" => "Somewhere here",
+        ];
         $dev = (object) $details;
         $business_category_id = BusinessCategory::first()->id;
         $role = Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first();
@@ -73,11 +46,7 @@ class DevUsersSeeder extends Seeder
             "business_category_id" => $business_category_id,
             "merchant_id" => "SALPAY",
             "terminal_id" => "4723120541",
-            "client_id" => config('database.default') == 'mysqltest' ?
-                "380278fb-e23b-4d3d-8461-7b1ff73ad51f" :
-                // "e5618cd6-cc35-4e47-8a36-f59beec50110"
-                // omotayo's account   
-                "0e2edc44-57ed-487f-9eb9-bf6cf7db7fdd"
+            "client_id" => "380278fb-e23b-4d3d-8461-7b1ff73ad51f"
         ]);
 
         $business->createDummyAccount();

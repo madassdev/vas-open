@@ -13,18 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sub_products', function (Blueprint $table) {
+        Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->string('up_product_key')->nullable();
+            $table->morphs('tokenable');
             $table->string('name');
-            $table->string('shortname');
-            $table->string('description')->nullable();
-            $table->float('price')->default(0);
+            $table->string('token', 64)->unique();
+            $table->text('abilities')->nullable();
+            $table->timestamp('last_used_at')->nullable();
             $table->timestamps();
-            // $table->index(['product_id', 'up_product_key']);
         });
-
     }
 
     /**
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_products');
+        Schema::dropIfExists('personal_access_tokens');
     }
 };
