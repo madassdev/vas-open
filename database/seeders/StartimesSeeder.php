@@ -20,35 +20,35 @@ class StartimesSeeder extends Seeder
         $startimes->update(['has_sub_product' => true]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTT-NOVA Monthly',
+            'name' => 'DTT-NOVA Monthly',
             'price' => 900,
             'description' => 'Startimes DTT-NOVA Monthly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTT-BASIC Daily',
+            'name' => 'DTT-BASIC Daily',
             'price' => 160,
             'description' => 'Startimes DTT-BASIC Daily',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTT-BASIC Weekly',
+            'name' => 'DTT-BASIC Weekly',
             'price' => 600,
             'description' => 'Startimes DTT-BASIC Weekly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTT-BASIC Monthly',
+            'name' => 'DTT-BASIC Monthly',
             'price' => 1850,
             'description' => 'Startimes DTT-BASIC Monthly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTT-NOVA Daily',
+            'name' => 'DTT-NOVA Daily',
             'price' => 90,
             'description' => 'Startimes DTT-NOVA Daily',
             'up_product_key' => null
@@ -56,91 +56,91 @@ class StartimesSeeder extends Seeder
 
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTT-NOVA Weekly',
+            'name' => 'DTT-NOVA Weekly',
             'price' => 300,
             'description' => 'Startimes DTT-NOVA Weekly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTT-CLASSIC Daily',
+            'name' => 'DTT-CLASSIC Daily',
             'price' => 320,
             'description' => 'Startimes DTT-CLASSIC Daily',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTT-CLASSIC Weekly',
+            'name' => 'DTT-CLASSIC Weekly',
             'price' => 1200,
             'description' => 'Startimes DTT-CLASSIC Weekly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTT-CLASSIC Monthly',
+            'name' => 'DTT-CLASSIC Monthly',
             'price' => 2750,
             'description' => 'Startimes DTT-CLASSIC Monthly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTH-NOVA Daily',
+            'name' => 'DTH-NOVA Daily',
             'price' => 90,
             'description' => 'Startimes DTH-NOVA Daily',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTH-NOVA Weekly',
+            'name' => 'DTH-NOVA Weekly',
             'price' => 300,
             'description' => 'Startimes DTH-NOVA Weekly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTH-NOVA Monthly',
+            'name' => 'DTH-NOVA Monthly',
             'price' => 900,
             'description' => 'Startimes DTH-NOVA Monthly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTH-SMART Daily',
+            'name' => 'DTH-SMART Daily',
             'price' => 180,
             'description' => 'Startimes DTH-SMART Daily',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTH-SMART Weekly',
+            'name' => 'DTH-SMART Weekly',
             'price' => 600,
             'description' => 'Startimes DTH-SMART Weekly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTH-SMART Monthly',
+            'name' => 'DTH-SMART Monthly',
             'price' => 2600,
             'description' => 'Startimes DTH-SMART Monthly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTH-SUPER Daily',
+            'name' => 'DTH-SUPER Daily',
             'price' => 360,
             'description' => 'Startimes DTH-SUPER Daily',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTH-SUPER Weekly',
+            'name' => 'DTH-SUPER Weekly',
             'price' => 1300,
             'description' => 'Startimes DTH-SUPER Weekly',
             'up_product_key' => null
         ]);
 
         $startimes->subProducts()->create([
-            'name' => 'Startimes DTH-SUPER Monthly',
+            'name' => 'DTH-SUPER Monthly',
             'price' => 4900,
             'description' => 'Startimes DTH-SUPER Monthly',
             'up_product_key' => null

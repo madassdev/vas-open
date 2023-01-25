@@ -72,6 +72,6 @@ class UpBusinessSeeder extends Seeder
         // Assign role to user 
         $user->assignRole(sc('SUPER_ADMIN_ROLE'));
 
-        $business->createDemoTransaction(30);
+        // $business->createDemoTransaction(30);
     }
 }

@@ -54,7 +54,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'Aiico Motor Insurance',
                 'shortname' => 'AiicoMotorInsurance',
-                'product_category_id' => 7,
+                'product_category_id' => 5,
             ],
             [
                 'name' => 'Airtel',
@@ -76,8 +76,9 @@ class SandboxProductsSeeder extends Seeder
             ],
             [
                 'name' => 'Akwa Ibom Internal Revenue Services',
-                'shortname' => 'AIIRS',
+                'shortname' => 'AKIRS',
                 'product_category_id' => 7,
+                'service_type' => 'AKIRS',
             ],
             [
                 'name' => 'Bayelsa Internal Revenue Service',
@@ -196,6 +197,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'Ibadan Electricity Distribution Company Postpaid',
                 'shortname' => 'IEDC-Postpaid',
+                'service_type' => 'IEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '12685',
                 'biller_id' => 8
@@ -203,6 +205,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'Ibadan Electricity Distribution Company Prepaid',
                 'shortname' => 'IEDC-Prepaid',
+                'service_type' => 'IEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '12684',
                 'biller_id' => 8
@@ -317,7 +320,7 @@ class SandboxProductsSeeder extends Seeder
             [
                 'name' => 'RoyalExchange Insurance',
                 'shortname' => 'RoyalExchangeInsurance',
-                'product_category_id' => 7,
+                'product_category_id' => 5,
             ],
             [
                 'name' => 'Sultan Abdulrahaman College of Health Technology',
@@ -411,7 +414,7 @@ class SandboxProductsSeeder extends Seeder
               if (isset($product['logo'])) {
                 $arr['logo'] = $product['logo'];
             }
-            $arr['service_type'] = $product['service_type'] ??  Str::slug($product['name'], '_');
+            $arr['service_type'] = $product['service_type'] ??  $product['shortname'];
             if (isset($product['biller_id'])) {
                 $arr['biller_id'] = $product['biller_id'];
             }

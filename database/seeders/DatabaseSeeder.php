@@ -124,17 +124,17 @@ class DatabaseSeeder extends Seeder
             $business->banks()->saveMany(BusinessBank::factory()->count(1)->make());
         }
 
-        Transaction::factory()->count(3)->create();
+        Transaction::factory()->count(1)->create();
         // foreach ($transactions as $transaction) {
         //     $transaction->extra()->save(TransactionExtra::factory()->make());
         // }
-        $wallets = Wallet::all();
-        foreach ($wallets as $wallet) {
-            // foreach wallet create transactions
-            $wallet->transactions()->saveMany(WalletTransaction::factory()->count(5)->make());
-            $wallet->splits()->saveMany(WalletSplit::factory()->count(5)->make());
-            $wallet->logs()->saveMany(WalletLog::factory()->count(5)->make());
-        }
+        // $wallets = Wallet::all();
+        // foreach ($wallets as $wallet) {
+        //     // foreach wallet create transactions
+        //     // $wallet->transactions()->saveMany(WalletTransaction::factory()->count(5)->make());
+        //     $wallet->splits()->saveMany(WalletSplit::factory()->count(5)->make());
+        //     $wallet->logs()->saveMany(WalletLog::factory()->count(5)->make());
+        // }
 
         $this->call(DevUsersSeeder::class);
         $this->call(UpBusinessSeeder::class);
@@ -142,7 +142,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GloSubProductSeeder::class);
         $this->call(AirtelSubProductSeeder::class);
         $this->call(NineMobileSubProductSeeder::class);
-        $this->call(TransactionExtraSeeder::class);
+        // $this->call(TransactionExtraSeeder::class);
         $this->call(DSTVSeeder::class);
         $this->call(GotvSeeder::class);
         $this->call(StartimesSeeder::class);

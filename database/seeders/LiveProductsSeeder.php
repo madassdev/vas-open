@@ -54,7 +54,7 @@ class LiveProductsSeeder extends Seeder
             [
                 'name' => 'Aiico Motor Insurance',
                 'shortname' => 'AiicoMotorInsurance',
-                'product_category_id' => 7,
+                'product_category_id' => 5,
                 'product_code' => '301086',
             ],
             [
@@ -81,6 +81,7 @@ class LiveProductsSeeder extends Seeder
                 'shortname' => 'AKIRS',
                 'product_category_id' => 7,
                 'product_code' => '300051',
+                'service_type' => 'AKIRS',
             ],
             [
                 'name' => 'Bayelsa Internal Revenue Service',
@@ -203,6 +204,7 @@ class LiveProductsSeeder extends Seeder
             [
                 'name' => 'Ibadan Electricity Distribution Company Postpaid',
                 'shortname' => 'IEDC-Postpaid',
+                'service_type' => 'IEDC-Postpaid',
                 'product_category_id' => 3,
                 'product_code' => '200018',
                 'biller_id' => 8
@@ -210,6 +212,7 @@ class LiveProductsSeeder extends Seeder
             [
                 'name' => 'Ibadan Electricity Distribution Company Prepaid',
                 'shortname' => 'IEDC-Prepaid',
+                'service_type' => 'IEDC-Prepaid',
                 'product_category_id' => 3,
                 'product_code' => '200017',
                 'biller_id' => 8
@@ -330,7 +333,7 @@ class LiveProductsSeeder extends Seeder
             [
                 'name' => 'RoyalExchange Insurance',
                 'shortname' => 'RoyalExchangeInsurance',
-                'product_category_id' => 7,
+                'product_category_id' => 5,
                 'product_code' => '301691',
             ],
             [
@@ -383,10 +386,11 @@ class LiveProductsSeeder extends Seeder
             ],
             [
                 'name' => 'STARTIMES',
-                'shortname' => 'STARTIMES2',
+                'shortname' => 'STARTIMES',
                 'logo' => 'https://res.cloudinary.com/vas-reseller/image/upload/v1665055006/73C97332-60D4-4BB2-B39B-3879FC43DFD3_w4onmw.png',
                 'product_category_id' => 4,
                 'product_code' => '5247',
+                'service_type' => 'startimes',
             ],
             [
                 'name' => 'Swift',
@@ -444,7 +448,7 @@ class LiveProductsSeeder extends Seeder
             if (isset($product['logo'])) {
                 $arr['logo'] = $product['logo'];
             }
-            $arr['service_type'] = $product['service_type'] ??  Str::slug($product['name'], '_');
+            $arr['service_type'] = $product['service_type'] ??  $product['shortname'];
             if (isset($product['biller_id'])) {
                 $arr['biller_id'] = $product['biller_id'];
             }

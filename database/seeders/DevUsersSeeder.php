@@ -107,6 +107,6 @@ class DevUsersSeeder extends Seeder
         // Assign role to user 
         $businessUser = BusinessUser::whereBusinessId($business->id)->whereUserId($user->id)->first();
         $businessUser->assignRole($role->name);
-        $business->createDemoTransaction(30);
+        // $business->createDemoTransaction(30);
     }
 }
