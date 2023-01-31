@@ -222,7 +222,7 @@ class AuthController extends Controller
         SendEmailJob::dispatch($passwordUpdatedMail);
 
 
-        return $this->sendSuccess('Password updated successfully', ["context" => $context, "mail_error" => $mailError]);
+        return $this->sendSuccess('Password updated successfully', ["context" => $context]);
     }
 
     public function logout()
