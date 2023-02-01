@@ -100,7 +100,7 @@ Route::group(['middleware' => [$authMiddleware, 'hasChangedPassword']], function
         Route::get('/products-configuration', [ProductController::class, 'getProductsConfiguration']);
         Route::group(["middleware" => ["noTestRoute", "activeBusiness"]], function () {
             Route::post('/switch-env', [BusinessController::class, 'switchEnv'])->middleware('businessUserPermission:switch_business_environment');
-            Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness'])->middleware('businessUserPermission:switch_active_business');
+            Route::post('/switch-active', [BusinessController::class, 'switchActiveBusiness']);
             Route::post('/documents', [BusinessDocumentController::class, 'uploadDocuments'])->middleware('businessUserPermission:upload_business_documents');
             Route::post('/documents/request-approval', [BusinessDocumentController::class, 'requestApproval'])->middleware('businessUserPermission:request_documents_approval');
             Route::get('/documents', [BusinessDocumentController::class, 'showDocuments'])->middleware('businessUserPermission:list_business_documents');
