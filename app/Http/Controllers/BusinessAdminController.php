@@ -273,6 +273,9 @@ class BusinessAdminController extends Controller
             "address" => $request->business_address,
             "current_env" => "test",
             "test_api_key" => $business->test_api_key,
+            "live_api_key" => $business->live_api_key,
+            "test_secret_key" => $business->test_secret_key,
+            "live_secret_key" => $business->live_secret_key,
             "live_enabled" => true,
             "business_category_id" => $request->business_category_id,
         ]);
