@@ -10,6 +10,7 @@ use App\Mail\GenericMail;
 use App\Mail\UserCreatedPasswordMail;
 use App\Models\Business;
 use App\Models\BusinessDocumentRequest;
+use App\Models\BusinessProduct;
 use App\Models\BusinessUser;
 use App\Models\Invitee;
 use App\Models\Role;
@@ -351,6 +352,28 @@ class BusinessAdminController extends Controller
         return $this->sendSuccess("Business live enable status set successfully", [
             "business" => $business
         ]);
+    }
+
+    public function toggleProductEnabled(Request $request, $business_id)
+    {
+        $this->authorizeAdmin('toggle_product_enabled');
+        $business = Business::find($business_id);
+        if (!$business) {
+            return $this->sendError("Business not found with that id", [], 404);
+        }
+        $request->validate([
+            "product_id" => "required",
+            "product_enabled" => "required|boolean"
+        ]);
+        $business_product = BusinessProduct::whereBusinessId($business_id)->whereProductId($request->product_id)->first();
+        if (!$business_product) {
+            return $this->sendError("Product not found for this Business", [], 404);
+        }
+
+        $business_product->enabled = $request->product_enabled;
+        $business_product->save();
+        $txt = $request->product_enabled == true ? "enabled":"disabled";
+        return $this->sendSuccess("Business product ".$txt." successfully", []);
     }
 
 
