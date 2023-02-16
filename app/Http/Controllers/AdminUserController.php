@@ -200,11 +200,11 @@ class AdminUserController extends Controller
         ]);
 
         $role_name = str()->snake($request->name);
-        $role = SpatieRole::whereName($request->name)
-            ->orWhere('readable_name', $request->name)
-            ->orWhere('name', $role_name)
-            ->orWhere('readable_name', $role_name)
-            ->first();
+        // $role = SpatieRole::whereName($request->name)
+        //     ->orWhere('readable_name', $request->name)
+        //     ->orWhere('name', $role_name)
+        //     ->orWhere('readable_name', $role_name)
+        //     ->first();
 
         if (!$role) {
             return $this->sendError(
