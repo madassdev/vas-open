@@ -92,7 +92,7 @@ class AdminUserController extends Controller
     {
         $this->authorizeAdmin('admin_create_admin');
         $roles = Role::adminRoles()->load('permissions');
-        $permissions = Permission::whereIsAdmin(false)->get();
+        $permissions = Permission::whereIsAdmin(true)->get();
         return $this->sendSuccess("Roles and Permissions fetched successfully", [
             "roles" => $roles,
             "permissions" => $permissions,
