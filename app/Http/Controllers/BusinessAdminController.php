@@ -218,7 +218,7 @@ class BusinessAdminController extends Controller
 
     public function createBusiness(RegistrationRequest $request)
     {
-        $this->authorizeAdmin('admin_create_business');
+        $this->authorizeAdmin('create_businesses');
         // Setup keys and passwords
         $generated_password = $this->generateRandomCharacters() . $this->generateRandomCharacters();
 
@@ -320,7 +320,7 @@ class BusinessAdminController extends Controller
 
     public function toggleLiveEnabled(Request $request, $business_id)
     {
-        $this->authorizeAdmin('admin_toggle_live_enabled');
+        $this->authorizeAdmin('toggle_golive');
         $business = Business::find($business_id);
         if (!$business) {
             return $this->sendError("Business not found with that id", [], 404);
@@ -381,7 +381,7 @@ class BusinessAdminController extends Controller
 
     public function sendBusinessInvites(Request $request, $business_id)
     {
-        $this->authorizeAdmin('send_business_invitations');
+        $this->authorizeAdmin('invite_business_user');
         $business = Business::find($business_id);
         if (!$business) {
             return $this->sendError("Business not found with that id", [], 404);
@@ -463,7 +463,7 @@ class BusinessAdminController extends Controller
 
     public function setMerchantData(Request $request, $business_id)
     {
-        $this->authorizeAdmin('admin_set_merchant_data');
+        $this->authorizeAdmin('configure_terminal');
         $business = Business::find($business_id);
         if (!$business) {
             return $this->sendError("Business not found with that id", [], 404);

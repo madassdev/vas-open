@@ -66,6 +66,7 @@ class ProductController extends Controller
 
     public function getAllProducts()
     {
+        $this->authorizeAdmin('list_products');
         $products = Product::paginate(10);
         return $this->sendSuccess("Products fetched successfully", [
             "products" => $products,
@@ -74,6 +75,7 @@ class ProductController extends Controller
 
     public function getOneProduct(Product $product)
     {
+        $this->authorizeAdmin('list_products');
         $product->load('productCategory');
         // businesses with this product and their configurations
         $businesses = DB::table('business_products')
@@ -99,6 +101,7 @@ class ProductController extends Controller
     public function addProduct(AddProductRequest $request)
     {
         // if logo is present, save it to cloudinary
+        $this->authorizeAdmin('edit_products');
         $logo = $request->logo;
         $all = $request->validated();
         if ($logo) {
@@ -119,6 +122,7 @@ class ProductController extends Controller
 
     public function deleteProduct(Product $product)
     {
+        $this->authorizeAdmin('edit_products');
         $product->delete();
         return $this->sendSuccess("Product deleted successfully", []);
     }
@@ -126,6 +130,7 @@ class ProductController extends Controller
     public function updateProduct(UpdateProductRequest $request, Product $product)
     {
         // if logo is present, save it to cloudinary
+        $this->authorizeAdmin('edit_products');
         $logo = $request->logo;
         $all = $request->validated();
         if ($logo) {
@@ -177,6 +182,7 @@ class ProductController extends Controller
 
     public function updateProductConfigurationForBusiness(UpdateBusinessProduct $request, Product $product, Business $business)
     {
+        $this->authorizeAdmin('edit_products');
         $businessProduct = BusinessProduct::where('business_id', $business->id)->where('product_id', $product->id)->first();
         if (!$businessProduct) {
             return $this->sendError("Business does not have this product", [], 404);
@@ -193,6 +199,7 @@ class ProductController extends Controller
 
     public function deleteProductForBusiness(Product $product, Business $business)
     {
+        $this->authorizeAdmin('edit_products');
         $businessProduct = BusinessProduct::where('business_id', $business->id)->where('product_id', $product->id)->first();
         if (!$businessProduct) {
             return $this->sendError("Business does not have this product", [], 404);
@@ -203,6 +210,7 @@ class ProductController extends Controller
 
     public function addProductForBusiness(AddBusinessProduct $request, Product $product, Business $business)
     {
+        $this->authorizeAdmin('edit_products');
         $businessProduct = BusinessProduct::where('business_id', $business->id)->where('product_id', $product->id)->first();
         if ($businessProduct) {
             return $this->sendError("Business already has this product", [], 400);
@@ -224,6 +232,7 @@ class ProductController extends Controller
 
     public function addProductForBusinesses(AddBusinessProduct $request, Product $product)
     {
+        $this->authorizeAdmin('edit_products');
         try {
             $businesses = Business::whereIn('id', $request->businesses)->get();
             BusinessProduct::upsert($businesses->map(function ($business) use ($product, $request) {
@@ -245,6 +254,7 @@ class ProductController extends Controller
 
     public function removeProductForBusinesses(Product $product, RemoveProductForBusinessesRequest $request)
     {
+        $this->authorizeAdmin('edit_products');
         BusinessProduct::whereIn('business_id', $request->businesses)->where('product_id', $product->id)->delete();
         return $this->sendSuccess("Product removed successfully from businesses", []);
     }

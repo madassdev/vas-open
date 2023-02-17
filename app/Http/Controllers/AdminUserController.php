@@ -79,7 +79,7 @@ class AdminUserController extends Controller
 
     public function getAdmins()
     {
-        $this->authorizeAdmin('admin_create_admin');
+        $this->authorizeAdmin('list_admins');
         $user = auth()->user();
         $adminBusiness = Business::whereEmail(sc('ADMIN_BUSINESS_EMAIL'))->first();
         if (!$adminBusiness) {
@@ -90,7 +90,7 @@ class AdminUserController extends Controller
 
     public function getRoles()
     {
-        $this->authorizeAdmin('admin_create_admin');
+        $this->authorizeAdmin('manage_roles');
         $roles = Role::adminRoles()->load('permissions');
         $permissions = Permission::whereIsAdmin(true)->get();
         return $this->sendSuccess("Roles and Permissions fetched successfully", [
@@ -101,7 +101,7 @@ class AdminUserController extends Controller
 
     public function assignAdminRole(Request $request)
     {
-        $this->authorizeAdmin('admin_assign_role');
+        $this->authorizeAdmin('manage_roles');
         $request->validate([
             "user_id" => "required|exists:users,id",
             "roles" => "required|array",
@@ -153,7 +153,7 @@ class AdminUserController extends Controller
 
     public function createRole(Request $request)
     {
-        $this->authorizeAdmin('admin_create_admin');
+        $this->authorizeAdmin('manage_roles');
         $request->validate([
             "name" => "required|string",
             "description" => "string|max:500",
@@ -190,7 +190,7 @@ class AdminUserController extends Controller
 
     public function updateRole(Request $request, SpatieRole $role)
     {
-        $this->authorizeAdmin('admin_create_admin');
+        $this->authorizeAdmin('manage_roles');
         $request->validate([
             "name" => "required|string",
             "description" => "string|max:500",
@@ -231,14 +231,14 @@ class AdminUserController extends Controller
 
     public function deleteRole(Request $request, SpatieRole $role)
     {
-        $this->authorizeAdmin('admin_create_admin');
+        $this->authorizeAdmin('manage_roles');
         $role->delete();
         return $this->sendSuccess("Role deleted successfully", []);
     }
 
     public function setPermissions(Request $request)
     {
-        $this->authorizeAdmin('admin_create_admin');
+        $this->authorizeAdmin('manage_roles');
         $request->validate([
             "role" => "required",
             "permissions" => "required|array",
