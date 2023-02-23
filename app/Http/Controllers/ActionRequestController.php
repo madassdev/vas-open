@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\ActionRequest;
 use App\Models\AdminActionLog;
 use App\Models\Biller;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class ActionRequestController extends Controller
 {
@@ -18,6 +20,39 @@ class ActionRequestController extends Controller
         return $this->sendSuccess("Action requests fetched successfully", [
             "action_requests" => $actionRequest
         ]);
+    }
+    public function check(Request $request, ActionRequest $actionRequest)
+    {
+        $request->validate([
+            "action" => "required|in:approve,reject"
+        ]);
+
+        if ($request->action == "reject") {
+            if ($actionRequest->status == "approved") {
+                return $this->sendError("[" . strtoupper($actionRequest->status) . " ACTION]: Cannot approve action with status: " . $actionRequest->status);
+            }
+            $actionRequest->status = "rejected";
+            $actionRequest->save();
+            return $this->sendSuccess("Action Request rejected successfully.");
+        }
+        if ($actionRequest->status != "pending") {
+            return $this->sendError("[" . strtoupper($actionRequest->status) . " ACTION]: Cannot approve action with status: " . $actionRequest->status);
+        }
+        $url = $actionRequest->handler['url'];
+        $req_method = $actionRequest->handler['method'];
+        $req_data = $actionRequest->handler['payload'] + ['is_check' => true, "maker_id" => $actionRequest->maker_id];
+        $req = Request::create($url, $req_method, $req_data);
+        $req->headers->set('Accept', 'application/json');
+        $resp = app()->handle($req);
+        if ($resp->getStatusCode() ==  200) {
+            $actionRequest->status  = "approved";
+            $actionRequest->save();
+        } else {
+            $actionRequest->status  = "failed";
+            $actionRequest->save();
+        }
+
+            return $resp;
     }
     public function createUser(Request $request)
     {

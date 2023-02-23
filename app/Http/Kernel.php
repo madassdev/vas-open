@@ -8,6 +8,7 @@ use App\Http\Middleware\BusinessUserPermission;
 use App\Http\Middleware\DownloadRouteMiddleware;
 use App\Http\Middleware\EnsureJsonResponse;
 use App\Http\Middleware\LogAdminAction;
+use App\Http\Middleware\MakerCheckerMiddleware;
 use App\Http\Middleware\NoTestEndpoints;
 use App\Http\Middleware\PasswordUpdated;
 use App\Http\Middleware\UserPermission;
@@ -83,5 +84,6 @@ class Kernel extends HttpKernel
         'businessUserPermission' => BusinessUserPermission::class,
         'userPermission' => UserPermission::class,
         'logAdminAction' => LogAdminAction::class,
+        'maker_checker' => MakerCheckerMiddleware::class,
     ];
 }
