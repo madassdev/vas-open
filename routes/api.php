@@ -163,7 +163,7 @@ Route::group(["middleware" => [
         Route::get("/document-requests", [BusinessAdminController::class, 'getDocumentRequests']);
         Route::post("/businesses", [BusinessAdminController::class, 'createBusiness'])->name('admin.businesses.create')->middleware('maker_checker');
         Route::post("/businesses/{business}/resend-mail", [MailController::class, 'resendAdminCreateBusiness'])->name('admin.businesses.resend_creation_mail')->middleware('maker_checker');
-        Route::post("/businesses/{document_request}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments'])->name('admin.businesses.approve_documents');
+        Route::post("/businesses/{document_request}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments'])->name('admin.businesses.approve_documents')->middleware('maker_checker');
         Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData'])->name('admin.businesses.update_merchant_data');
         Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled'])->name('admin.businesses.toggle_live_enabled');
         Route::post("/businesses/{business_id}/send-invitations", [BusinessAdminController::class, 'sendBusinessInvites'])->name('admin.businesses.send_invitations');
