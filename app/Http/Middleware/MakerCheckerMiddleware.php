@@ -45,7 +45,7 @@ class MakerCheckerMiddleware
             [
                 'status' => true,
                 'message' => "Action has been successfully saved for approval.",
-                'data' => []
+                'data' => ["action_request"=>$action]
             ]
         );
         return $next($request);
