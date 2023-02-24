@@ -22,7 +22,7 @@ class MakerCheckerMiddleware
             // Ensure validity
             return $next($request);
         }
-        $route_data =  Route::getByName('admin.businesses.approve_documents');
+        // $route_data =  Route::getByName('admin.businesses.approve_documents');
         $route_name = Route::currentRouteName();
         $url = $request->url();
         $req_method = $request->method();
@@ -31,7 +31,7 @@ class MakerCheckerMiddleware
             "method" => $req_method,
             "payload" => $request->all(),
             "route_name" => $route_name,
-            "route_data" => $route_data,
+            // "route_data" => $route_data,
         ];
 
         // $hal;
