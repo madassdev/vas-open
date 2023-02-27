@@ -22,7 +22,10 @@ class BusinessDocumentRequest extends Model
     public static function getMetaFromParams($params)
     {
         $action = request()->action;
-        $document = $params['document_request'];
+        $path =  request()->path();
+        $path =  str_replace("api/super/businesses/", "", $path);
+        $path =  str_replace("/approve-documents", "", $path);
+        $document = BusinessDocumentRequest::findOrFail($path);
         $business_id = $document['business_id'];
         $user = auth()->user();
         $business = Business::find($business_id);

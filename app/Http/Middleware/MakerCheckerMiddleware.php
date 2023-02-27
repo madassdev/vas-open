@@ -29,11 +29,11 @@ class MakerCheckerMiddleware
         $route_title = str_replace('admin.', '',  $route_name);
         $route_title =  strtoupper($route_title);
         $route_data =  Route::getByName($route_name);
-        $res = $route_data;
-        return response()->json([
-            'res' => $res
-        ]);
         $meta = $this->getMeta($route_data);
+        // $res = $meta;
+        // return response()->json([
+        //     'res' => $res
+        // ]);
         $url = $request->url();
         $req_method = $request->method();
         $handler = [
