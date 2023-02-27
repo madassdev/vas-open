@@ -164,7 +164,7 @@ Route::group(["middleware" => [
 
         Route::post("/businesses", [BusinessAdminController::class, 'createBusiness'])
             ->name('admin.businesses.create')
-            ->middleware(['role_or_permission:super_admin|create_businesses', 'maker_checker']);
+            ->middleware(['role_or_permission:super_admin|create_businesses']);
 
         Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails'])
             ->name('admin.businesses.view')
