@@ -197,6 +197,390 @@ class RoleSeeder extends Seeder
                 "guard_name" => "web",
                 "readable_name" => "Requery Transaction as Admin",
                 "is_admin" => true,
+            ], [
+                "name" => "approve_business_documents",
+                "guard_name" => "web",
+                "readable_name" => "Approve/Reject Business Documents",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "create_businesses",
+                "guard_name" => "web",
+                "readable_name" => "Create Businesses",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_request_logs",
+                "guard_name" => "web",
+                "readable_name" => "View Request Logs",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "toggle_product_enabled",
+                "guard_name" => "web",
+                "readable_name" => "Toggle product enable on business",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_products",
+                "guard_name" => "web",
+                "readable_name" => "List Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "edit_products",
+                "guard_name" => "web",
+                "readable_name" => "Edit products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_billers",
+                "guard_name" => "web",
+                "readable_name" => "List billers",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "edit_billers",
+                "guard_name" => "web",
+                "readable_name" => "Edit billers",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_banks",
+                "guard_name" => "web",
+                "readable_name" => "List banks",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "edit_banks",
+                "guard_name" => "web",
+                "readable_name" => "Edit banks",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_admins",
+                "guard_name" => "web",
+                "readable_name" => "List Admin Users",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "create_admin",
+                "guard_name" => "web",
+                "readable_name" => "Create  Admin",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "manage_roles",
+                "guard_name" => "web",
+                "readable_name" => "Manage Roles",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_logs",
+                "guard_name" => "web",
+                "readable_name" => "View Logs",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_business_users",
+                "guard_name" => "web",
+                "readable_name" => "List business users",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_business_products",
+                "guard_name" => "web",
+                "readable_name" => "List business products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "enable_product_for_business",
+                "guard_name" => "web",
+                "readable_name" => "Enable product for business",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_business_documents",
+                "guard_name" => "web",
+                "readable_name" => "View business documents",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_action_requests",
+                "guard_name" => "web",
+                "readable_name" => "View Action Requests",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "create_banks",
+                "guard_name" => "web",
+                "readable_name" => "Create Banks",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_banks",
+                "guard_name" => "web",
+                "readable_name" => "List Banks",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_banks",
+                "guard_name" => "web",
+                "readable_name" => "View Banks",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "update_banks",
+                "guard_name" => "web",
+                "readable_name" => "Update Banks",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "delete_banks",
+                "guard_name" => "web",
+                "readable_name" => "Delete Banks",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "create_billers",
+                "guard_name" => "web",
+                "readable_name" => "Create Billers",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_billers",
+                "guard_name" => "web",
+                "readable_name" => "List Billers",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_billers",
+                "guard_name" => "web",
+                "readable_name" => "View Billers",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "update_billers",
+                "guard_name" => "web",
+                "readable_name" => "Update Billers",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "delete_billers",
+                "guard_name" => "web",
+                "readable_name" => "Delete Billers",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "create_business_categories",
+                "guard_name" => "web",
+                "readable_name" => "Create Business Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_business_categories",
+                "guard_name" => "web",
+                "readable_name" => "List Business Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_business_categories",
+                "guard_name" => "web",
+                "readable_name" => "View Business Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "update_business_categories",
+                "guard_name" => "web",
+                "readable_name" => "Update Business Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "delete_business_categories",
+                "guard_name" => "web",
+                "readable_name" => "Delete Business Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "create_product_categories",
+                "guard_name" => "web",
+                "readable_name" => "Create Product Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_product_categories",
+                "guard_name" => "web",
+                "readable_name" => "List Product Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_product_categories",
+                "guard_name" => "web",
+                "readable_name" => "View Product Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "update_product_categories",
+                "guard_name" => "web",
+                "readable_name" => "Update Product Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "delete_product_categories",
+                "guard_name" => "web",
+                "readable_name" => "Delete Product Categories",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "create_sub_products",
+                "guard_name" => "web",
+                "readable_name" => "Create Sub-Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_sub_products",
+                "guard_name" => "web",
+                "readable_name" => "List Sub-Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_sub_products",
+                "guard_name" => "web",
+                "readable_name" => "View Sub-Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "update_sub_products",
+                "guard_name" => "web",
+                "readable_name" => "Update Sub-Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "delete_sub_products",
+                "guard_name" => "web",
+                "readable_name" => "Delete Sub-Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "create_products",
+                "guard_name" => "web",
+                "readable_name" => "Create Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "list_products",
+                "guard_name" => "web",
+                "readable_name" => "List Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_products",
+                "guard_name" => "web",
+                "readable_name" => "View Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "update_products",
+                "guard_name" => "web",
+                "readable_name" => "Update Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "delete_products",
+                "guard_name" => "web",
+                "readable_name" => "Delete Products",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "view_business_product_configuration",
+                "guard_name" => "web",
+                "readable_name" => "View Product Configuration on Business",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "update_business_product_configuration",
+                "guard_name" => "web",
+                "readable_name" => "Update Product Configuration on Business",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "delete_business_product",
+                "guard_name" => "web",
+                "readable_name" => "Delete Business Product",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "add_product_for_business",
+                "guard_name" => "web",
+                "readable_name" => "Add product for a business",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "add_product_for_businesses",
+                "guard_name" => "web",
+                "readable_name" => "Add product for businesses",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "remove_product_for_business",
+                "guard_name" => "web",
+                "readable_name" => "Remove product for business",
+                "description" => null,
+                "is_admin" => true
             ],
         ]);
 
@@ -259,7 +643,7 @@ class RoleSeeder extends Seeder
         $developer_permissions = [
             "get_whitelist_ips", "set_whitelist_ips", "get_low_balance_threshold", "set_low_balance_threshold", "get_webhook_url", "set_webhook_url", "show_business_stats"
         ];
-        Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first()->syncPermissions($permissions->pluck('name'));
+        Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first()->syncPermissions($permissions->where('is_admin', false)->pluck('name'));
         Role::whereName(sc('BUSINESS_DEVELOPER_ROLE'))->first()->syncPermissions($developer_permissions);
         Role::whereName(sc('BUSINESS_FINANCE_ROLE'))->first()->syncPermissions($finance_permissions);
         Role::whereName(sc('SUPER_ADMIN_ROLE'))->first()->syncPermissions($permissions->where('is_admin', true)->pluck('name'));

@@ -16,4 +16,14 @@ class ActionRequest extends Model
         "initial_data" => 'array',
         "final_data" => 'array',
     ];
+
+    public function checker()
+    {
+        return  $this->belongsTo(User::class, 'checker_id');
+    }
+
+    public function maker()
+    {
+        return  $this->belongsTo(User::class, 'maker_id');
+    }
 }

@@ -150,24 +150,77 @@ Route::group(["middleware" => [
     // "role:" . sc("SUPER_ADMIN_ROLE")
 ]], function () {
     Route::group(['prefix' => 'super', 'middleware' => ['logAdminAction']], function () {
-        Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport'])->name('admin.transactions.report');
-        Route::get("/products-commissions", [SuperAdminController::class, 'getProductsCommissions']);
-        Route::get("/businesses", [BusinessAdminController::class, 'getBusinesses']);
-        Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails']);
-        Route::get("/businesses/{business_id}/documents", [BusinessAdminController::class, 'getBusinessDocuments']);
-        Route::get("/businesses/{business_id}/get-balance", [BusinessAdminController::class, 'getBusinessBalance']);
-        Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers']);
-        Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts']);
-        Route::post("/businesses/{business_id}/toggle-product-enabled", [BusinessAdminController::class, 'toggleProductEnabled']);
-        Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments']);
-        Route::get("/document-requests", [BusinessAdminController::class, 'getDocumentRequests']);
-        Route::post("/businesses", [BusinessAdminController::class, 'createBusiness'])->name('admin.businesses.create')->middleware('maker_checker');
-        Route::post("/businesses/{business}/resend-mail", [MailController::class, 'resendAdminCreateBusiness'])->name('admin.businesses.resend_creation_mail')->middleware('maker_checker');
-        Route::post("/businesses/{document_request}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments'])->name('admin.businesses.approve_documents')->middleware('maker_checker');
-        Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData'])->name('admin.businesses.update_merchant_data');
-        Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled'])->name('admin.businesses.toggle_live_enabled');
-        Route::post("/businesses/{business_id}/send-invitations", [BusinessAdminController::class, 'sendBusinessInvites'])->name('admin.businesses.send_invitations');
-        Route::get('/action-logs', [ActionRequestController::class, 'getAdminActionLogs']);
+        Route::get("/transactions/report", [SuperAdminController::class, 'getTransactionsReport'])
+            ->name('admin.transactions.report')
+            ->middleware(['role_or_permission:super_admin|view_transactions']);
+
+        Route::get("/products-commissions", [SuperAdminController::class, 'getProductsCommissions'])
+            ->name('admin.products.list')
+            ->middleware(['role_or_permission:super_admin|list_products']);
+
+        Route::get("/businesses", [BusinessAdminController::class, 'getBusinesses'])
+            ->name('admin.businesses.list')
+            ->middleware(['role_or_permission:super_admin|list_businesses']);
+
+        Route::post("/businesses", [BusinessAdminController::class, 'createBusiness'])
+            ->name('admin.businesses.create')
+            ->middleware(['role_or_permission:super_admin|create_businesses', 'maker_checker']);
+
+        Route::get("/businesses/{business_id}", [BusinessAdminController::class, 'getBusinessDetails'])
+            ->name('admin.businesses.view')
+            ->middleware(['role_or_permission:super_admin|view_business']);
+
+        Route::get("/businesses/{business_id}/get-balance", [BusinessAdminController::class, 'getBusinessBalance'])
+            ->name('admin.businesses.balance.view')
+            ->middleware(['role_or_permission:super_admin|view_business_balance']);
+
+        Route::post("/businesses/{business_id}/update-merchant-data", [BusinessAdminController::class, 'setMerchantData'])
+            ->name('admin.businesses.update_merchant_data')
+            ->middleware(['role_or_permission:super_admin|configure_terminal']);
+
+        Route::post("/businesses/{business}/resend-mail", [MailController::class, 'resendAdminCreateBusiness'])
+            ->name('admin.businesses.resend_creation_mail')
+            ->middleware(['role_or_permission:super_admin|create_businesses']);
+
+        Route::post("/businesses/{business_id}/toggle-live-enabled", [BusinessAdminController::class, 'toggleLiveEnabled'])
+            ->name('admin.businesses.toggle_live_enabled')
+            ->middleware(['role_or_permission:super_admin|configure_terminal']);
+
+        Route::post("/businesses/{business_id}/send-invitations", [BusinessAdminController::class, 'sendBusinessInvites'])
+            ->name('admin.businesses.send_invitations')
+            ->middleware(['role_or_permission:super_admin|invite_business_user']);
+
+        Route::get("/businesses/{business_id}/documents", [BusinessAdminController::class, 'getBusinessDocuments'])
+            ->name('admin.businesses.documents.list')
+            ->middleware(['role_or_permission:super_admin|view_business_documents']);
+
+        Route::post("/businesses/{document_request}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments'])
+            ->name('admin.businesses.approve_documents')
+            ->middleware(['role_or_permission:super_admin|approve_business_documents', 'maker_checker']);
+
+        Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers'])
+            ->name('admin.businesses.users.list')
+            ->middleware(['role_or_permission:super_admin|list_business_users']);
+
+        Route::get("/businesses/{business_id}/products", [BusinessAdminController::class, 'getBusinessProducts'])
+            ->name('admin.businesses.products.list')
+            ->middleware(['role_or_permission:super_admin|list_business_products']);
+
+        Route::post("/businesses/{business_id}/toggle-product-enabled", [BusinessAdminController::class, 'toggleProductEnabled'])
+            ->name('admin.businesses.products.enable')
+            ->middleware(['role_or_permission:super_admin|enable_product_for_business']);
+
+        Route::get("/business-documents", [SuperAdminController::class, 'getBusinessDocuments'])
+            ->name('admin.businesses.documents.view')
+            ->middleware(['role_or_permission:super_admin|view_business_documents']);
+
+        Route::get("/document-requests", [BusinessAdminController::class, 'getDocumentRequests'])
+            ->name('admin.businesses.document_requests.list')
+            ->middleware(['role_or_permission:super_admin|list_document_requests']);
+
+        Route::get('/action-logs', [ActionRequestController::class, 'getAdminActionLogs'])
+            ->name('admin.view_logs')
+            ->middleware(['role_or_permission:super_admin|view_logs']);
         /**  Product Configuration
             - Add Product Configurations
             - View Product Configurations
@@ -182,20 +235,52 @@ Route::group(["middleware" => [
         //     Route::post("/", [ProductController::class, 'addSubProduct']);
         // });
         Route::group(['prefix' => 'products'], function () {
-            Route::get("/", [ProductController::class, 'getAllProducts']);
-            Route::post("/", [ProductController::class, 'addProduct']);
-            Route::get("/{product}", [ProductController::class, 'getOneProduct']);
-            Route::put("/{product}", [ProductController::class, 'updateProduct'])->name('admin.products.update');
-            Route::delete("/{product}", [ProductController::class, 'deleteProduct'])->name('admin.products.delete');
+            Route::get("/", [ProductController::class, 'getAllProducts'])
+                ->name('admin.products.index')
+                ->middleware(['role_or_permission:super_admin|list_products']);
+            Route::post("/", [ProductController::class, 'addProduct'])
+                ->name('admin.products.create')
+                ->middleware(['role_or_permission:super_admin|create_products']);
+            Route::get("/{product}", [ProductController::class, 'getOneProduct'])
+                ->name('admin.products.show')
+                ->middleware(['role_or_permission:super_admin|view_products']);
+            Route::put("/{product}", [ProductController::class, 'updateProduct'])
+                ->name('admin.products.update')
+                ->middleware(['role_or_permission:super_admin|update_products']);
+
+            Route::delete("/{product}", [ProductController::class, 'deleteProduct'])
+                ->name('admin.products.delete')
+                ->middleware(['role_or_permission:super_admin|delete_products']);
             // Per business
-            Route::get("/{product}/{business}", [ProductController::class, 'getProductConfigurationForBusiness']);
-            Route::put("/{product}/{business}", [ProductController::class, 'updateProductConfigurationForBusiness'])->name('admin.update_product_for_business');
-            Route::delete("/{product}/{business}", [ProductController::class, 'deleteProductForBusiness'])->where('product', '[0-9]+')->where('business', '[0-9]+')->name('admin.delete_product_for_business');
-            Route::post("/{product}/{business}", [ProductController::class, 'addProductForBusiness'])->where('product', '[0-9]+')->where('business', '[0-9]+')->name('admin.add_product_for_business');
+            Route::get("/{product}/{business}", [ProductController::class, 'getProductConfigurationForBusiness'])
+                ->name('admin.products.business.configuration.view')
+                ->middleware(['role_or_permission:super_admin|view_business_product_configuration']);
+
+            Route::put("/{product}/{business}", [ProductController::class, 'updateProductConfigurationForBusiness'])
+                ->name('admin.products.business.configuration.update')
+                ->middleware(['role_or_permission:super_admin|update_business_product_configuration']);
+
+            Route::delete("/{product}/{business}", [ProductController::class, 'deleteProductForBusiness'])
+                ->where('product', '[0-9]+')
+                ->where('business', '[0-9]+')
+                ->name('admin.delete_business_product')
+                ->middleware(['role_or_permission:super_admin|delete_business_product']);
+
+            Route::post("/{product}/{business}", [ProductController::class, 'addProductForBusiness'])
+                ->where('product', '[0-9]+')
+                ->where('business', '[0-9]+')
+                ->name('admin.add_product_for_business')
+                ->middleware(['role_or_permission:super_admin|add_product_for_business']);
             // add product to multiple businesses
-            Route::post("/{product}/businesses", [ProductController::class, 'addProductForBusinesses'])->name('admin.add_product_for_businesses');
+            Route::post("/{product}/businesses", [ProductController::class, 'addProductForBusinesses'])
+                ->name('admin.add_product_for_businesses')
+                ->middleware(['role_or_permission:super_admin|add_product_for_businesses']);
+                ;
             // remove product from multiple businesses
-            Route::delete("/{product}/businesses", [ProductController::class, 'removeProductForBusinesses'])->name('admin.remove_product_for_businesses');
+            Route::delete("/{product}/businesses", [ProductController::class, 'removeProductForBusinesses'])
+                ->name('admin.remove_product_for_businesses')
+                ->middleware(['role_or_permission:super_admin|remove_product_for_business']);
+
         });
 
         /**  Transactions
@@ -218,11 +303,86 @@ Route::group(["middleware" => [
             Route::delete('/roles/{role}', [AdminUserController::class, 'deleteRole'])->name('admin.delete_roles');
             Route::post('/roles/set-permissions', [AdminUserController::class, 'setPermissions'])->name('admin.set_permissions');
         });
-        Route::apiResource('banks', BankController::class);
-        Route::apiResource('billers', BillerController::class);
-        Route::apiResource('business-categories', BusinessCategoryController::class);
-        Route::apiResource('product-categories', ProductCategoryController::class);
-        Route::apiResource('sub-products', SubProductController::class);
+
+        Route::get('banks', [BankController::class, 'index'])
+            ->name('admin.banks.index')
+            ->middleware(['role_or_permission:super_admin|list_banks']);
+        Route::get('banks/{bank}', [BankController::class, "show"])
+            ->name('admin.banks.view')
+            ->middleware(['role_or_permission:super_admin|view_banks']);
+        Route::post('banks', [BankController::class, 'create'])
+            ->name('admin.banks.create')
+            ->middleware(['role_or_permission:super_admin|create_banks']);
+        Route::put('banks/{bank}', [BankController::class, 'update'])
+            ->name('admin.banks.update')
+            ->middleware(['role_or_permission:super_admin|update_banks']);
+        Route::delete('banks/{bank}', [BankController::class, 'destroy'])
+            ->name('admin.banks.delete')
+            ->middleware(['role_or_permission:super_admin|delete_banks']);
+
+        Route::get('billers', [BillerController::class, 'index'])
+            ->name('admin.billers.index')
+            ->middleware(['role_or_permission:super_admin|list_billers','maker_checker']);
+        Route::get('billers/{biller}', [BillerController::class, "show"])
+            ->name('admin.billers.view')
+            ->middleware(['role_or_permission:super_admin|view_billers']);
+        Route::post('billers', [BillerController::class, 'create'])
+            ->name('admin.billers.create')
+            ->middleware(['role_or_permission:super_admin|create_billers']);
+        Route::put('billers/{biller}', [BillerController::class, 'update'])
+            ->name('admin.billers.update')
+            ->middleware(['role_or_permission:super_admin|update_billers']);
+        Route::delete('billers/{biller}', [BillerController::class, 'destroy'])
+            ->name('admin.billers.delete')
+            ->middleware(['role_or_permission:super_admin|delete_billers']);
+
+        Route::get('business-categories', [BusinessCategoryController::class, 'index'])
+            ->name('admin.business_categories.index')
+            ->middleware(['role_or_permission:super_admin|list_business_categories']);
+        Route::get('business-categories/{business_category}', [BusinessCategoryController::class, "show"])
+            ->name('admin.business_categories.view')
+            ->middleware(['role_or_permission:super_admin|view_business_categories']);
+        Route::post('business-categories', [BusinessCategoryController::class, 'create'])
+            ->name('admin.business_categories.create')
+            ->middleware(['role_or_permission:super_admin|create_business_categories']);
+        Route::put('business-categories/{business_category}', [BusinessCategoryController::class, 'update'])
+            ->name('admin.business_categories.update')
+            ->middleware(['role_or_permission:super_admin|update_business_categories']);
+        Route::delete('business-categories/{business_category}', [BusinessCategoryController::class, 'destroy'])
+            ->name('admin.business_categories.delete')
+            ->middleware(['role_or_permission:super_admin|delete_business_categories']);
+
+        Route::get('product-categories', [ProductCategoryController::class, 'index'])
+            ->name('admin.product_categories.index')
+            ->middleware(['role_or_permission:super_admin|list_product_categories']);
+        Route::get('product-categories/{product_category}', [ProductCategoryController::class, "show"])
+            ->name('admin.product_categories.view')
+            ->middleware(['role_or_permission:super_admin|view_product_categories']);
+        Route::post('product-categories', [ProductCategoryController::class, 'create'])
+            ->name('admin.product_categories.create')
+            ->middleware(['role_or_permission:super_admin|create_product_categories']);
+        Route::put('product-categories/{product_category}', [ProductCategoryController::class, 'update'])
+            ->name('admin.product_categories.update')
+            ->middleware(['role_or_permission:super_admin|update_product_categories']);
+        Route::delete('product-categories/{product_category}', [ProductCategoryController::class, 'destroy'])
+            ->name('admin.product_categories.delete')
+            ->middleware(['role_or_permission:super_admin|delete_product_categories']);
+
+        Route::get('sub-products', [SubProductController::class, 'index'])
+            ->name('admin.sub_products.index')
+            ->middleware(['role_or_permission:super_admin|list_sub_products']);
+        Route::get('sub-products/{sub_product}', [SubProductController::class, "show"])
+            ->name('admin.sub_products.view')
+            ->middleware(['role_or_permission:super_admin|view_sub_products']);
+        Route::post('sub-products', [SubProductController::class, 'create'])
+            ->name('admin.sub_products.create')
+            ->middleware(['role_or_permission:super_admin|create_sub_products']);
+        Route::put('sub-products/{sub_product}', [SubProductController::class, 'update'])
+            ->name('admin.sub_products.update')
+            ->middleware(['role_or_permission:super_admin|update_sub_products']);
+        Route::delete('sub-products/{sub_product}', [SubProductController::class, 'destroy'])
+            ->name('admin.sub_products.delete')
+            ->middleware(['role_or_permission:super_admin|delete_sub_products']);
 
         Route::group(['prefix' => 'actions'], function () {
             Route::get('/', [ActionRequestController::class, 'getActionRequests']);

@@ -22,8 +22,15 @@ class MakerCheckerMiddleware
             // Ensure validity
             return $next($request);
         }
-        // $route_data =  Route::getByName('admin.businesses.approve_documents');
         $route_name = Route::currentRouteName();
+        $route_title = str_replace('admin.', '',  $route_name);
+        $route_title =  strtoupper($route_title);
+        $route_data =  Route::getByName($route_name);
+        // $res = $route_data->getAction()["middleware"];
+        // $res = $route_title;
+        // return response()->json([
+        //     'res' => $res
+        // ]);
         $url = $request->url();
         $req_method = $request->method();
         $handler = [
@@ -31,7 +38,7 @@ class MakerCheckerMiddleware
             "method" => $req_method,
             "payload" => $request->all(),
             "route_name" => $route_name,
-            // "route_data" => $route_data,
+            "route_data" => $route_data,
         ];
 
         // $hal;
@@ -40,6 +47,7 @@ class MakerCheckerMiddleware
         $action->status = "pending";
         $action->payload = $request->all();
         $action->handler = $handler;
+        $action->title = $route_title;
         $action->save();
         return response()->json(
             [

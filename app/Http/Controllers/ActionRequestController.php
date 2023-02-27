@@ -16,7 +16,7 @@ class ActionRequestController extends Controller
     public function getActionRequests(Request $request)
     {
         $per_page = $request->per_page ?? 20;
-        $actionRequest = ActionRequest::latest()->paginate($per_page);
+        $actionRequest = ActionRequest::with('maker',  'checker')->latest()->paginate($per_page);
         return $this->sendSuccess("Action requests fetched successfully", [
             "action_requests" => $actionRequest
         ]);
@@ -26,6 +26,7 @@ class ActionRequestController extends Controller
         $request->validate([
             "action" => "required|in:approve,reject"
         ]);
+        $user = auth()->user();
 
         if ($request->action == "reject") {
             if ($actionRequest->status == "approved") {
@@ -33,6 +34,7 @@ class ActionRequestController extends Controller
             }
             $actionRequest->status = "rejected";
             $actionRequest->save();
+            $actionRequest->checker_id = $user->id;
             return $this->sendSuccess("Action Request rejected successfully.");
         }
         if ($actionRequest->status != "pending") {
@@ -46,9 +48,13 @@ class ActionRequestController extends Controller
         $resp = app()->handle($req);
         if ($resp->getStatusCode() ==  200) {
             $actionRequest->status  = "approved";
+            $actionRequest->checker_id = $user->id;
+            $actionRequest->treated_at = now();
             $actionRequest->save();
         } else {
             $actionRequest->status  = "failed";
+            $actionRequest->checker_id = $user->id;
+            $actionRequest->treated_at = now();
             $actionRequest->save();
         }
 
