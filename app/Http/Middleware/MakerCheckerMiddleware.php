@@ -29,6 +29,10 @@ class MakerCheckerMiddleware
         $route_title = str_replace('admin.', '',  $route_name);
         $route_title =  strtoupper($route_title);
         $route_data =  Route::getByName($route_name);
+        $res = $route_data;
+        return response()->json([
+            'res' => $res
+        ]);
         $meta = $this->getMeta($route_data);
         $url = $request->url();
         $req_method = $request->method();
@@ -49,10 +53,7 @@ class MakerCheckerMiddleware
         $action->title = $meta["description"];
         $action->description = $meta["description"];
         $action->view_link = $meta["view_link"];
-        // $res = $action;
-        // return response()->json([
-        //     'res' => $res
-        // ]);
+        
         $action->save();
         return response()->json(
             [
