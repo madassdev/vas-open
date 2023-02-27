@@ -322,7 +322,7 @@ Route::group(["middleware" => [
 
         Route::get('billers', [BillerController::class, 'index'])
             ->name('admin.billers.index')
-            ->middleware(['role_or_permission:super_admin|list_billers','maker_checker']);
+            ->middleware(['role_or_permission:super_admin|list_billers']);
         Route::get('billers/{biller}', [BillerController::class, "show"])
             ->name('admin.billers.view')
             ->middleware(['role_or_permission:super_admin|view_billers']);

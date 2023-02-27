@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\ActionRequest;
+use App\Models\BusinessDocumentRequest;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,8 @@ class MakerCheckerMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        // https://vasreseller.up-ng.com/admin/businesses/details/26
+
         if ($request->is_check) {
             // Ensure validity
             return $next($request);
@@ -26,11 +29,7 @@ class MakerCheckerMiddleware
         $route_title = str_replace('admin.', '',  $route_name);
         $route_title =  strtoupper($route_title);
         $route_data =  Route::getByName($route_name);
-        // $res = $route_data->getAction()["middleware"];
-        // $res = $route_title;
-        // return response()->json([
-        //     'res' => $res
-        // ]);
+        $meta = $this->getMeta($route_data);
         $url = $request->url();
         $req_method = $request->method();
         $handler = [
@@ -40,14 +39,20 @@ class MakerCheckerMiddleware
             "route_name" => $route_name,
             "route_data" => $route_data,
         ];
-
+        
         // $hal;
         $action = new ActionRequest();
         $action->maker_id = auth()->id();
         $action->status = "pending";
         $action->payload = $request->all();
         $action->handler = $handler;
-        $action->title = $route_title;
+        $action->title = $meta["description"];
+        $action->description = $meta["description"];
+        $action->view_link = $meta["view_link"];
+        // $res = $action;
+        // return response()->json([
+        //     'res' => $res
+        // ]);
         $action->save();
         return response()->json(
             [
@@ -57,5 +62,21 @@ class MakerCheckerMiddleware
             ]
         );
         return $next($request);
+    }
+
+    public function getMeta($route_data)
+    {
+        $route_name = $route_data->getAction()['as'];
+        $parameters = $route_data->parameters;
+        switch ($route_name) {
+            case 'admin.businesses.approve_documents':
+                // $business = 
+                return BusinessDocumentRequest::getMetaFromParams($parameters);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
     }
 }
