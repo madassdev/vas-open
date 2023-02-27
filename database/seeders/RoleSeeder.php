@@ -582,6 +582,13 @@ class RoleSeeder extends Seeder
                 "description" => null,
                 "is_admin" => true
             ],
+            [
+                "name" => "check_approve_business_documents",
+                "guard_name" => "web",
+                "readable_name" => "Check business document approval",
+                "description" => null,
+                "is_admin" => true
+            ],
         ]);
 
         $permissions->map(function ($p) {

@@ -128,7 +128,7 @@ class BusinessAdminController extends Controller
 
     public function approveBusinessDocuments(BusinessDocumentRequest $document_request, Request $request)
     {
-        $this->authorizeAdmin('approve_approve_business_documents');
+        $this->authorizeAdmin('check_approve_business_documents');
         $user = auth()->user();
         $request->validate([
             "action" => "required|in:approve,reject,pending",
