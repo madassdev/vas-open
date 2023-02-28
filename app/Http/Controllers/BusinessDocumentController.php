@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Business;
 use App\Models\BusinessDocumentRequest;
 use Illuminate\Http\Request;
 
@@ -115,7 +116,39 @@ class BusinessDocumentController extends Controller
             "documents_count" => $documents->documents_count,
             "status" => $status,
             "message" => $message,
-            "comment" => $comment." Kindly Re-upload",
+            "comment" => $comment . " Kindly Re-upload",
         ]);
+    }
+
+    public function makeAction(Request $request)
+    {
+        $request->validate([
+            "action" => "required|in:approve,reject",
+        ]);
+        $action = $request->action;
+        $path =  request()->path();
+        $path =  str_replace("api/super/businesses/", "", $path);
+        $path =  str_replace("/approve-documents", "", $path);
+        $document_request = BusinessDocumentRequest::findOrFail($path);
+        $document = $document_request->businessDocument;
+        $business_id = $document_request['business_id'];
+        $user = auth()->user();
+        $business = Business::find($business_id);
+        if ($document_request->status == "approved") {
+            $data = [];
+            $success = false;
+            $message = "Document has already been approved";
+            return compact("data", "success", "message");
+        }
+        $view_link = "https://vasreseller.up-ng.com/admin/businesses/details/{$business_id}";
+        $description = "{$user->first_name} {$user->last_name} tried to {$action} business documents on {$business->name}";
+        $success = true;
+        $message = "Action has been successfully saved for approval.";
+        $data = [
+            "title" => $description,
+            "description" => $description,
+            "view_link" => $view_link,
+        ];
+        return compact("data", "success", "message");
     }
 }
