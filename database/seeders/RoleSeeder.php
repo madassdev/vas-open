@@ -606,6 +606,27 @@ class RoleSeeder extends Seeder
                 "is_admin" => true
             ],
             [
+                "name" => "action_checker",
+                "guard_name" => "web",
+                "readable_name" => "Action Checker",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "document_reviewer",
+                "guard_name" => "web",
+                "readable_name" => "Document Reviewer",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
+                "name" => "product_editor",
+                "guard_name" => "web",
+                "readable_name" => "Product Editor",
+                "description" => null,
+                "is_admin" => true
+            ],
+            [
                 "name" => "business_admin",
                 "guard_name" => "web",
                 "readable_name" => "Business Admin",
@@ -650,9 +671,28 @@ class RoleSeeder extends Seeder
         $developer_permissions = [
             "get_whitelist_ips", "set_whitelist_ips", "get_low_balance_threshold", "set_low_balance_threshold", "get_webhook_url", "set_webhook_url", "show_business_stats"
         ];
+
+        $action_checker_permissions = [
+            'view_action_requests',
+            'check_approve_business_documents'
+        ];
+
+        $document_reviewer_permissions = ["list_businesses", 'view_business', 'list_document_requests', 'view_business_documents', 'approve_business_documents'];
+        $product_editor_permissions = [
+            "list_products", 'edit_products',
+            'list_business_products', 'enable_product_for_business', 'create_products', 
+            'view_products', 'delete_products', 'view_business_product_configuration',
+            'update_business_product_configuration', 'delete_business_product', 
+            'add_product_for_business','add_product_for_businesses', 'remove_product_for_business'
+        ];
+
+
         Role::whereName(sc('BUSINESS_ADMIN_ROLE'))->first()->syncPermissions($permissions->where('is_admin', false)->pluck('name'));
         Role::whereName(sc('BUSINESS_DEVELOPER_ROLE'))->first()->syncPermissions($developer_permissions);
         Role::whereName(sc('BUSINESS_FINANCE_ROLE'))->first()->syncPermissions($finance_permissions);
+        Role::whereName('action_checker')->first()->syncPermissions($action_checker_permissions);
+        Role::whereName('document_reviewer')->first()->syncPermissions($document_reviewer_permissions);
+        Role::whereName('product_editor')->first()->syncPermissions($product_editor_permissions);
         Role::whereName(sc('SUPER_ADMIN_ROLE'))->first()->syncPermissions($permissions->where('is_admin', true)->pluck('name'));
     }
 }
