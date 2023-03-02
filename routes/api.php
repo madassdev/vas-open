@@ -274,13 +274,11 @@ Route::group(["middleware" => [
             // add product to multiple businesses
             Route::post("/{product}/businesses", [ProductController::class, 'addProductForBusinesses'])
                 ->name('admin.add_product_for_businesses')
-                ->middleware(['role_or_permission:super_admin|add_product_for_businesses']);
-                ;
+                ->middleware(['role_or_permission:super_admin|add_product_for_businesses']);;
             // remove product from multiple businesses
             Route::delete("/{product}/businesses", [ProductController::class, 'removeProductForBusinesses'])
                 ->name('admin.remove_product_for_businesses')
                 ->middleware(['role_or_permission:super_admin|remove_product_for_business']);
-
         });
 
         /**  Transactions
@@ -385,7 +383,9 @@ Route::group(["middleware" => [
             ->middleware(['role_or_permission:super_admin|delete_sub_products']);
 
         Route::group(['prefix' => 'actions'], function () {
-            Route::get('/', [ActionRequestController::class, 'getActionRequests']);
+            Route::get('/', [ActionRequestController::class, 'getActionRequests'])
+                ->name('admin.actions.list')
+                ->middleware(['role_or_permission:super_admin|view_action_requests']);;
             Route::group(['prefix' => 'make', 'middleware' => 'role:' . sc("ACTION_MAKER_ROLE")], function () {
                 Route::post('create-user', [ActionRequestController::class, 'createUser']);
                 Route::post('update-biller', [ActionRequestController::class, 'makeUpdateBiller']);
@@ -394,7 +394,9 @@ Route::group(["middleware" => [
                 'prefix' => 'check',
                 // 'middleware' => 'role:' . sc("ACTION_CHECKER_ROLE") . '|' . sc("SUPER_ADMIN_ROLE")
             ], function () {
-                Route::post('/{actionRequest}', [ActionRequestController::class, 'check']);
+                Route::post('/{actionRequest}', [ActionRequestController::class, 'check'])
+                    ->name('admin.actions.check');
+                    // ->middleware(['role_or_permission:super_admin|list_businesses']);
             });
         });
     });
