@@ -45,9 +45,9 @@ class RoleSeeder extends Seeder
                 "readable_name" => "List Business Documents"
             ],
             [
-                "name" => "business_list_products",
+                "name" => "list_products_for_business",
                 "guard_name" => "web",
-                "readable_name" => "List Business Products"
+                "readable_name" => "List Products under Business dashboard"
             ],
             [
                 "name" => "validate_business_bank_details",
