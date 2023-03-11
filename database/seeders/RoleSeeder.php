@@ -45,6 +45,11 @@ class RoleSeeder extends Seeder
                 "readable_name" => "List Business Documents"
             ],
             [
+                "name" => "business_list_products",
+                "guard_name" => "web",
+                "readable_name" => "List Business Products"
+            ],
+            [
                 "name" => "validate_business_bank_details",
                 "guard_name" => "web",
                 "readable_name" => "Validate Business Bank Details"
@@ -695,4 +700,18 @@ class RoleSeeder extends Seeder
         Role::whereName('product_editor')->first()->syncPermissions($product_editor_permissions);
         Role::whereName(sc('SUPER_ADMIN_ROLE'))->first()->syncPermissions($permissions->where('is_admin', true)->pluck('name'));
     }
+
+
+    // Sidebar
+    // [
+    //     "dashboard" => ["show_business_stats", "view_admin_dashboard"],
+    //     "transactions" => ["list_business_transactions", "search_business_transactions", "view_transactions"],
+    //     "documentation" => ["list_business_documents", "approve_business_documents", "list_document_requests"],
+    //     "settings" => ["get_whitelist_ips", "set_whitelist_ips", "get_low_balance_threshold", "set_low_balance_threshold", "get_webhook_url", "set_webhook_url"],
+    //     "product" => ["list_products", 'edit_products',],
+    //     "users" => ["list_invitations", "send_invitations", "list_admins", "manage_roles"],
+        // "logs" => ["view_request_logs", "view_logs"],
+        // "request_logs" => ["view_request_logs",  "view_logs"],
+        
+    // ];
 }
