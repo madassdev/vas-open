@@ -63,7 +63,7 @@ class BalanceService
 
             return $response;
         } catch (Exception $e) {
-            throw new ApiCallException($e->getMessage, 400);
+            throw new ApiCallException($e->getMessage(), 400);
         }
     }
 
@@ -82,7 +82,7 @@ class BalanceService
 
             return $response;
         } catch (Exception $e) {
-            throw new ApiCallException($e->getMessage, 400);
+            throw new ApiCallException($e->getMessage(), 400);
         }
     }
 
@@ -109,7 +109,7 @@ class BalanceService
 
             return $response;
         } catch (Exception $e) {
-            throw new ApiCallException($e->getMessage, 400, $e->getTrace());
+            throw new ApiCallException($e->getMessage(), 400, $e->getTrace());
         }
     }
 }
