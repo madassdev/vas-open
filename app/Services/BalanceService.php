@@ -35,7 +35,7 @@ class BalanceService
             ])->post($url.'/'. $account)->json();
 
             if (!$response['success']) {
-                $balance = "Balance unavailable.";
+                $balance = "Balance unavailable..";
                 return $balance;
             }
             $balance = $response['data'];
