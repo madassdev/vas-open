@@ -304,7 +304,7 @@ class BusinessController extends Controller
         $env = $business->current_env;
         $balance = 0;
         try {
-            $balance = $balanceService->getBalance($business->client_id || '00');
+            $balance = $balanceService->getBalance($business->client_id ?? '00');
         } catch (\Exception $e) {
             $balance = 'Balance not available' . $e->getMessage();
         }
