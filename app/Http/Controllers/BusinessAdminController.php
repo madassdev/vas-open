@@ -17,6 +17,7 @@ use App\Models\Role;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Services\MailApiService;
+use App\Services\BalanceService;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -439,9 +440,9 @@ class BusinessAdminController extends Controller
         return $this->sendSuccess('Invitations sent successfully');
     }
 
-    public function getBusinessBalance(Business $business)
+    public function getBusinessBalance(Business $business, BalanceService $balanceService)
     {
-        $balance = rand(7000, 45000);
+        $balance = $balanceService->getBalance($business->client_id);
         return $this->sendSuccess("Business balance fetched successfully", [
             "wallet_balance" => $balance
         ]);
