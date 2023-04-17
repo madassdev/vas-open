@@ -5,7 +5,7 @@ if (env("APP_ENV") === "production") {
     return [
         'balanceApi' => [
             'hash' => env('BALANCE_API_HASH', '06ef1e0d2b1c02f53f920dc9c1eb79bc6d1d17b5309209f6bf7b0d43fa179283'),
-            'url' => env('BALANCE_API_URL', 'http://196.46.20.114:8003/api/vasreseller/getbalance'),
+            'url' => 'http://196.46.20.114:8003/api/vasreseller/getbalance',
         ],
 
         'bankAccountVerification' => [
