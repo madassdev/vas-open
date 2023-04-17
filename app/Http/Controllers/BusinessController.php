@@ -297,13 +297,13 @@ class BusinessController extends Controller
         $products = $query->with('productCategory', 'biller')->get();
         return $this->sendSuccess("Business Products fetched successfully", ["products" => $products]);
     }
-    public function getBalance()
+    public function getBalance(BalanceService $balanceService)
     {
         // @TODO: Sort balance threshold logic
         $business = auth()->user()->business;
         $env = $business->current_env;
         $live_stats = [
-            "wallet_balance" => 0,
+            "wallet_balance" => $balanceService->getBalance($business->client_id),
             "transactions" => [
                 "failed_percentage" => 0,
                 "success_percentage" => 0,
