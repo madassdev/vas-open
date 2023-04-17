@@ -302,8 +302,14 @@ class BusinessController extends Controller
         // @TODO: Sort balance threshold logic
         $business = auth()->user()->business;
         $env = $business->current_env;
+        $balance = 0;
+        try{
+            $balance = $balanceService->getBalance($business->client_id);
+        }catch(\Exception $e){
+            $balance = 'Balance not available';
+        }
         $live_stats = [
-            "wallet_balance" => $balanceService->getBalance($business->client_id),
+            "wallet_balance" => $balance,
             "transactions" => [
                 "failed_percentage" => 0,
                 "success_percentage" => 0,
