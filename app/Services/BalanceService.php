@@ -41,8 +41,9 @@ class BalanceService
             $balance = $response['data'];
             return $balance;
         } catch (Exception $e) {
+
             // throw new ApiCallException($e->getMessage(), 400);
-            $balance = "Balance unavailable.";
+            $balance = "Balance unavailable." . $e->getMessage();
             return $balance;
         }
     }
