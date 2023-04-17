@@ -303,9 +303,9 @@ class BusinessController extends Controller
         $business = auth()->user()->business;
         $env = $business->current_env;
         $balance = 0;
-        try{
-            $balance = $balanceService->getBalance($business->client_id);
-        }catch(\Exception $e){
+        try {
+            $balance = $balanceService->getBalance($business->client_id || '00');
+        } catch (\Exception $e) {
             $balance = 'Balance not available';
         }
         $live_stats = [
