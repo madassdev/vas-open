@@ -13,7 +13,7 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-        $per_page = $request->per_page ?? 20;
+        $per_page = $request->per_page ?? 100;
         $user = auth()->user();
         $business = $user->business;
         // $business->createDemoTransaction(rand(30,80));
@@ -61,7 +61,7 @@ class TransactionController extends Controller
             $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
 
-        $transactions = $query->with('product.productCategory', 'product.biller','extra')->paginate($per_page)->appends(request()->query());
+        $transactions = $query->with('product.productCategory', 'product.biller', 'extra')->paginate($per_page)->appends(request()->query())->orderBy('created_at', 'desc');
 
         return $this->sendSuccess("Transactions fetched successful", [
             "transactions" => $transactions
@@ -214,8 +214,8 @@ class TransactionController extends Controller
         // }
         return $this->sendSuccess("Transactions fetched successful", [
             "transactions" => $query->with('business', 'product.productCategory', 'product.biller')
-            ->paginate($per_page, ['id', 'business_id', 'product_id', 'transaction_status', 'transaction_reference', 'business_reference', 'provider_reference', 'debit_reference', 'idempotency_hash', 'phone_number', 'account_number', 'created_at'])
-            ->appends(request()->query())
+                ->paginate($per_page, ['id', 'business_id', 'product_id', 'transaction_status', 'transaction_reference', 'business_reference', 'provider_reference', 'debit_reference', 'idempotency_hash', 'phone_number', 'account_number', 'created_at'])
+                ->appends(request()->query())
         ]);
     }
 }
