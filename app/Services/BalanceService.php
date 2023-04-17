@@ -35,10 +35,10 @@ class BalanceService
             ])->post($url.'/'. $account)->json();
 
             if (!$response['success']) {
-                $balance = "Balance unavailable.." . $response['message'] . $client_id;
+                $balance = "Balance unavailable..";
                 return $balance;
             }
-            $balance = $response['data'];
+            $balance = '₦'.$response['data'];
             return $balance;
         } catch (Exception $e) {
 

@@ -306,7 +306,7 @@ class BusinessController extends Controller
         try {
             $balance = $balanceService->getBalance($business->client_id ?? '00');
         } catch (\Exception $e) {
-            $balance = 'Balance not available' . $e->getMessage();
+            $balance = 'Balance not available';
         }
         $live_stats = [
             "wallet_balance" => $balance,
