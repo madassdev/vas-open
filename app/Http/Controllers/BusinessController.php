@@ -314,7 +314,6 @@ class BusinessController extends Controller
                 "failed_percentage" => 0,
                 "success_percentage" => 0,
                 "pending_percentage" => 0,
-                "client_id" => $business->client_id,
             ],
             "total_commission_earned" => 0,
             "total_fees_paid" => 0,
