@@ -43,7 +43,7 @@ class BalanceService
         } catch (Exception $e) {
 
             // throw new ApiCallException($e->getMessage(), 400);
-            $balance = "Balance unavailable." . $e->getMessage();
+            $balance = "Balance unavailable.";
             return $balance;
         }
     }
