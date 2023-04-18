@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('business_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->timestamps();
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->string('reversal_status',8)->nullable();
         });
     }
 
@@ -27,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('business_categories');
+        Schema::table('transactions', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -61,7 +61,7 @@ class TransactionController extends Controller
             $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
 
-        $transactions = $query->with('product.productCategory', 'product.biller')->paginate($per_page)->appends(request()->query());
+        $transactions = $query->with('product.productCategory', 'product.biller','extra')->paginate($per_page)->appends(request()->query());
 
         return $this->sendSuccess("Transactions fetched successful", [
             "transactions" => $transactions

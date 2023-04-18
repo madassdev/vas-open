@@ -10,7 +10,7 @@ class AdminTransactionController extends Controller
 {
     public function index(Request $request)
     {
-        $per_page = $request->per_page ?? 20;
+        $per_page = $request->per_page ?? 100;
         $user = auth()->user();
         // $business->createDemoTransaction(rand(30,80));
         $query = Transaction::query();
@@ -61,7 +61,9 @@ class AdminTransactionController extends Controller
             $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
 
-        $transactions = $query->with('business', 'product.productCategory','product.subProducts', 'product.biller')->paginate($per_page)->appends(request()->query());
+        $transactions = $query->with('business', 'product.productCategory', 'product.subProducts', 'product.biller')
+            ->orderBy('created_at', 'desc')
+            ->paginate($per_page)->appends(request()->query());
 
         return $this->sendSuccess("Transactions fetched successful", [
             "transactions" => $transactions

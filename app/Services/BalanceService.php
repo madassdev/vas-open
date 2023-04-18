@@ -19,29 +19,32 @@ class BalanceService
     {
         $this->user = $user;
     }
-    public function getBalance(User $user)
+    public function getBalance(string $client_id)
     {
         // git remote add live-heroku  https://git.heroku.com/vasreseller-admin-live.git
 
-        $account = "1020000589";
-        $hash = config('api.balanceTestApi.hash');
-        $url = config('api.balanceTestApi.url');
-        $payload = ["Account" => $account];
+        $account = $client_id;
+        $hash = config('api.balanceApi.hash');
+        $url = config('api.balanceApi.url');
+        // $payload = ["Account" => $account];
         try {
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
                 'hash' => $hash,
-            ])->post($url, $payload)->json();
+            ])->post($url.'/'. $account)->json();
 
             if (!$response['success']) {
-                $balance = "Balance unavailable.";
+                $balance = "Balance unavailable..";
                 return $balance;
             }
-            $balance = $response['data'];
+            $balance = '₦'.$response['data'];
             return $balance;
         } catch (Exception $e) {
-            throw new ApiCallException($e->getMessage, 400);
+
+            // throw new ApiCallException($e->getMessage(), 400);
+            $balance = "Balance unavailable.". $e->getMessage();
+            return $balance;
         }
     }
 
@@ -60,7 +63,7 @@ class BalanceService
 
             return $response;
         } catch (Exception $e) {
-            throw new ApiCallException($e->getMessage, 400);
+            throw new ApiCallException($e->getMessage(), 400);
         }
     }
 
@@ -79,7 +82,7 @@ class BalanceService
 
             return $response;
         } catch (Exception $e) {
-            throw new ApiCallException($e->getMessage, 400);
+            throw new ApiCallException($e->getMessage(), 400);
         }
     }
 
@@ -106,7 +109,7 @@ class BalanceService
 
             return $response;
         } catch (Exception $e) {
-            throw new ApiCallException($e->getMessage, 400, $e->getTrace());
+            throw new ApiCallException($e->getMessage(), 400, $e->getTrace());
         }
     }
 }
