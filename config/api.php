@@ -14,7 +14,8 @@ if (env("APP_ENV") === "production") {
         ],
 
         'bankOtpVerification' => [
-            'url' => env('BANK_OTP_VERIFICATION_URL', 'http://196.46.20.114:8003/api/hopebank/validateotp')
+            'url' => env('BANK_OTP_VERIFICATION_URL', 'http://196.46.20.114:8003/api/hopebank/validateotp'),
+            'hash' => env('BANK_VERIFICATION_HASH', '06ef1e0d2b1c02f53f920dc9c1eb79bc6d1d17b5309209f6bf7b0d43fa179283'),
         ],
 
         'vasCustomerRegistration' => [
@@ -36,7 +37,8 @@ if (env("APP_ENV") === "production") {
         ],
 
         'bankOtpVerification' => [
-            'url' => env('BANK_OTP_VERIFICATION_URL', 'http://196.46.20.20:8002/api/hopebank/validateotp')
+            'url' => env('BANK_OTP_VERIFICATION_URL', 'http://196.46.20.20:8002/api/hopebank/validateotp'),
+            'hash' => env('BANK_VERIFICATION_API_HASH_TEST', '06ef1e0d2b1c02f53f920dc9c1eb79bc6d1d17b5309209f6bf7b0d43fa179283'),
         ],
 
         'vasCustomerRegistration' => [
