@@ -196,7 +196,7 @@ Route::group(["middleware" => [
 
         Route::post("/businesses/{document_request}/approve-documents", [BusinessAdminController::class, 'approveBusinessDocuments'])
             ->name('admin.businesses.approve_documents')
-            ->middleware(['role_or_permission:super_admin|approve_business_documents|check_approve_business_documents', 'maker_checker']);
+            ->middleware(['role_or_permission:super_admin|approve_business_documents|check_approve_business_documents|action_checker', 'maker_checker']);
 
         Route::get("/businesses/{business_id}/users", [BusinessAdminController::class, 'getBusinessUsers'])
             ->name('admin.businesses.users.list')
