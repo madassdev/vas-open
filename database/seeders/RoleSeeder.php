@@ -688,6 +688,8 @@ class RoleSeeder extends Seeder
         ];
 
         $action_checker_permissions = [
+            'view_business',
+            'view_business_documents',
             'view_action_requests',
             'check_approve_business_documents'
         ];
