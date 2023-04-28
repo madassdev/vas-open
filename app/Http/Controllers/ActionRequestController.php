@@ -16,7 +16,7 @@ class ActionRequestController extends Controller
     public function getActionRequests(Request $request)
     {
         $per_page = $request->per_page ?? 20;
-        $actionRequest = ActionRequest::with('maker',  'checker')->where('status', 'pending')->latest()->paginate($per_page);
+        $actionRequest = ActionRequest::with('maker',  'checker')->where('status', 'pending')->orWhere('status','failed')->latest()->paginate($per_page);
         return $this->sendSuccess("Action requests fetched successfully", [
             "action_requests" => $actionRequest
         ]);
@@ -31,7 +31,7 @@ class ActionRequestController extends Controller
 
         if ($request->action == "reject") {
             if ($actionRequest->status == "approved") {
-                return $this->sendError("[" . strtoupper($actionRequest->status) . " ACTION]: Cannot approve action with status: " . $actionRequest->status);
+                return $this->sendError("[" . strtoupper($actionRequest->status) . " ACTION]: Cannot approve action with status: " . $actionRequest->status, [], 403);
             }
             $actionRequest->status = "rejected";
             $actionRequest->checker_id = $user->id;
@@ -39,8 +39,8 @@ class ActionRequestController extends Controller
             return $this->sendSuccess("Action Request rejected successfully.");
         }
 
-        if ($actionRequest->status != "pending") {
-            return $this->sendError("[" . strtoupper($actionRequest->status) . " ACTION]: Cannot approve action with status: " . $actionRequest->status);
+        if ($actionRequest->status == "approved") {
+            return $this->sendError("[" . strtoupper($actionRequest->status) . " ACTION]: Action already approved.", [], 403);
         }
 
         $actionRequest->status = 'treating';

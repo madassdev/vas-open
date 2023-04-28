@@ -91,14 +91,15 @@ class BalanceService
         $hash = config('api.vasCustomerRegistration.hash');
         $url = config('api.vasCustomerRegistration.url');
         // return $url;
+        $business_bank = $business->businessBank()->first();
         $payload = [
             "Name" => $business->name,
             "Email" => $business->email,
             "PhoneNumber" => $business->phone,
             "IsBank" => (bool)@$business->is_bank,
             "Address" => $business->address,
-            "AccountNumber" => $business->account_number,
-            "AccountName" => $business->account_name,
+            "AccountNumber" => @$business_bank->account_number,
+            "AccountName" => @$business_bank->account_name,
         ];
         try {
             $response = Http::withHeaders([
