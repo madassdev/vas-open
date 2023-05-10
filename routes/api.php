@@ -324,7 +324,7 @@ Route::group(["middleware" => [
         Route::get('billers/{biller}', [BillerController::class, "show"])
             ->name('admin.billers.view')
             ->middleware(['role_or_permission:super_admin|view_billers']);
-        Route::post('billers', [BillerController::class, 'create'])
+        Route::post('billers', [BillerController::class, 'store'])
             ->name('admin.billers.create')
             ->middleware(['role_or_permission:super_admin|create_billers']);
         Route::put('billers/{biller}', [BillerController::class, 'update'])
