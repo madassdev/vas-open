@@ -10,7 +10,7 @@ class AdminTransactionController extends Controller
 {
     public function index(Request $request)
     {
-        $per_page = $request->per_page ?? 100;
+        $per_page =100;
         $user = auth()->user();
         // $business->createDemoTransaction(rand(30,80));
         $query = Transaction::query();
