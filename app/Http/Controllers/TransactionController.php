@@ -13,7 +13,7 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-        $per_page = $request->per_page ?? 20;
+        $per_page = 100;
         $user = auth()->user();
         $business = $user->business;
         // $business->createDemoTransaction(rand(30,80));
@@ -61,7 +61,9 @@ class TransactionController extends Controller
             $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
 
-        $transactions = $query->with('product.productCategory', 'product.biller','extra')->paginate($per_page)->appends(request()->query());
+        $transactions = $query->with('product.productCategory', 'product.biller','extra')
+        ->latest()
+        ->paginate($per_page)->appends(request()->query());
 
         return $this->sendSuccess("Transactions fetched successful", [
             "transactions" => $transactions

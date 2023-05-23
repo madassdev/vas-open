@@ -12,9 +12,6 @@ class AdminTransactionController extends Controller
     {
         $per_page =100;
         $user = auth()->user();
-        dd("why"); 
-
-        // $business->createDemoTransaction(rand(30,80));
         $query = Transaction::query();
         $query->orderBy('created_at', 'DESC');
         if ($request->product_category_id) {
