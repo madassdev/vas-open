@@ -14,6 +14,7 @@ class AdminTransactionController extends Controller
         $user = auth()->user();
         // $business->createDemoTransaction(rand(30,80));
         $query = Transaction::query();
+        $query->orderBy('created_at', 'DESC');
         if ($request->product_category_id) {
             $category_id = $request->product_category_id;
             $query = $query->whereHas('product', function ($q) use ($category_id) {
@@ -61,10 +62,9 @@ class AdminTransactionController extends Controller
             $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
         $transactions = $query->with('business', 'product.productCategory', 'product.subProducts', 'product.biller')
-            ->orderBy('transactions.created_at', 'DESC')
             ->paginate($per_page)->appends(request()->query());
 
-        return $this->sendSuccess("Transactions fetched successful", [
+        return $this->sendSuccess("Transactions fetched successfully", [
             "transactions" => $transactions
         ]);
 
