@@ -60,9 +60,8 @@ class AdminTransactionController extends Controller
             $end_date = $request->end_date;
             $query = $query->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date);
         }
-
         $transactions = $query->with('business', 'product.productCategory', 'product.subProducts', 'product.biller')
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->paginate($per_page)->appends(request()->query());
 
         return $this->sendSuccess("Transactions fetched successful", [
