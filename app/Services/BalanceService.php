@@ -19,8 +19,11 @@ class BalanceService
     {
         $this->user = $user;
     }
-    public function getBalance(string $client_id)
+    public function getBalance(string|null $client_id)
     {
+        if(!$client_id){
+            return "Balance Unavailable";
+        }
         // git remote add live-heroku  https://git.heroku.com/vasreseller-admin-live.git
 
         $account = $client_id;
