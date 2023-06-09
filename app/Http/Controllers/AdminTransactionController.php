@@ -12,7 +12,6 @@ class AdminTransactionController extends Controller
     {
         $per_page = $request->per_page ?? 100;
         $user = auth()->user();
-        // $business->createDemoTransaction(rand(30,80));
         $query = Transaction::query();
         if ($request->product_category_id) {
             $category_id = $request->product_category_id;

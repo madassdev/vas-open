@@ -119,12 +119,12 @@ class Business extends Model
 
     public function getLatestDocumentCommentAttribute()
     {
-        
+
     }
 
     public function createDemoTransaction($count = 1)
     {
-        $payment_status = ["successful", "successful", "succesful", "pending", "failed"];
+        $payment_status = ["successful", "successful", "successful", "pending", "failed"];
         $tx = [];
         $bp = $this->products()->count();
         if ($bp < 3) {
@@ -141,7 +141,7 @@ class Business extends Model
             $t->product_id = $product->id;
             $t->business_id = $this->id;
             $t->idempotency_hash = md5(str()->random(12));
-            $t->amount = $product->max_amount + 40;
+            $t->amount = $product->max_amount + rand(20, 1000);
             // $t->amount = rand(0,50)*100 + rand(0,50)*10 + rand(0,50);
             $t->business_reference = strtoupper(str()->random(12));
             // $t->transaction_reference = strtoupper(str()->random(12));
@@ -185,5 +185,28 @@ class Business extends Model
     public function businessDocumentRequests()
     {
         return $this->hasMany(BusinessDocumentRequest::class);
+    }
+
+    public function fetchTxStats()
+    {
+        // Date >= '2011/02/25' and Date <= '2011/02/27'
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $successfulCount = $this->transactions()->whereTransactionStatus('successful')->whereDate('created_at', '>=', $startOfMonth)->count();
+        $pendingCount = $this->transactions()->whereTransactionStatus('pending')->whereDate('created_at', '>=', $startOfMonth)->count();
+        $failedCount = $this->transactions()->whereTransactionStatus('failed')->whereDate('created_at', '>=', $startOfMonth)->count();
+        $transactionVolume = $this->transactions()->whereDate('created_at', '>=', $startOfMonth)->whereTransactionStatus('successful')->sum('amount');
+        $totalCommissionEarned = $this->transactions()->whereDate('created_at', '>=', $startOfMonth)->whereTransactionStatus('successful')->sum('integrator_commission');
+        $totalFeesPaid = $this->transactions()->whereDate('created_at', '>=', $startOfMonth)->whereTransactionStatus('successful')->sum('fee');
+
+        return [
+            'transactions' => [
+                "successful_transactions" => $successfulCount,
+                "pending_transactions" => $pendingCount,
+                "failed_transactions" => $failedCount,
+                "transaction_volume" => (float)$transactionVolume,
+                "total_commission_earned" => (float)$totalCommissionEarned,
+                "total_fees_paid" => (float)$totalFeesPaid,
+            ]
+        ];
     }
 }

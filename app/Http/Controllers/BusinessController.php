@@ -308,40 +308,27 @@ class BusinessController extends Controller
         } catch (\Exception $e) {
             $balance = 'Balance not available';
         }
-        $live_stats = [
-            "wallet_balance" => $balance,
-            "transactions" => [
-                "failed_percentage" => 0,
-                "success_percentage" => 0,
-                "pending_percentage" => 0,
-            ],
-            "total_commission_earned" => 0,
-            "total_fees_paid" => 0,
-            "recent_transactions" => 0,
-            "transactions_count" => 0,
-            "transactions_volume" => 0,
-        ];
-        $test_stats = [
-            "wallet_balance" => 1000,
-            "transactions" => [
-                "failed_percentage" => 8,
-                "success_percentage" => 80,
-                "pending_percentage" => 12,
-            ],
-            "total_commission_earned" => 140,
-            "total_fees_paid" => 23,
-            "recent_transactions" => Transaction::latest()->take(rand(1, 5))->get(),
-            "transactions_count" => rand(5, 20),
-            "transactions_volume" => rand(2000, 10000),
-        ];
 
-        $stats = $env == "live" ? $live_stats : $test_stats;
-        $recent_transactions = Transaction::with('product.productCategory', 'product.biller')->whereBusinessId($business->id)->latest()->take(5)->get();
-        if (auth()->user()->email != "oluwaseunoffice@gmail.com") {
-            $stats = $live_stats;
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $transactions_count = $business->transactions()->whereDate('created_at', '>=', $startOfMonth)->count();
+        if ($transactions_count > 0) {
+            $recent_transactions = Transaction::with('product.productCategory', 'product.biller')->whereBusinessId($business->id)->latest()->take(5)->get();
+            $tx_stats = $business->fetchTxStats();
+
+        } else {
+            $tx_stats = [
+                "successful_transactions" => 0,
+                "pending_transactions" => 0,
+                "failed_transactions" => 0,
+            ];
         }
+        $stats = $tx_stats + [
+            "wallet_balance" => $balance,
+            'recent_transactions' => $recent_transactions
+        ];
 
-        return $this->sendSuccess("Stats fetched successfully!", ["stats" => $stats, "recent_transactions" => $recent_transactions]);;
+        return $this->sendSuccess("Stats fetched successfully!", ["stats" => $stats, "recent_transactions" => $recent_transactions]);
+        ;
     }
 
     // 1. Percentage of failed, pending and successful transaction 

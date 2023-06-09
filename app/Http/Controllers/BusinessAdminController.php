@@ -440,8 +440,9 @@ class BusinessAdminController extends Controller
         return $this->sendSuccess('Invitations sent successfully');
     }
 
-    public function getBusinessBalance(Business $business, BalanceService $balanceService)
+    public function getBusinessBalance($business, BalanceService $balanceService)
     {
+        $business = Business::findOrFail($business);
         $balance = $balanceService->getBalance($business->client_id);
         return $this->sendSuccess("Business balance fetched successfully", [
             "wallet_balance" => $balance
